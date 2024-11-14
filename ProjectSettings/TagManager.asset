@@ -15,12 +15,12 @@ TagManager:
   - 
   - 
   - 
+  - Controller
   - 
   - 
   - 
   - 
-  - 
-  - 
+  - DamageCollider
   - 
   - 
   - 
