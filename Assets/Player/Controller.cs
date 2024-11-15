@@ -20,6 +20,7 @@ namespace Custom
 
             private void OnDisable()
             {
+                _locomotion.Cleanup();
                 _inputHandler.Cleanup();
             }
 
@@ -37,9 +38,8 @@ namespace Custom
             {
                 float deltaTime = Time.fixedDeltaTime;
                 float horizontalInput = _inputHandler.HorizontalInput;
-                bool jumpInput = _inputHandler.JumpInput;
 
-                _locomotion.FixedTick(deltaTime, horizontalInput, jumpInput);
+                _locomotion.FixedTick(deltaTime, horizontalInput);
             }
         }
     }

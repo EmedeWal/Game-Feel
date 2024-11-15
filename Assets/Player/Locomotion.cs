@@ -4,10 +4,12 @@ namespace Custom
 {
     namespace Player
     {
-        [RequireComponent(typeof(CircleCollider2D))]
+        [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(Rigidbody2D))]
         public class Locomotion : MonoBehaviour
         {
+            private InputHandler _inputHandler;
+
             [Header("FRICTION SETTINGS")]
             [SerializeField] private float _frictionAmount = 0.25f;
 
@@ -18,7 +20,7 @@ namespace Custom
             [SerializeField] private float _deceleration = 13f;
 
             [Header("JUMP SETTINGS")]
-            [Range(0, 1)][SerializeField] private float _jumpCutMultiplier = 0.4f;
+            [Range(0, 1)][SerializeField] private float _jumpCutMultiplier = 0.6f;
             [SerializeField] private float _jumpCoyoteTime = 0.15f;
             [SerializeField] private float _jumpBufferTime = 0.1f;
             [SerializeField] private float _jumpForce = 13f;
@@ -28,35 +30,60 @@ namespace Custom
 
             [Header("GRAVITY SETTINGS")]
             [SerializeField] private float _gravityScale = 1f;
-            [SerializeField] private float _fallGravityMultiplier = 2f;
-            [SerializeField] private Vector2 _groundCheckSize = new(0.4f, 0.1f);
+            [SerializeField] private float _fallGravityMultiplier = 1.2f;
+            [SerializeField] private Vector2 _groundCheckSize = new(0.2f, 0.1f);
              private LayerMask _ignoreLayers;
 
-            private CircleCollider2D _circleCollider2D;
+            private BoxCollider2D _boxCollider2D;
             private Rigidbody2D _rigidbody2D;
 
             public void Init()
             {
+                _inputHandler = GetComponent<InputHandler>();
+
                 int controllerLayer = LayerMask.NameToLayer("Controller");
                 int damageColliderLayer = LayerMask.NameToLayer("DamageCollider");
                 _ignoreLayers = ~(1 << controllerLayer | 1 << damageColliderLayer);
 
-                _circleCollider2D = GetComponent<CircleCollider2D>();
+                _boxCollider2D = GetComponent<BoxCollider2D>();
 
                 _rigidbody2D = GetComponent<Rigidbody2D>();
                 _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
                 _rigidbody2D.gravityScale = _gravityScale;
                 _rigidbody2D.isKinematic = false;
+
+                _inputHandler.JumpInputPerformed += Locomotion_JumpInputPerformed;
+                _inputHandler.JumpInputCanceled += Locomotion_JumpInputCanceled;
             }
 
-            public void FixedTick(float deltaTime, float horizontalInput, bool jumpInput)
+            public void Cleanup()
+            {
+                _inputHandler.JumpInputPerformed -= Locomotion_JumpInputPerformed;
+                _inputHandler.JumpInputCanceled -= Locomotion_JumpInputCanceled;
+            }
+
+            public void FixedTick(float deltaTime, float horizontalInput)
             {
                 GroundCheck();
                 TickTimers(deltaTime);
                 HandleHorizontalMovement(horizontalInput);
-                HandleVerticalMovement(jumpInput);
                 HandleFriction(horizontalInput);
+                HandleVerticalMovement();
                 HandleGravity();
+            }
+
+            private void Locomotion_JumpInputPerformed()
+            {
+                _lastJumpTime = _jumpBufferTime;
+            }
+
+            private void Locomotion_JumpInputCanceled()
+            {
+                if (_rigidbody2D.velocity.y > 0 && _isJumping)
+                {
+                    _rigidbody2D.AddForce((1 - _jumpCutMultiplier) * _rigidbody2D.velocity.y * Vector2.down, ForceMode2D.Impulse);
+                    _isJumping = false;
+                }
             }
 
             private void HandleHorizontalMovement(float horizontalInput)
@@ -69,27 +96,14 @@ namespace Custom
                 _rigidbody2D.AddForce(movement * Vector2.right);
             }
 
-            private void HandleVerticalMovement(bool jumpInput)
+            private void HandleVerticalMovement()
             {
-                if (jumpInput)
+                if (_lastGroundedTime > 0 && _lastJumpTime > 0 && !_isJumping)
                 {
-                    _lastJumpTime = _jumpBufferTime;
-
-                    if (_lastGroundedTime > 0 && _lastJumpTime > 0 && !_isJumping)
-                    {
-                        _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-                        _isJumping = true;
-                        _lastGroundedTime = 0f;
-                        _lastJumpTime = 0f;
-                    }
-                }
-                else
-                {
-                    if (_rigidbody2D.velocity.y > 0 && _isJumping)
-                    {
-                        _rigidbody2D.AddForce((1 - _jumpCutMultiplier) * _rigidbody2D.velocity.y * Vector2.down, ForceMode2D.Impulse);
-                        _isJumping = false;
-                    }
+                    _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+                    _isJumping = true;
+                    _lastGroundedTime = 0f;
+                    _lastJumpTime = 0f;
                 }
             }
 
@@ -124,8 +138,8 @@ namespace Custom
 
             private bool GroundCheck()
             {
-                Vector2 position = _circleCollider2D.bounds.center;
-                position.y -= _circleCollider2D.bounds.extents.y;
+                Vector2 position = _boxCollider2D.bounds.center;
+                position.y -= _boxCollider2D.bounds.extents.y;
 
                 if (Physics2D.OverlapBox(position, _groundCheckSize, 0, _ignoreLayers))
                 {
@@ -138,11 +152,11 @@ namespace Custom
 
             private void OnDrawGizmosSelected()
             {
-                if (_circleCollider2D != null)
+                if (_boxCollider2D != null)
                 {
                     Gizmos.color = Color.red;
-                    Vector2 position = _circleCollider2D.bounds.center;
-                    position.y -= _circleCollider2D.bounds.extents.y;
+                    Vector2 position = _boxCollider2D.bounds.center;
+                    position.y -= _boxCollider2D.bounds.extents.y;
                     Gizmos.DrawWireCube(position, _groundCheckSize);
                 }
             }
