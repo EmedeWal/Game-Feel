@@ -120,6 +120,15 @@ namespace Custom
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6709dd2-ff1b-4e58-8e1e-062770e4e5b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -131,6 +140,17 @@ namespace Custom
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbdf8a4e-4155-49c1-aa57-91754961d79e"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -145,6 +165,7 @@ namespace Custom
             // Actions
             m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
             m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
+            m_Actions_Dash = m_Actions.FindAction("Dash", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -253,11 +274,13 @@ namespace Custom
         private readonly InputActionMap m_Actions;
         private List<IActionsActions> m_ActionsActionsCallbackInterfaces = new List<IActionsActions>();
         private readonly InputAction m_Actions_Jump;
+        private readonly InputAction m_Actions_Dash;
         public struct ActionsActions
         {
             private @InputActions m_Wrapper;
             public ActionsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Jump => m_Wrapper.m_Actions_Jump;
+            public InputAction @Dash => m_Wrapper.m_Actions_Dash;
             public InputActionMap Get() { return m_Wrapper.m_Actions; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -270,6 +293,9 @@ namespace Custom
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
 
             private void UnregisterCallbacks(IActionsActions instance)
@@ -277,6 +303,9 @@ namespace Custom
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
+                @Dash.started -= instance.OnDash;
+                @Dash.performed -= instance.OnDash;
+                @Dash.canceled -= instance.OnDash;
             }
 
             public void RemoveCallbacks(IActionsActions instance)
@@ -301,6 +330,7 @@ namespace Custom
         public interface IActionsActions
         {
             void OnJump(InputAction.CallbackContext context);
+            void OnDash(InputAction.CallbackContext context);
         }
     }
 }

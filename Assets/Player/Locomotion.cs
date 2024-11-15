@@ -1,3 +1,4 @@
+using Custom.Player.Utilities;
 using UnityEngine;
 
 namespace Custom
@@ -8,12 +9,11 @@ namespace Custom
         [RequireComponent(typeof(Rigidbody2D))]
         public class Locomotion : MonoBehaviour
         {
-            private InputHandler _inputHandler;
-
-            [Header("FRICTION SETTINGS")]
-            [SerializeField] private float _frictionAmount = 0.25f;
+            private LocomotionGetters _getters;
+            [SerializeField] private LocomotionState _state;
 
             [Header("SPEED SETTINGS")]
+            [SerializeField] private float _frictionAmount = 0.25f;
             [SerializeField] private float _movementSpeed = 9f;
             [SerializeField] private float _velocityPower = 0.95f;
             [SerializeField] private float _acceleration = 16f;
@@ -26,50 +26,65 @@ namespace Custom
             [SerializeField] private float _jumpForce = 13f;
             private float _lastGroundedTime = 0f;
             private float _lastJumpTime = 0f;
-            private bool _isJumping = false;
 
             [Header("GRAVITY SETTINGS")]
             [SerializeField] private float _gravityScale = 1f;
             [SerializeField] private float _fallGravityMultiplier = 1.2f;
-            [SerializeField] private Vector2 _groundCheckSize = new(0.2f, 0.1f);
-             private LayerMask _ignoreLayers;
 
-            private BoxCollider2D _boxCollider2D;
-            private Rigidbody2D _rigidbody2D;
+            [Header("OVERLAP CIRCLE SETTINGS")]
+            [SerializeField] private Vector2 _wallCheckOffset = new(0.25f, 0.5f);
+            [SerializeField] private float _groundCheckRadius = 0.2f;
+            [SerializeField] private float _grabCheckRadius = 0.2f;
+            private LayerMask _ignoreLayers;
+
+            private InputHandler _inputHandler;
+            private AnimatorManager _animatorManager;
+            private BoxCollider2D _boxCollider;
+            private Rigidbody2D _rigidbody;
+            private Transform _transform;
+            private float _verticalVelocity;
+            private bool _facingRight;
 
             public void Init()
             {
-                _inputHandler = GetComponent<InputHandler>();
+                _getters = new();
 
                 int controllerLayer = LayerMask.NameToLayer("Controller");
                 int damageColliderLayer = LayerMask.NameToLayer("DamageCollider");
                 _ignoreLayers = ~(1 << controllerLayer | 1 << damageColliderLayer);
 
-                _boxCollider2D = GetComponent<BoxCollider2D>();
+                _inputHandler = GetComponent<InputHandler>();
+                _animatorManager = GetComponent<AnimatorManager>();
+                _boxCollider = GetComponent<BoxCollider2D>();
+                _rigidbody = GetComponent<Rigidbody2D>();
+                _transform = transform;
+                _facingRight = true;
 
-                _rigidbody2D = GetComponent<Rigidbody2D>();
-                _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-                _rigidbody2D.gravityScale = _gravityScale;
-                _rigidbody2D.isKinematic = false;
+                _rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                _rigidbody.gravityScale = _gravityScale;
+                _rigidbody.isKinematic = false;
 
                 _inputHandler.JumpInputPerformed += Locomotion_JumpInputPerformed;
                 _inputHandler.JumpInputCanceled += Locomotion_JumpInputCanceled;
+                _inputHandler.DashInputPerformed += Locomotion_DashInputPerformed;
             }
 
             public void Cleanup()
             {
+                _getters = null;
+
                 _inputHandler.JumpInputPerformed -= Locomotion_JumpInputPerformed;
                 _inputHandler.JumpInputCanceled -= Locomotion_JumpInputCanceled;
+                _inputHandler.DashInputPerformed -= Locomotion_DashInputPerformed;
             }
 
             public void FixedTick(float deltaTime, float horizontalInput)
             {
-                GroundCheck();
-                TickTimers(deltaTime);
-                HandleHorizontalMovement(horizontalInput);
-                HandleFriction(horizontalInput);
+                float inputMagnitude = Mathf.Abs(horizontalInput);
+
+                UpdateLocomotionState(deltaTime, horizontalInput, inputMagnitude, _rigidbody.velocity.y);
+                HandleHorizontalMovement(horizontalInput, inputMagnitude);
                 HandleVerticalMovement();
-                HandleGravity();
             }
 
             private void Locomotion_JumpInputPerformed()
@@ -79,85 +94,112 @@ namespace Custom
 
             private void Locomotion_JumpInputCanceled()
             {
-                if (_rigidbody2D.velocity.y > 0 && _isJumping)
+                if (_verticalVelocity > 0 && _state == LocomotionState.Jumping)
                 {
-                    _rigidbody2D.AddForce((1 - _jumpCutMultiplier) * _rigidbody2D.velocity.y * Vector2.down, ForceMode2D.Impulse);
-                    _isJumping = false;
+                    _rigidbody.AddForce((1 - _jumpCutMultiplier) * _verticalVelocity * Vector2.down, ForceMode2D.Impulse);
                 }
             }
 
-            private void HandleHorizontalMovement(float horizontalInput)
+            private void Locomotion_DashInputPerformed()
             {
+
+            }
+
+            private void UpdateLocomotionState(float deltaTime, float horizontalInput, float inputMagnitude, float verticalVelocity)
+            {
+                #region Updating Global Fields
+                _lastJumpTime -= deltaTime;
+                _lastGroundedTime -= deltaTime;
+
+                (float lastGroundedTime, bool grounded, bool hanging) =
+                _getters.HandlePhysicsChecks(_boxCollider, _transform, _wallCheckOffset, _ignoreLayers,
+                _groundCheckRadius, _grabCheckRadius, _lastGroundedTime, _jumpCoyoteTime);
+
+                _state = _getters.UpdateLocomotionState(verticalVelocity, grounded, hanging);
+
+                _verticalVelocity = verticalVelocity;
+                _lastGroundedTime = lastGroundedTime;
+                #endregion
+
+                #region Character Turning
+                if (!_facingRight && horizontalInput > 0f || _facingRight && horizontalInput < 0f)
+                {
+                    Vector3 scale = transform.localScale;
+                    scale.x *= -1;
+
+                    _facingRight = !_facingRight;
+                    transform.localScale = scale;
+                }
+                #endregion
+
+                #region Animator Calls
+                _animatorManager.FixedTick(_state, inputMagnitude);
+                #endregion
+            }
+
+            private void HandleHorizontalMovement(float horizontalInput, float inputMagnitude)
+            {
+                #region Movement
                 float targetSpeed = horizontalInput * _movementSpeed;
-                float speedDifference = targetSpeed - _rigidbody2D.velocity.x;
+                float speedDifference = targetSpeed - _rigidbody.velocity.x;
                 float accelerationRate = (Mathf.Abs(targetSpeed) > 0.01) ? _acceleration : _deceleration;
                 float movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelerationRate, _velocityPower) * Mathf.Sign(speedDifference);
 
-                _rigidbody2D.AddForce(movement * Vector2.right);
+                _rigidbody.AddForce(movement * Vector2.right);
+                #endregion
+
+                #region Friction
+                if (_state == LocomotionState.Grounded && inputMagnitude < 0.01f)
+                {
+                    float amount = Mathf.Min(Mathf.Abs(_rigidbody.velocity.x), Mathf.Abs(_frictionAmount));
+                    amount *= Mathf.Sign(_rigidbody.velocity.x);
+
+                    _rigidbody.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
+                }
+                #endregion
             }
 
             private void HandleVerticalMovement()
             {
-                if (_lastGroundedTime > 0 && _lastJumpTime > 0 && !_isJumping)
+                #region Jumping
+                if (_lastJumpTime > 0)
                 {
-                    _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-                    _isJumping = true;
-                    _lastGroundedTime = 0f;
                     _lastJumpTime = 0f;
-                }
-            }
 
-            private void HandleGravity()
-            {
-                if (_rigidbody2D.velocity.y < 0)
+                    if (_state == LocomotionState.Hanging)
+                    {
+                        Debug.Log("Wall jump performed");
+                    }
+                    else if (_state == LocomotionState.Grounded)
+                    {
+                        _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+                        _lastGroundedTime = 0f;
+                    }
+                }
+                #endregion
+
+                #region Gravity
+                if (_rigidbody.velocity.y < 0)
                 {
-                    _rigidbody2D.gravityScale = _gravityScale * _fallGravityMultiplier;
+                    _rigidbody.gravityScale = _gravityScale * _fallGravityMultiplier;
                 }
                 else
                 {
-                    _rigidbody2D.gravityScale = _gravityScale;
+                    _rigidbody.gravityScale = _gravityScale;
                 }
-            }
-
-            private void HandleFriction(float inputMagnitude)
-            {
-                if (_lastGroundedTime > 0 && Mathf.Abs(inputMagnitude) < 0.01f)
-                {
-                    float amount = Mathf.Min(Mathf.Abs(_rigidbody2D.velocity.x), Mathf.Abs(_frictionAmount));
-                    amount *= Mathf.Sign(_rigidbody2D.velocity.x);
-
-                    _rigidbody2D.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
-                }
-            }
-
-            private void TickTimers(float deltaTime)
-            {
-                _lastGroundedTime -= deltaTime;
-                _lastJumpTime -= deltaTime;
-            }
-
-            private bool GroundCheck()
-            {
-                Vector2 position = _boxCollider2D.bounds.center;
-                position.y -= _boxCollider2D.bounds.extents.y;
-
-                if (Physics2D.OverlapBox(position, _groundCheckSize, 0, _ignoreLayers))
-                {
-                    _lastGroundedTime = _jumpCoyoteTime;
-                    _isJumping = false;
-                    return true;
-                }
-                return false;
+                #endregion
             }
 
             private void OnDrawGizmosSelected()
             {
-                if (_boxCollider2D != null)
+                if (_boxCollider != null)
                 {
+                    (Vector2 groundCheckOrigin, Vector2 leftWallCheckOrigin, Vector2 rightWallCheckOrigin) = _getters.GetPhysicsOrigins(_boxCollider, transform, _wallCheckOffset);
+
                     Gizmos.color = Color.red;
-                    Vector2 position = _boxCollider2D.bounds.center;
-                    position.y -= _boxCollider2D.bounds.extents.y;
-                    Gizmos.DrawWireCube(position, _groundCheckSize);
+                    Gizmos.DrawWireSphere(groundCheckOrigin, _groundCheckRadius);
+                    Gizmos.DrawWireSphere(leftWallCheckOrigin, _grabCheckRadius);
+                    Gizmos.DrawWireSphere(rightWallCheckOrigin, _grabCheckRadius);
                 }
             }
         }

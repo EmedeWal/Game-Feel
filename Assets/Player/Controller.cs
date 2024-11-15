@@ -7,14 +7,17 @@ namespace Custom
         public class Controller : MonoBehaviour
         {
             private InputHandler _inputHandler;
+            private AnimatorManager _animatorManager;
             private Locomotion _locomotion;
 
             private void Awake()
             {
                 _inputHandler = GetComponent<InputHandler>();
+                _animatorManager = GetComponent<AnimatorManager>();
                 _locomotion = GetComponent<Locomotion>();
 
                 _inputHandler.Init();
+                _animatorManager.Init();
                 _locomotion.Init();
             }
 
@@ -22,16 +25,6 @@ namespace Custom
             {
                 _locomotion.Cleanup();
                 _inputHandler.Cleanup();
-            }
-
-            private void Update()
-            {
-
-            }
-
-            private void LateUpdate()
-            {
-                
             }
 
             private void FixedUpdate()

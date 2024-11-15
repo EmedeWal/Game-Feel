@@ -10,6 +10,7 @@ namespace Custom
             public float HorizontalInput { get; private set; }
             public event Action JumpInputPerformed;
             public event Action JumpInputCanceled;
+            public event Action DashInputPerformed;
 
             private InputActions _inputActions;
 
@@ -23,6 +24,8 @@ namespace Custom
                 _inputActions.Actions.Jump.performed += i => JumpInputPerformed.Invoke();
                 _inputActions.Actions.Jump.canceled += i => JumpInputCanceled.Invoke();
 
+                _inputActions.Actions.Dash.performed += i => DashInputPerformed.Invoke();
+
                 _inputActions.Enable();
             }
 
@@ -33,6 +36,8 @@ namespace Custom
 
                 _inputActions.Actions.Jump.performed -= i => JumpInputPerformed.Invoke();
                 _inputActions.Actions.Jump.canceled -= i => JumpInputCanceled.Invoke();
+
+                _inputActions.Actions.Dash.performed -= i => DashInputPerformed.Invoke();
 
                 _inputActions.Disable();
             }
