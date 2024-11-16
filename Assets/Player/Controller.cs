@@ -8,13 +8,13 @@ namespace Custom
         {
             private InputHandler _inputHandler;
             private AnimatorManager _animatorManager;
-            private Locomotion _locomotion;
+            private Locomotion.Controller _locomotion;
 
             private void Awake()
             {
                 _inputHandler = GetComponent<InputHandler>();
                 _animatorManager = GetComponent<AnimatorManager>();
-                _locomotion = GetComponent<Locomotion>();
+                _locomotion = GetComponent<Locomotion.Controller>();
 
                 _inputHandler.Init();
                 _animatorManager.Init();
