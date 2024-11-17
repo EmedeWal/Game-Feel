@@ -11,6 +11,7 @@ namespace Custom
             private int _jumpHash;
             private int _fallHash;
             private int _hangHash;
+            private int _dashHash;
 
             public void Init()
             {
@@ -20,6 +21,7 @@ namespace Custom
                 _jumpHash = Animator.StringToHash("Jump");
                 _fallHash = Animator.StringToHash("Fall");
                 _hangHash = Animator.StringToHash("Hang");
+                _dashHash = Animator.StringToHash("Dash");
             }
 
             public void FixedTick(LocomotionState locomotionState, float inputMagnitude)
@@ -29,19 +31,23 @@ namespace Custom
                 switch (locomotionState)
                 {
                     case LocomotionState.Grounded:
-                        Play(Animator.StringToHash("Locomotion"));
+                        Play(_locomotionHash);
                         break;
 
                     case LocomotionState.Jumping:
-                        Play(Animator.StringToHash("Jump"));
+                        Play(_jumpHash);
                         break;
 
                     case LocomotionState.Falling:
-                        Play(Animator.StringToHash("Fall"));
+                        Play(_fallHash);
                         break;
 
                     case LocomotionState.Hanging:
-                        Play(Animator.StringToHash("Hang"));
+                        Play(_hangHash);
+                        break;
+
+                    case LocomotionState.Dashing:
+                        Play(_dashHash);
                         break;
                 }
             }

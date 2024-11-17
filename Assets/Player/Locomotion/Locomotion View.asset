@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3199cc4fbde5bfa4e8411aced31c9b7a, type: 3}
+  m_Name: Locomotion View
+  m_EditorClassIdentifier: 
+  AirMultiplier: 0.6
+  FrictionAmount: 2
+  MovementSpeed: 9
+  VelocityPower: 0.95
+  Acceleration: 16
+  Deceleration: 13
+  WallJumpMultiplier: 1.2
+  JumpCutMultiplier: 0.6
+  MaximumAirJumps: 1
+  JumpCoyoteTime: 0.15
+  JumpBufferTime: 0.1
+  WallJumpTime: 0.2
+  JumpForce: 13
+  DashForce: 21
+  DashCooldown: 3
+  DashDuration: 0.1
+  GravityScaleCutMultiplier: 0.5
+  MaximumVerticalVelocity: 30
+  FallGravityMultiplier: 1.01
+  DefaultGravityScale: 1
+  WallCheckOffset: {x: 0.25, y: 0.5}
+  GroundCheckRadius: 0.2
+  GrabCheckRadius: 0.2
+  LastTouchedWall: 1
+  CurrentAirJumps: 0
+  LastGroundedTime: 0.13000001
+  LastHangingTime: -4.239997
+  LastJumpTime: -4.239997
+  InputTimer: -3.799997
+  DashTimer: -0.8999974
+  FacingRight: 0
+  HandleInput: 1
+  InputHandler: {fileID: 0}
+  AnimatorManager: {fileID: 0}
+  BoxCollider: {fileID: 0}
+  Rigidbody: {fileID: 0}
+  Transform: {fileID: 0}
+  IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 4294933503

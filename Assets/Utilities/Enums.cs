@@ -8,4 +8,11 @@ namespace Custom
         Hanging,
         Dashing
     }
+
+    public enum Direction
+    {
+        None,
+        Left,
+        Right
+    }
 }

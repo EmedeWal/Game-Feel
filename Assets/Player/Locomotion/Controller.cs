@@ -42,11 +42,18 @@ namespace Custom
                 public void FixedTick(float deltaTime, float horizontalInput)
                 {
                     float inputMagnitude = Mathf.Abs(horizontalInput);
+                    UpdateLocomotionState(_view.Rigidbody.velocity.y);
 
-                    UpdateLocomotionState(deltaTime, horizontalInput, inputMagnitude, _view.Rigidbody.velocity.y);
-                    HandleHorizontalMovement(horizontalInput);
-                    HandleVerticalMovement(horizontalInput);
-                    HandleFriction(inputMagnitude);
+                    if (_view.HandleInput)
+                    {
+                        HandleVerticalMovement();
+                        HandleHorizontalMovement(horizontalInput);
+                    }
+
+                    HandlePhysics(inputMagnitude);
+                    HandleVisuals(inputMagnitude);
+
+                    _view.FixedTick(deltaTime);
                 }
 
                 private void Locomotion_JumpInputPerformed()
@@ -64,88 +71,109 @@ namespace Custom
 
                 private void Locomotion_DashInputPerformed()
                 {
-
+                    if (_model.CanDash(_view, _currentState))
+                    {
+                        _currentState = _model.PerformDash(_view);
+                    }
                 }
 
-                private void UpdateLocomotionState(float deltaTime, float horizontalInput, float inputMagnitude, float verticalVelocity)
+                private void UpdateLocomotionState(float verticalVelocity)
                 {
-                    #region Updating Fields
-                    _view.FixedTick(deltaTime);
-
                     (bool grounded, bool hanging) = 
                     _model.HandlePhysicsChecks(_view);
 
                     _previousState = _currentState;
+                    if (_currentState == LocomotionState.Dashing && !_view.HandleInput) return;
                     _currentState = _model.UpdateLocomotionState(verticalVelocity, grounded, hanging);
-
-                    _model.FixedTick(_view, _currentState, inputMagnitude);
-                    #endregion
-
-                    if (_model.InputDirectionOpposite(_view, horizontalInput))
-                    {
-                        _model.TurnCharacter(_view);
-                    }
                 }
 
                 private void HandleHorizontalMovement(float horizontalInput)
                 {
-                    float movement = _model.CalculateMovement(_view, horizontalInput);
+                    float movement = _model.CalculateMovement(_view, _currentState, horizontalInput);
                     _view.Rigidbody.AddForce(movement * Vector2.right);
                 }
 
-                private void HandleVerticalMovement(float horizontalInput)
+                private void HandleVerticalMovement()
                 {
-                    #region Jumping
+                    if (_currentState == LocomotionState.Grounded)
+                    {
+                        _view.CurrentAirJumps = 0;
+                    }
+
                     if (_view.LastJumpTime > 0)
                     {
-                        _view.LastJumpTime = 0f;
-                        if (_view.LastHangingTime > 0 && _currentState != LocomotionState.Grounded)
+                        if (_model.CanTimedJump(_view.LastHangingTime))
                         {
-                            _view.LastHangingTime = _model.PerformJump(_view, Vector2.up);
+                            _model.PerformWallJump(_view);
                         }
-                        else if (_view.LastGroundedTime > 0)
+                        else if (_model.CanTimedJump(_view.LastGroundedTime))
                         {
-                            _view.LastGroundedTime = _view.LastHangingTime = _model.PerformJump(_view, Vector2.up);
+                            _model.PerformJump(_view, Vector2.up);
                         }
+                        else if (_model.CanAirJump(_view, _currentState))
+                        {
+                            _model.PerformAirJump(_view, Vector2.up);
+                        }
+                    }
+                }
+
+                private void HandlePhysics(float inputMagnitude)
+                {
+                    #region Transitions
+                    if (_previousState != LocomotionState.Hanging && _currentState == LocomotionState.Hanging)
+                    {
+                        _view.Rigidbody.gravityScale = _view.DefaultGravityScale;
+                        _model.CutVerticalVelocity(_view);
+                        _view.CurrentAirJumps = 0;
                     }
                     #endregion
 
                     #region Gravity
-                    if (_currentState == LocomotionState.Falling)
+                    if (_currentState == LocomotionState.Dashing)
                     {
-                        _view.Rigidbody.gravityScale = _view.Rigidbody.gravityScale * _view.FallGravityMultiplier;
+                        _view.Rigidbody.gravityScale = 0;
                     }
-                    else
+                    else if (_currentState == LocomotionState.Grounded)
                     {
                         _view.Rigidbody.gravityScale = _view.DefaultGravityScale;
                     }
-                    #endregion
-
-                    #region Transitions
-                    if (_previousState == LocomotionState.Jumping && _currentState == LocomotionState.Hanging)
+                    else if (_currentState == LocomotionState.Falling || _currentState == LocomotionState.Hanging)
                     {
-                        _model.CutVerticalVelocity(_view);
+                        _view.Rigidbody.gravityScale = _view.Rigidbody.gravityScale * _view.FallGravityMultiplier;
                     }
                     #endregion
+
+                    #region Friction
+                    if (_currentState == LocomotionState.Grounded && Mathf.Abs(inputMagnitude) < 0.01f)
+                    {
+                        float amount = Mathf.Min(Mathf.Abs(_view.Rigidbody.velocity.x), Mathf.Abs(_view.FrictionAmount));
+                        amount *= Mathf.Sign(_view.Rigidbody.velocity.x);
+
+                        _view.Rigidbody.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
+                    }
+                    else if (Mathf.Abs(_view.Rigidbody.velocity.x) < 0.05)
+                    {
+                        _view.Rigidbody.velocity = new Vector2(0, _view.Rigidbody.velocity.y);
+                    }
+                    #endregion
+
+                    float newVerticalVelocity = Mathf.Clamp(_view.Rigidbody.velocity.y, _view.Rigidbody.velocity.y, _view.MaximumVerticalVelocity);
+                    _view.Rigidbody.velocity = new(_view.Rigidbody.velocity.x, newVerticalVelocity);
                 }
 
-                private void HandleFriction(float inputMagnitude)
+                private void HandleVisuals(float inputMagnitude)
                 {
-                    #region Drag
-                    if (_currentState == LocomotionState.Grounded && inputMagnitude > 0)
+                    if (_model.DirectionOpposite(_view, _view.Rigidbody.velocity.x))
                     {
-                        _view.Rigidbody.drag = 0;
+                        _model.TurnCharacter(_view);
                     }
-                    else
-                    {
-                        _view.Rigidbody.drag = _view.DragAmount;
-                    }
-                    #endregion
+
+                    _model.FixedTick(_view, _currentState, inputMagnitude);
                 }
 
                 private void OnDrawGizmosSelected()
                 {
-                    if (_view.BoxCollider != null)
+                    if (_view != null && _model != null)
                     {
                         (Vector2 groundCheckOrigin, Vector2 leftWallCheckOrigin, Vector2 rightWallCheckOrigin) = _model.GetPhysicsOrigins(_view.BoxCollider, transform, _view.WallCheckOffset);
 
