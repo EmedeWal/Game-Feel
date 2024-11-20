@@ -12,16 +12,47 @@ namespace Custom
 
                 public Handler(Data data) { _d = data; }
 
-                public void FixedTick(LocomotionState state, float input, bool update)
+                public void FixedTick(float input)
                 {
-                    _d.AnimatorManager.FixedTick(state, input, update);
+                    _d.AnimatorManager.FixedTick(_d.CurrentLocomotion, input);
                 }
 
-                public void PerformJump(Vector2 direction)
+                public void PerformDash()
                 {
-                    StopVerticalVelocity();
+                    _d.DashTimer = _d.DashCooldown;
+                    _d.DisableInput(_d.DashDuration);
+                    _d.CurrentLocomotion = LocomotionState.Dashing;
+                    _d.PoolManager.ReuseObject(_d.DashEffect, _d.Transform.position, Quaternion.identity);
+                    _d.Rigidbody.AddForce(new Vector2(_d.FacingRight ? 1 : -1, 0) * _d.DashForce, ForceMode2D.Impulse);
+                }
 
+                public void PerformBounce()
+                {
+                    _d.DisableInput(_d.BounceTime);
+                    Vector2 bounceDirection = Vector2.up;
+
+                    if (_d.LastTouchedWall == Direction.Left)
+                    {
+                        bounceDirection += Vector2.right;
+                    }
+                    else if (_d.LastTouchedWall == Direction.Right)
+                    {
+                        bounceDirection += Vector2.left;
+                    }
+
+                    bounceDirection = bounceDirection.normalized;
+                    bounceDirection *= _d.BounceMultiplier;
+
+                    PerformJump(LocomotionState.Bouncing, bounceDirection);
+                }
+
+                public void PerformJump(LocomotionState state, Vector2 direction)
+                {
+                    StopVerticalVelocity(_d.DefaultGravityScale);
+
+                    _d.PoolManager.ReuseObject(_d.JumpEffect, _d.Transform.position, Quaternion.identity);
                     _d.Rigidbody.AddForce(direction * _d.JumpForce, ForceMode2D.Impulse);
+                    _d.CurrentLocomotion = state;
                     _d.LastGroundedTime = 0f;
                     _d.LastHangingTime = 0;
                     _d.LastJumpTime = 0f;
@@ -31,31 +62,12 @@ namespace Custom
                 {
                     _d.CurrentAirJumps++;
 
-                    PerformJump(direction);
+                    PerformJump(LocomotionState.Jumping, direction);
                 }
 
-                public void PerformWallJump()
+                public void StopVerticalVelocity(float newGravityScale)
                 {
-                    _d.DisableInput(_d.WallJumpTime);
-                    Vector2 wallJumpDirection = Vector2.up;
-
-                    if (_d.LastTouchedWall == Direction.Left)
-                    {
-                        wallJumpDirection += Vector2.right;
-                    }
-                    else if (_d.LastTouchedWall == Direction.Right)
-                    {
-                        wallJumpDirection += Vector2.left;
-                    }
-
-                    wallJumpDirection = wallJumpDirection.normalized;
-                    wallJumpDirection *= _d.WallJumpMultiplier;
-                    PerformJump(wallJumpDirection);
-                }
-
-                public void StopVerticalVelocity()
-                {
-                    _d.Rigidbody.gravityScale = _d.DefaultGravityScale;
+                    _d.Rigidbody.gravityScale = newGravityScale;
                     _d.Rigidbody.velocity = new(_d.Rigidbody.velocity.x, 0);
                 }
 
@@ -73,54 +85,13 @@ namespace Custom
                     _d.FacingRight = !_d.FacingRight;
                 }
 
-                public LocomotionState UpdateLocomotionState(float verticalVelocity, bool grounded, bool hanging)
-                {
-                    LocomotionState positionState;
-
-                    if (grounded)
-                    {
-                        positionState = LocomotionState.Grounded;
-                    }
-                    else if (hanging)
-                    {
-                        positionState = LocomotionState.Hanging;
-                    }
-                    else if (verticalVelocity > 0)
-                    {
-                        positionState = LocomotionState.Jumping;
-                    }
-                    else
-                    {
-                        positionState = LocomotionState.Falling;
-                    }
-
-                    return positionState;
-                }
-
-                public LocomotionState PerformDash()
-                {
-                    _d.DashTimer = _d.DashCooldown;
-                    _d.DisableInput(_d.DashDuration);
-                    _d.PoolManager.ReuseObject(_d.DashEffect, _d.Transform.position, Quaternion.identity);
-                    _d.Rigidbody.AddForce(new Vector2(_d.FacingRight ? 1 : -1, 0) * _d.DashForce, ForceMode2D.Impulse);
-
-                    return LocomotionState.Dashing;
-                }
-
-                public float CalculateMovement(LocomotionState state, float input)
+                public float CalculateMovement(float input)
                 {
                     float targetSpeed = input * _d.MovementSpeed;
                     float speeddifference = targetSpeed - _d.Rigidbody.velocity.x;
                     float accelerationRate = (Mathf.Abs(targetSpeed) > 0.01) ? _d.Acceleration : _d.Deceleration;
-
-                    if (state == LocomotionState.Grounded)
-                    {
-                        return Mathf.Pow(Mathf.Abs(speeddifference) * accelerationRate, _d.VelocityPower) * Mathf.Sign(speeddifference);
-                    }
-                    else
-                    {
-                        return Mathf.Pow(Mathf.Abs(speeddifference) * accelerationRate * _d.AirMultiplier, _d.VelocityPower) * Mathf.Sign(speeddifference);
-                    }
+                    float turnRateMultiplier = _d.CurrentLocomotion == LocomotionState.Grounded ? 1 : _d.AirMultiplier;
+                    return Mathf.Pow(Mathf.Abs(speeddifference) * accelerationRate * turnRateMultiplier, _d.VelocityPower) * Mathf.Sign(speeddifference);
                 }
 
                 public bool CanDash(LocomotionState state)
@@ -161,15 +132,36 @@ namespace Custom
                     return (groundCheckOrigin, leftWallCheckOrigin, rightWallCheckOrigin);
                 }
 
+                public (LocomotionState previousLocomotion, LocomotionState currentLocomotion)
+                UpdateLocomotionState(LocomotionState currentLocomotion, float verticalVelocity, bool grounded, bool hanging)
+                {
+                    LocomotionState newLocomotion = currentLocomotion;
+
+                    if (grounded)
+                    {
+                        newLocomotion = LocomotionState.Grounded;
+                    }
+                    else if (hanging)
+                    {
+                        newLocomotion = LocomotionState.Hanging;
+                    }
+                    else if (verticalVelocity < 0)
+                    {
+                        newLocomotion = LocomotionState.Falling;
+                    }
+
+                    return (currentLocomotion, newLocomotion);
+                }
+
                 public (bool grounded, bool hanging)
                 HandlePhysicsChecks()
                 {
                     (Vector2 groundCheckOrigin, Vector2 leftWallCheckOrigin, Vector2 rightWallCheckOrigin) =
                     GetPhysicsOrigins(_d.BoxCollider, _d.Transform, _d.WallCheckOffset);
 
-                    bool touchingRightWall = Physics2D.OverlapCircle(rightWallCheckOrigin, _d.GrabCheckRadius, _d.WallLayer) && _d.FacingRight;
-                    bool touchingLeftWall = Physics2D.OverlapCircle(leftWallCheckOrigin, _d.GrabCheckRadius, _d.WallLayer) && !_d.FacingRight;
-                    bool grounded = Physics2D.OverlapCircle(groundCheckOrigin, _d.GroundCheckRadius, _d.GroundedLayers);
+                    bool touchingRightWall = Physics2D.OverlapCircle(rightWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer) && _d.FacingRight;
+                    bool touchingLeftWall = Physics2D.OverlapCircle(leftWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer) && !_d.FacingRight;
+                    bool grounded = Physics2D.OverlapCircle(groundCheckOrigin, _d.GroundCheckRadius, _d.GroundLayer);
 
                     bool hanging = false;
                     if (_d.LastGroundedTime < 0)
@@ -186,7 +178,7 @@ namespace Custom
                         }
                     }
 
-                    if (grounded) _d.LastGroundedTime = _d.JumpCoyoteTime;
+                    if (grounded) _d.LastGroundedTime = _d.JumpBufferTime;
                     if (hanging) _d.LastHangingTime = _d.JumpCoyoteTime;
 
                     return (grounded, hanging);

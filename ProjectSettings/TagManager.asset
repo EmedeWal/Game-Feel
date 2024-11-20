@@ -9,14 +9,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
   - 
-  - Ground
-  - Wall
-  - Ice
+  - 
+  - 
+  - 
   - 
   - PostProcessing
   - 
@@ -45,6 +45,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: New Layer
+  - name: Terrain
     uniqueID: 1802038029
     locked: 0

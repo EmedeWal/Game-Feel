@@ -14,9 +14,6 @@ namespace Custom
                 [SerializeField] private Data _data;
                 private Handler _handler;
 
-                private LocomotionState _currentState = LocomotionState.Grounded;
-                private LocomotionState _previousState = LocomotionState.Grounded;
-
                 public void Init()
                 {
                     _data.Init(gameObject);
@@ -63,7 +60,7 @@ namespace Custom
 
                 private void Locomotion_JumpInputCanceled()
                 {
-                    if (_currentState == LocomotionState.Jumping)
+                    if (_data.CurrentLocomotion == LocomotionState.Jumping)
                     {
                         _handler.CutVerticalVelocity();
                     }
@@ -71,32 +68,28 @@ namespace Custom
 
                 private void Locomotion_DashInputPerformed()
                 {
-                    if (_handler.CanDash(_currentState))
+                    if (_handler.CanDash(_data.CurrentLocomotion))
                     {
-                        _data.PoolManager.ReuseObject(_data.DashEffect, _data.Transform.position, Quaternion.identity);
-                        _currentState = _handler.PerformDash();
+                        _handler.PerformDash();
                     }
                 }
 
                 private void UpdateLocomotionState(float verticalVelocity)
                 {
-                    (bool grounded, bool hanging) = 
-                    _handler.HandlePhysicsChecks();
-
-                    _previousState = _currentState;
-                    if (_currentState == LocomotionState.Dashing && !_data.HandleInput) return;
-                    _currentState = _handler.UpdateLocomotionState(verticalVelocity, grounded, hanging);
+                    (bool grounded, bool hanging) = _handler.HandlePhysicsChecks();
+                    if (_data.CurrentLocomotion == LocomotionState.Dashing && !_data.HandleInput) return;
+                    (_data.PreviousLocomotion, _data.CurrentLocomotion) = _handler.UpdateLocomotionState(_data.CurrentLocomotion, verticalVelocity, grounded, hanging);
                 }
 
                 private void HandleHorizontalMovement(float horizontalInput)
                 {
-                    float movement = _handler.CalculateMovement(_currentState, horizontalInput);
+                    float movement = _handler.CalculateMovement(horizontalInput);
                     _data.Rigidbody.AddForce(movement * Vector2.right);
                 }
 
                 private void HandleVerticalMovement()
                 {
-                    if (_currentState == LocomotionState.Grounded)
+                    if (_data.CurrentLocomotion == LocomotionState.Grounded)
                     {
                         _data.CurrentAirJumps = 0;
                     }
@@ -105,16 +98,14 @@ namespace Custom
                     {
                         if (_handler.CanTimedJump(_data.LastHangingTime))
                         {
-                            _handler.PerformWallJump();
+                            _handler.PerformBounce();
                         }
                         else if (_handler.CanTimedJump(_data.LastGroundedTime))
                         {
-                            _data.PoolManager.ReuseObject(_data.JumpEffect, _data.Transform.position, Quaternion.identity);
-                            _handler.PerformJump(Vector2.up);
+                            _handler.PerformJump(LocomotionState.Jumping, Vector2.up);
                         }
-                        else if (_handler.CanAirJump(_currentState))
+                        else if (_handler.CanAirJump(_data.CurrentLocomotion))
                         {
-                            _data.PoolManager.ReuseObject(_data.JumpEffect, _data.Transform.position, Quaternion.identity);
                             _handler.PerformAirJump(Vector2.up * _data.JumpCutMultiplier);
                         }
                     }
@@ -123,31 +114,33 @@ namespace Custom
                 private void HandlePhysics(float inputMagnitude)
                 {
                     #region Transitions
-                    if (_previousState != LocomotionState.Hanging && _currentState == LocomotionState.Hanging)
+                    if (_data.PreviousLocomotion != LocomotionState.Hanging && _data.CurrentLocomotion == LocomotionState.Hanging)
                     {
-                        _handler.StopVerticalVelocity();
+                        _handler.StopVerticalVelocity(_data.HangingGravityScale);
+                    }
+                    else if (_data.PreviousLocomotion == LocomotionState.Hanging && _data.CurrentLocomotion != LocomotionState.Hanging)
+                    {
+                        _data.Rigidbody.gravityScale = _data.DefaultGravityScale;
                     }
                     #endregion
 
                     #region Gravity
-                    if (_currentState == LocomotionState.Dashing)
+                    if (_data.CurrentLocomotion == LocomotionState.Dashing)
                     {
                         _data.Rigidbody.gravityScale = 0;
                     }
-                    else if (_currentState == LocomotionState.Grounded)
+                    else if (_data.CurrentLocomotion == LocomotionState.Grounded)
                     {
                         _data.Rigidbody.gravityScale = _data.DefaultGravityScale;
                     }
-                    else if (_currentState == LocomotionState.Falling || _currentState == LocomotionState.Hanging)
+                    else if (_data.CurrentLocomotion == LocomotionState.Falling || _data.CurrentLocomotion == LocomotionState.Hanging)
                     {
                         _data.Rigidbody.gravityScale += _data.FallGravityIncrement;
                     }
                     #endregion
 
                     #region Friction
-                    _data.Rigidbody.drag = _currentState == LocomotionState.Hanging ? 10 : 0;
-
-                    if (_currentState == LocomotionState.Grounded && Mathf.Abs(inputMagnitude) < 0.01f)
+                    if (_data.CurrentLocomotion == LocomotionState.Grounded && Mathf.Abs(inputMagnitude) < 0.01f)
                     {
                         float amount = Mathf.Min(Mathf.Abs(_data.Rigidbody.velocity.x), Mathf.Abs(_data.FrictionAmount));
                         amount *= Mathf.Sign(_data.Rigidbody.velocity.x);
@@ -167,14 +160,14 @@ namespace Custom
 
                 private void HandleVisuals(float inputMagnitude)
                 {
-                    _data.DustParticles.rateOverTime = _currentState == LocomotionState.Grounded ? _data.Particles : 0; 
+                    _data.DustParticles.rateOverTime = _data.CurrentLocomotion == LocomotionState.Grounded ? _data.Particles : 0;
 
                     if (_handler.DirectionOpposite(_data.Rigidbody.velocity.x))
                     {
                         _handler.TurnCharacter();
                     }
 
-                    _handler.FixedTick(_currentState, inputMagnitude, _currentState != _previousState);
+                    _handler.FixedTick(inputMagnitude);
                 }
 
                 private void OnDrawGizmosSelected()

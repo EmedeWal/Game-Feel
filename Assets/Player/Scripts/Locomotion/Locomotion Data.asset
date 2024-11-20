@@ -17,36 +17,39 @@ MonoBehaviour:
   DashEffect: {fileID: 6986405501480664510, guid: d8dbf8da8295dab4b87b6bef8b28b851,
     type: 3}
   Particles: 35
-  FrictionAmount: 1000
+  FrictionAmount: 0.25
   MovementSpeed: 9
   VelocityPower: 0.95
   Acceleration: 16
   Deceleration: 13
-  WallJumpMultiplier: 1.4
   JumpCutMultiplier: 0.6
+  BounceMultiplier: 1
   AirMultiplier: 0.4
   MaximumAirJumps: 1
   JumpCoyoteTime: 0.15
   JumpBufferTime: 0.1
-  WallJumpTime: 0.2
+  BounceTime: 0.1
   JumpForce: 21
   DashForce: 33
   DashCooldown: 3
   DashDuration: 0.1
+  HangingGravityScale: 0.1
   MaximumVerticalVelocity: 60
   FallGravityIncrement: 0.01
   DefaultGravityScale: 2
   WallCheckOffset: {x: 0.25, y: 0}
   GroundCheckRadius: 0.2
   GrabCheckRadius: 0.2
+  PreviousLocomotion: 0
+  CurrentLocomotion: 0
   LastJumpDirection: 2
-  LastTouchedWall: 2
+  LastTouchedWall: 1
   CurrentAirJumps: 0
-  LastGroundedTime: 0.13000001
-  LastHangingTime: -1.7799989
-  LastJumpTime: -1.7799989
-  InputTimer: -4.4999967
-  DashTimer: -8.780008
+  LastGroundedTime: 0.08
+  LastHangingTime: -1.659999
+  LastJumpTime: -1.659999
+  InputTimer: -3.5799973
+  DashTimer: -20.540277
   FacingRight: 0
   HandleInput: 1
   InputHandler: {fileID: 0}

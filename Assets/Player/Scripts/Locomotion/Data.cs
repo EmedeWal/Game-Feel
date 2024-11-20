@@ -14,7 +14,7 @@ namespace Custom
                 [Header("VISUAL SETTINGS")]
                 public PoolObject JumpEffect;
                 public PoolObject DashEffect;
-                public float Particles = 70f;
+                public float Particles = 35f;
 
                 [Header("SPEED SETTINGS")]
                 public float FrictionAmount = 0.25f;
@@ -24,13 +24,13 @@ namespace Custom
                 public float Deceleration = 13f;
 
                 [Header("JUMP SETTINGS")]
-                [Range(1, 2)] public float WallJumpMultiplier = 1.4f;
                 [Range(0, 1)] public float JumpCutMultiplier = 0.6f;
+                [Range(0, 1)] public float BounceMultiplier = 1f;
                 [Range(0, 1)] public float AirMultiplier = 0.4f;
                 public int MaximumAirJumps = 1;
                 public float JumpCoyoteTime = 0.15f;
                 public float JumpBufferTime = 0.1f;
-                public float WallJumpTime = 0.3f;
+                public float BounceTime = 0.1f;
                 public float JumpForce = 21f;
 
                 [Header("DASH SETTINGS")]
@@ -39,15 +39,18 @@ namespace Custom
                 public float DashDuration = 0.1f;
 
                 [Header("GRAVITY SETTINGS")]
-                public float MaximumVerticalVelocity = 30f;
+                [Range(0, 1)] public float HangingGravityScale = 0.4f;
+                public float MaximumVerticalVelocity = 60f;
                 public float FallGravityIncrement = 0.01f;
-                public float DefaultGravityScale = 1f;
+                public float DefaultGravityScale = 2f;
 
                 [Header("OVERLAP CIRCLE SETTINGS")]
-                public Vector2 WallCheckOffset = new(0.25f, 0.5f);
+                public Vector2 WallCheckOffset = new(0.25f, 0f);
                 public float GroundCheckRadius = 0.2f;
                 public float GrabCheckRadius = 0.2f;
 
+                [HideInInspector] public LocomotionState PreviousLocomotion;
+                [HideInInspector] public LocomotionState CurrentLocomotion;
                 [HideInInspector] public Direction LastJumpDirection;
                 [HideInInspector] public Direction LastTouchedWall;
                 [HideInInspector] public int CurrentAirJumps;
@@ -65,8 +68,7 @@ namespace Custom
                 [HideInInspector] public BoxCollider2D BoxCollider;
                 [HideInInspector] public Rigidbody2D Rigidbody;
                 [HideInInspector] public Transform Transform;
-                [HideInInspector] public LayerMask WallLayer;
-                [HideInInspector] public LayerMask GroundedLayers;
+                [HideInInspector] public LayerMask GroundLayer;
 
                 public void Init(GameObject playerObject)
                 {
@@ -75,22 +77,20 @@ namespace Custom
                     PoolManager.CreatePool(DashEffect, 2);
                     PoolManager.CreatePool(JumpEffect, 2);
 
-                    int wallLayer = LayerMask.NameToLayer("Wall");
-                    int groundLayer = LayerMask.NameToLayer("Ground");
-                    GroundedLayers = 1 << groundLayer | 1 << wallLayer;
-                    WallLayer = 1 << wallLayer;
-
                     DustParticles = playerObject.GetComponentInChildren<ParticleSystem>().emission;
                     InputHandler = playerObject.GetComponent<InputHandler>();
                     AnimatorManager = playerObject.GetComponent<AnimatorManager>();
                     BoxCollider = playerObject.GetComponent<BoxCollider2D>();
                     Rigidbody = playerObject.GetComponent<Rigidbody2D>();
                     Transform = playerObject.transform;
+                    GroundLayer = LayerMask.GetMask("Ground");
 
                     Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
                     Rigidbody.gravityScale = DefaultGravityScale;
                     Rigidbody.isKinematic = false;
 
+                    PreviousLocomotion = LocomotionState.Grounded;
+                    CurrentLocomotion = LocomotionState.Grounded;
                     LastTouchedWall = Direction.None;
                     CurrentAirJumps = 0;
                     LastGroundedTime = 0;

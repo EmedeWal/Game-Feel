@@ -17,8 +17,6 @@ namespace Custom
         {
             if (collision.TryGetComponent(out Rigidbody2D rigidbody))
             {
-                Debug.Log(rigidbody.velocity);
-
                 float xVelocity = Mathf.Abs(rigidbody.velocity.x);
                 float yVelocity = Mathf.Abs(rigidbody.velocity.y);
 
