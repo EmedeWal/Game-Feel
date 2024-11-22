@@ -48,3 +48,6 @@ TagManager:
   - name: Terrain
     uniqueID: 1802038029
     locked: 0
+  - name: Foreground
+    uniqueID: 3335063225
+    locked: 0

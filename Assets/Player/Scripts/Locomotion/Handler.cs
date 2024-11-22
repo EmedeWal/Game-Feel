@@ -21,6 +21,7 @@ namespace Custom
                 {
                     _d.DashTimer = _d.DashCooldown;
                     _d.DisableInput(_d.DashDuration);
+                    _d.Rigidbody.velocity = Vector2.zero;
                     _d.CurrentLocomotion = LocomotionState.Dashing;
                     _d.PoolManager.ReuseObject(_d.DashEffect, _d.Transform.position, Quaternion.identity);
                     _d.Rigidbody.AddForce(new Vector2(_d.FacingRight ? 1 : -1, 0) * _d.DashForce, ForceMode2D.Impulse);
@@ -31,16 +32,16 @@ namespace Custom
                     _d.DisableInput(_d.BounceTime);
                     Vector2 bounceDirection = Vector2.up;
 
-                    if (_d.LastTouchedWall == Direction.Left)
+                    if (_d.LastTouchedWall == DirectionType.Left)
                     {
                         bounceDirection += Vector2.right;
                     }
-                    else if (_d.LastTouchedWall == Direction.Right)
+                    else if (_d.LastTouchedWall == DirectionType.Right)
                     {
                         bounceDirection += Vector2.left;
                     }
 
-                    bounceDirection = bounceDirection.normalized;
+                    bounceDirection.Normalize();
                     bounceDirection *= _d.BounceMultiplier;
 
                     PerformJump(LocomotionState.Bouncing, bounceDirection);
@@ -48,8 +49,7 @@ namespace Custom
 
                 public void PerformJump(LocomotionState state, Vector2 direction)
                 {
-                    StopVerticalVelocity(_d.DefaultGravityScale);
-
+                    _d.Rigidbody.velocity = new(_d.Rigidbody.velocity.x, 0);
                     _d.PoolManager.ReuseObject(_d.JumpEffect, _d.Transform.position, Quaternion.identity);
                     _d.Rigidbody.AddForce(direction * _d.JumpForce, ForceMode2D.Impulse);
                     _d.CurrentLocomotion = state;
@@ -63,12 +63,6 @@ namespace Custom
                     _d.CurrentAirJumps++;
 
                     PerformJump(LocomotionState.Jumping, direction);
-                }
-
-                public void StopVerticalVelocity(float newGravityScale)
-                {
-                    _d.Rigidbody.gravityScale = newGravityScale;
-                    _d.Rigidbody.velocity = new(_d.Rigidbody.velocity.x, 0);
                 }
 
                 public void CutVerticalVelocity()
@@ -102,11 +96,6 @@ namespace Custom
                 public bool CanAirJump(LocomotionState state)
                 {
                     return (_d.CurrentAirJumps < _d.MaximumAirJumps) && state != LocomotionState.Grounded && state != LocomotionState.Hanging;
-                }
-
-                public bool CanTimedJump(float time)
-                {
-                    return time > 0;
                 }
 
                 public bool DirectionOpposite(float direction)
@@ -168,17 +157,17 @@ namespace Custom
                     {
                         if (touchingLeftWall)
                         {
-                            _d.LastTouchedWall = Direction.Left;
+                            _d.LastTouchedWall = DirectionType.Left;
                             hanging = true;
                         }
                         else if (touchingRightWall) 
                         {
-                            _d.LastTouchedWall = Direction.Right;
+                            _d.LastTouchedWall = DirectionType.Right;
                             hanging = true;
                         }
                     }
 
-                    if (grounded) _d.LastGroundedTime = _d.JumpBufferTime;
+                    if (grounded) _d.LastGroundedTime = _d.JumpCoyoteTime;
                     if (hanging) _d.LastHangingTime = _d.JumpCoyoteTime;
 
                     return (grounded, hanging);

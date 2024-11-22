@@ -39,27 +39,24 @@ MonoBehaviour:
   DefaultGravityScale: 2
   WallCheckOffset: {x: 0.25, y: 0}
   GroundCheckRadius: 0.2
-  GrabCheckRadius: 0.2
+  GrabCheckRadius: 0.1
   PreviousLocomotion: 0
   CurrentLocomotion: 0
   LastJumpDirection: 2
-  LastTouchedWall: 1
+  LastTouchedWall: 2
   CurrentAirJumps: 0
-  LastGroundedTime: 0.08
-  LastHangingTime: -1.659999
-  LastJumpTime: -1.659999
-  InputTimer: -3.5799973
-  DashTimer: -20.540277
-  FacingRight: 0
+  LastGroundedTime: 0.13000001
+  LastHangingTime: -2.939998
+  LastJumpTime: -2.939998
+  InputTimer: -20.940289
+  DashTimer: -20.940289
+  FacingRight: 1
   HandleInput: 1
   InputHandler: {fileID: 0}
   AnimatorManager: {fileID: 0}
   BoxCollider: {fileID: 0}
   Rigidbody: {fileID: 0}
   Transform: {fileID: 0}
-  WallLayer:
+  GroundLayer:
     serializedVersion: 2
-    m_Bits: 512
-  GroundedLayers:
-    serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 8

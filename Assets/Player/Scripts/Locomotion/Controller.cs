@@ -77,7 +77,8 @@ namespace Custom
                 private void UpdateLocomotionState(float verticalVelocity)
                 {
                     (bool grounded, bool hanging) = _handler.HandlePhysicsChecks();
-                    if (_data.CurrentLocomotion == LocomotionState.Dashing && !_data.HandleInput) return;
+
+                    if (!_data.HandleInput) return;
                     (_data.PreviousLocomotion, _data.CurrentLocomotion) = _handler.UpdateLocomotionState(_data.CurrentLocomotion, verticalVelocity, grounded, hanging);
                 }
 
@@ -96,11 +97,11 @@ namespace Custom
 
                     if (_data.LastJumpTime > 0)
                     {
-                        if (_handler.CanTimedJump(_data.LastHangingTime))
+                        if (_data.LastHangingTime > 0)
                         {
                             _handler.PerformBounce();
                         }
-                        else if (_handler.CanTimedJump(_data.LastGroundedTime))
+                        else if (_data.LastGroundedTime > 0)
                         {
                             _handler.PerformJump(LocomotionState.Jumping, Vector2.up);
                         }
@@ -116,7 +117,8 @@ namespace Custom
                     #region Transitions
                     if (_data.PreviousLocomotion != LocomotionState.Hanging && _data.CurrentLocomotion == LocomotionState.Hanging)
                     {
-                        _handler.StopVerticalVelocity(_data.HangingGravityScale);
+                        _data.Rigidbody.gravityScale = _data.HangingGravityScale;
+                        _data.Rigidbody.velocity = new(_data.Rigidbody.velocity.x, 0);
                     }
                     else if (_data.PreviousLocomotion == LocomotionState.Hanging && _data.CurrentLocomotion != LocomotionState.Hanging)
                     {

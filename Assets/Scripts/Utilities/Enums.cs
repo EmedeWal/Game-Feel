@@ -10,7 +10,14 @@ namespace Custom
         Dashing,
     }
 
-    public enum Direction
+    public enum CollectibleType
+    {
+        Treasure,
+        Coin,
+        Key
+    }
+
+    public enum DirectionType
     {
         None,
         Left,

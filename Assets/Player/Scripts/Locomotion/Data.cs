@@ -25,7 +25,7 @@ namespace Custom
 
                 [Header("JUMP SETTINGS")]
                 [Range(0, 1)] public float JumpCutMultiplier = 0.6f;
-                [Range(0, 1)] public float BounceMultiplier = 1f;
+                [Range(0, 1)] public float BounceMultiplier = 0.1f;
                 [Range(0, 1)] public float AirMultiplier = 0.4f;
                 public int MaximumAirJumps = 1;
                 public float JumpCoyoteTime = 0.15f;
@@ -51,8 +51,8 @@ namespace Custom
 
                 [HideInInspector] public LocomotionState PreviousLocomotion;
                 [HideInInspector] public LocomotionState CurrentLocomotion;
-                [HideInInspector] public Direction LastJumpDirection;
-                [HideInInspector] public Direction LastTouchedWall;
+                [HideInInspector] public DirectionType LastJumpDirection;
+                [HideInInspector] public DirectionType LastTouchedWall;
                 [HideInInspector] public int CurrentAirJumps;
                 [HideInInspector] public float LastGroundedTime;
                 [HideInInspector] public float LastHangingTime;
@@ -91,7 +91,7 @@ namespace Custom
 
                     PreviousLocomotion = LocomotionState.Grounded;
                     CurrentLocomotion = LocomotionState.Grounded;
-                    LastTouchedWall = Direction.None;
+                    LastTouchedWall = DirectionType.None;
                     CurrentAirJumps = 0;
                     LastGroundedTime = 0;
                     LastHangingTime = 0;
@@ -117,7 +117,6 @@ namespace Custom
                 {
                     HandleInput = false;
                     InputTimer = duration;
-                    Rigidbody.velocity = Vector2.zero;
                 }
 
                 private void CheckReset()

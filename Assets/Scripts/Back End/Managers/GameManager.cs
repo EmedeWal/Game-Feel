@@ -5,6 +5,7 @@ namespace Custom
 {
     public class GameManager : MonoBehaviour
     {
+        private CollectibleManager _collectibleManager;
         private Controller _player;
 
         private void Awake()
@@ -12,8 +13,10 @@ namespace Custom
             SingletonBase[] singletons = FindObjectsByType<SingletonBase>(FindObjectsSortMode.None);
             foreach (var singleton in singletons) singleton.Init();
 
+            _collectibleManager = FindObjectOfType<CollectibleManager>();
             _player = FindObjectOfType<Controller>();
 
+            _collectibleManager.Init();
             _player.Init();
         }
 
