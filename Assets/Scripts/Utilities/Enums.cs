@@ -23,4 +23,11 @@ namespace Custom
         Left,
         Right
     }
+
+    public enum AudioType
+    {
+        Action,
+        Pickup,
+        Succes
+    }
 }

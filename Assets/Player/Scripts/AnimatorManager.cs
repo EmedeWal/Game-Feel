@@ -4,7 +4,7 @@ namespace Custom
 {
     namespace Player
     {
-        public class AnimatorManager : MonoBehaviour
+        public class AnimatorManager 
         {
             private Animator _animator;
             private int _locomotionHash;
@@ -13,9 +13,9 @@ namespace Custom
             private int _hangHash;
             private int _dashHash;
 
-            public void Init()
+            public AnimatorManager(Animator animator)
             {
-                _animator = GetComponentInChildren<Animator>();
+                _animator = animator;
 
                 _locomotionHash = Animator.StringToHash("Locomotion");
                 _jumpHash = Animator.StringToHash("Jump");

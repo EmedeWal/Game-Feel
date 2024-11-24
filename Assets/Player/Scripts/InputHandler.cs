@@ -5,7 +5,7 @@ namespace Custom
 {
     namespace Player
     {
-        public class InputHandler : MonoBehaviour
+        public class InputHandler
         {
             public float HorizontalInput { get; private set; }
             public event Action JumpInputPerformed;
@@ -14,7 +14,7 @@ namespace Custom
 
             private InputActions _inputActions;
 
-            public void Init()
+            public InputHandler()
             {
                 _inputActions = new();
 
