@@ -1,7 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 
-namespace Custom
+namespace ShatterStep
 {
     public class CreditScreen : MonoBehaviour
     {

@@ -1,8 +1,8 @@
 using UnityEngine.SceneManagement;
-using Custom.Player;
+using ShatterStep.Player;
 using UnityEngine;
 
-namespace Custom
+namespace ShatterStep
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class LevelLoader : MonoBehaviour

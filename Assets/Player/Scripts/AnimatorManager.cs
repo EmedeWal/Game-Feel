@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Custom
+namespace ShatterStep
 {
     namespace Player
     {

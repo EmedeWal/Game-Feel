@@ -2,7 +2,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
-namespace Custom
+namespace ShatterStep
 {
     public class TitleScreen : MonoBehaviour
     {
@@ -25,7 +25,8 @@ namespace Custom
 
         private void LoadLevel()
         {
-            SceneManager.LoadScene("Level 01");
+            int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            SceneManager.LoadScene(nextIndex);
         }
     }
 }

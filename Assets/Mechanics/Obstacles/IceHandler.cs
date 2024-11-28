@@ -1,12 +1,15 @@
-using Custom.Utilities;
-using Custom.Player;
+using ShatterStep.Utilities;
+using ShatterStep.Player;
 using UnityEngine;
 using TMPro;
 
-namespace Custom
+namespace ShatterStep
 {
     public class IceHandler : MonoBehaviour
     {
+        [Header("AUDIO SETTINGS")]
+        [SerializeField] private AudioData _audioData;
+
         [Header("TIME SETTINGS")]
         [SerializeField] private float _timeScale = 0.2f;
         [SerializeField] private float _timeDuration = 0.5f;
@@ -22,6 +25,7 @@ namespace Custom
         [SerializeField] private float _xRequirement = 33f;
 
         private Trigger[] _triggers;
+        private AudioSystem _audioSystem;
         private TimeSystem _timeSystem;
         private float _elapsedTime;
 
@@ -34,7 +38,9 @@ namespace Custom
                 ice.Setup();
             }
 
+            _audioSystem = AudioSystem.Instance;
             _timeSystem = TimeSystem.Instance;
+
             SetAlphaColor(_velocityText, 0);
         }
 
@@ -60,16 +66,21 @@ namespace Custom
         private void Ice_PlayerEntered(Manager player, Trigger trigger)
         {
             float xVelocity = Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x);
-            float rawPercentage = xVelocity / _xRequirement * 100;
-            int percentage = Mathf.RoundToInt(rawPercentage);
-
-            if (xVelocity >= _xRequirement)
+            if (xVelocity > 0f)
             {
-                _timeSystem.DelayTimeFor(_timeScale, _timeDuration);
-                Destroy(trigger.gameObject);
-            }
+                float rawPercentage = xVelocity / _xRequirement * 100;
+                int percentage = Mathf.RoundToInt(rawPercentage);
 
-            ShowFeedbackText(percentage, trigger.transform.position);
+                if (xVelocity >= _xRequirement)
+                {
+                    //_audioSystem.Play(_audioData);
+                    _timeSystem.DelayTimeFor(_timeScale, _timeDuration);
+
+                    Destroy(trigger.gameObject);
+                }
+
+                ShowFeedbackText(percentage, trigger.transform.position);
+            }
         }
 
         private void ShowFeedbackText(float percentage, Vector3 position)
@@ -79,15 +90,17 @@ namespace Custom
             _velocityText.gameObject.SetActive(true);
             _velocityText.transform.position = position;
 
-            _velocityText.color = Helpers.GetColorBasedOnPercentage(_colorArray, 100, percentage);
+            _velocityText.color = ColorHelpers.GetColorBasedOnPercentage(_colorArray, 100, percentage);
             _velocityText.text = $"{percentage}%";
+
             SetAlphaColor(_velocityText, 255);
         }
 
         private void SetAlphaColor(TextMeshProUGUI text, float alpha)
         {
             Color color = text.color;
-            text.color = new Color(color.r, color.g, color.b, alpha);
+            color.a = alpha;
+            text.color = color;
         }
     }
 }

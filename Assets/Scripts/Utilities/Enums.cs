@@ -1,4 +1,4 @@
-namespace Custom
+namespace ShatterStep
 {
     public enum LocomotionState
     {
@@ -12,22 +12,21 @@ namespace Custom
 
     public enum CollectibleType
     {
-        Treasure,
-        Coin,
-        Key
+        Heart,
+        Key,
     }
 
     public enum DirectionType
     {
         None,
         Left,
-        Right
+        Right,
     }
 
-    public enum AudioType
+    public enum ActionType
     {
-        Action,
-        Pickup,
-        Succes
+        Jump,
+        Dash,
+        Spawn,
     }
 }
