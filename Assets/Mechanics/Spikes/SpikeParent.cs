@@ -17,7 +17,7 @@ namespace ShatterStep
             foreach (Trigger spike in _spikeArray)
             {
                 spike.PlayerEntered += SpikeParent_PlayerEntered;
-                spike.Setup();
+                spike.Init();
             }
         }
 
@@ -31,7 +31,7 @@ namespace ShatterStep
 
         private void SpikeParent_PlayerEntered(Manager player, Trigger trigger)
         {
-            _respawnSystem.RespawnPlayer(player.Controller.Data);
+            _respawnSystem.RespawnPlayer(player.Data);
         }
     }
 }

@@ -22,10 +22,16 @@ namespace ShatterStep
         }
         #endregion
 
+        private AudioSystem _audioSystem;
+
         [Header("PARENT REFERENCE")]
         [SerializeField] private GameObject _respawnPointParent;
 
-        private List<Trigger> _respawnPointList = new();
+        [Header("AUDIO REFERENCE")]
+        [SerializeField] private AudioData _audioData;
+        private AudioSource _audioSource;
+
+        private Dictionary<Trigger, ParticleSystem> _respawnPointDictionary = new();
         private Vector2 _lastRespawnPosition;
 
         public void Setup()
@@ -35,20 +41,29 @@ namespace ShatterStep
                 Debug.LogError("Respawn point parent not assigned!");
             }
 
-            _respawnPointList.AddRange(_respawnPointParent.GetComponentsInChildren<Trigger>());
-            foreach (Trigger respawnPoint in _respawnPointList)
+            _audioSystem = AudioSystem.Instance;
+
+            _audioSource = GetComponent<AudioSource>();
+
+            Trigger[] respawnPointArray = _respawnPointParent.GetComponentsInChildren<Trigger>();
+            foreach (Trigger respawnPoint in respawnPointArray)
             {
+                ParticleSystem particleSystem = respawnPoint.GetComponent<ParticleSystem>();
+                _respawnPointDictionary.Add(respawnPoint, particleSystem);
+
                 respawnPoint.PlayerEntered += RespawnSystem_PlayerEntered;
-                respawnPoint.Setup();
+                respawnPoint.Init();
             }
         }
 
         public void Cleanup()
         {
-            foreach (Trigger respawnPoint in _respawnPointList)
+            foreach (Trigger respawnPoint in _respawnPointDictionary.Keys)
             {
                 respawnPoint.PlayerEntered -= RespawnSystem_PlayerEntered;
             }
+
+            _respawnPointDictionary.Clear();
         }
 
         public void RespawnPlayer(Data data)
@@ -60,8 +75,11 @@ namespace ShatterStep
         {
             _lastRespawnPosition = respawnPoint.transform.position;
 
+            _respawnPointDictionary[respawnPoint].Play();
+            _audioSystem.Play(_audioData, _audioSource);
+
             respawnPoint.PlayerEntered -= RespawnSystem_PlayerEntered;
-            _respawnPointList.Remove(respawnPoint);
+            _respawnPointDictionary.Remove(respawnPoint);
             Destroy(respawnPoint);
         }
     }

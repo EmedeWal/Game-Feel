@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace ShatterStep
@@ -7,48 +8,77 @@ namespace ShatterStep
         public class Manager : MonoBehaviour
         {
             private InputManager _inputManager;
+            private float _deltaTime;
 
             [Header("SETTINGS")]
-            [SerializeField] private Data _data;
+            public Data Data;
 
             private AnimatorManager _animatorManager;
-            private Feedback _feedback;
+            private Controller _controller;
 
-            public Controller Controller { get; private set; }
+            private SpriteRenderer _spriteRenderer;
+            private Color _originalColor;
 
             public void Setup()
             {
                 _inputManager = InputManager.Instance;
 
+                Data.Init(gameObject, _inputManager);
+
                 _animatorManager = new(GetComponentInChildren<Animator>());
-                _feedback = new(_data, GetComponentInChildren<SpriteRenderer>());
+                _controller = new(Data);
 
-                _data.Init(gameObject, _inputManager, _animatorManager);
+                Data.Setup(_controller, _animatorManager);
 
-                Controller = new(_data);
+                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+                _originalColor = _spriteRenderer.color;
+
+                Data.PlayerDeath += Manager_PlayerRespawned;
             }
 
             public void Cleanup()
             {
-                _feedback.Cleanup();
-
-                Controller.Cleanup();
+                _controller.Cleanup();
 
                 _animatorManager = null;
-                _feedback = null;
-                Controller = null;
+                _controller = null;
+
+                Data.PlayerDeath += Manager_PlayerRespawned;
             }
 
             public void Tick(float deltaTime)
             {
-                _feedback.Tick(deltaTime);
+                _deltaTime = deltaTime;
             }
 
             public void FixedTick(float fixedDeltaTime)
             {
                 float horizontalInput = _inputManager.HorizontalInput;
 
-                Controller.FixedTick(fixedDeltaTime, horizontalInput);
+                _controller.FixedTick(fixedDeltaTime, horizontalInput);
+            }
+
+            private void Manager_PlayerRespawned()
+            {
+                StartCoroutine(ColorCoroutine(Data.RespawnColor, Data.RespawnTime));
+            }
+
+            private IEnumerator ColorCoroutine(Color color, float duration)
+            {
+                _spriteRenderer.color = color;  
+                float time = 0;
+
+                while (time < duration)
+                {
+                    time += _deltaTime;
+
+                    float transitionTime = time / duration;
+                    _spriteRenderer.color = Color.Lerp(color, _originalColor, transitionTime);  
+
+                    yield return null;
+                }
+
+                _spriteRenderer.color = _originalColor;
             }
         }
     }

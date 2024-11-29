@@ -98,9 +98,9 @@ namespace ShatterStep
                 #endregion
 
                 #region Friction
-                if ((Data.CurrentLocomotion == LocomotionState.Falling || Data.CurrentLocomotion == LocomotionState.Jumping) && Mathf.Abs(inputMagnitude) < 0.01f)
+                if (inputMagnitude < 0.01f)
                 {
-                    float amount = Mathf.Min(Mathf.Abs(Data.Rigidbody.velocity.x), Mathf.Abs(Data.AirFriction));
+                    float amount = Mathf.Min(Mathf.Abs(Data.Rigidbody.velocity.x), Mathf.Abs(Data.Friction));
                     amount *= Mathf.Sign(Data.Rigidbody.velocity.x);
 
                     Data.Rigidbody.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
@@ -156,7 +156,7 @@ namespace ShatterStep
             }
 
             #region Input Handling
-            private void SubscribeToActions(bool subscribe)
+            public void SubscribeToActions(bool subscribe)
             {
                 if (subscribe)
                 {

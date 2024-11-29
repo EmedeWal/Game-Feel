@@ -9,7 +9,7 @@ namespace ShatterStep
         public delegate void PlayerEnteredDelegate(Manager player, Trigger trigger);
         public event PlayerEnteredDelegate PlayerEntered;
 
-        public void Setup()
+        public void Init()
         {
             GetComponent<Collider2D>().isTrigger = true;
         }

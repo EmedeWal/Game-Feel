@@ -41,8 +41,8 @@ namespace ShatterStep
                 }
                 else
                 {
-                    _d.PoolManager.ReuseObject(_d.RedShapePrefab, position, rotation);
-                    _d.AudioSystem.Play(_d.BlockedData, _d.AudioSource);
+                    PoolObject pool = _d.PoolManager.ReuseObject(_d.RedShapePrefab, position, rotation);
+                    _d.AudioSystem.Play(_d.BlockedData, pool.GetComponent<AudioSource>());
                 }
             }
 
@@ -74,7 +74,7 @@ namespace ShatterStep
                 }
 
                 bounceDirection.Normalize();
-                bounceDirection *= _d.BounceMultiplier;
+                bounceDirection = new(bounceDirection.x, bounceDirection.y * _d.VerticalBounceMultiplier);
 
                 PerformJump(LocomotionState.Bouncing, bounceDirection, Vector2.zero);
             }

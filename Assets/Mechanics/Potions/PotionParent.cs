@@ -26,7 +26,7 @@ namespace ShatterStep
             foreach (Trigger potion in _potionArray)
             {
                 potion.PlayerEntered += PotionParent_PlayerEntered;
-                potion.Setup();
+                potion.Init();
             }
         }
 
@@ -40,7 +40,7 @@ namespace ShatterStep
 
         private void PotionParent_PlayerEntered(Manager player, Trigger trigger)
         {
-            player.Controller.Data.RefreshAbilities();
+            player.Data.RefreshAbilities();
 
             StartCoroutine(PotionCoroutine(trigger.gameObject, _pickupDelay));
         }

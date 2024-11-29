@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -15,28 +14,27 @@ namespace ShatterStep
             [Header("AUDIO SETTINGS")]
             public AudioData JumpData;
             public AudioData DashData;
+            public AudioData DeathData;
             public AudioData BlockedData;
 
             [Header("VISUAL SETTINGS")]
             public PoolObject JumpEffect;
             public PoolObject DashEffect;
             public Color RespawnColor; 
-            public Color RefreshColor;
             public float RespawnTime = 0.5f;
-            public float RefreshTime = 0.5f;
             public float Particles = 35f;
 
             [Header("SPEED SETTINGS")]
-            public float AirFriction = 0.25f;
+            public float Friction = 0.25f;
             public float MovementSpeed = 9f;
             public float VelocityPower = 0.95f;
             public float Acceleration = 16f;
             public float Deceleration = 13f;
 
             [Header("JUMP SETTINGS")]
+            [Range(1, 2)] public float VerticalBounceMultiplier = 1.2f;
             [Range(0, 1)] public float JumpCutMultiplier = 0.6f;
             [Range(0, 1)] public float AirJumpMultiplier = 0.8f;
-            [Range(0, 1)] public float BounceMultiplier = 0.1f;
             [Range(0, 1)] public float AirMultiplier = 0.4f;
             public int MaximumAirJumps = 1;
             public float JumpCoyoteTime = 0.15f;
@@ -80,19 +78,22 @@ namespace ShatterStep
             [HideInInspector] public bool CanDash;
 
             [HideInInspector] public ParticleSystem.EmissionModule DustParticles;
+            [HideInInspector] public ApplicationManager ApplicationManager;
             [HideInInspector] public InputManager InputManager;
             [HideInInspector] public AnimatorManager AnimatorManager;
             [HideInInspector] public BoxCollider2D BoxCollider;
             [HideInInspector] public AudioSource AudioSource;
             [HideInInspector] public Rigidbody2D Rigidbody;
+            [HideInInspector] public Controller Controller;
             [HideInInspector] public Transform Transform;
             [HideInInspector] public LayerMask GroundLayer;
+            [HideInInspector] public Vector2 RespawnPoint;
 
-            public event Action AbilitiesRefreshed;
-            public event Action PlayerRespawned;
+            public event Action PlayerDeath;
 
-            public void Init(GameObject playerObject, InputManager inputHandler, AnimatorManager animatorManager)
+            public void Init(GameObject playerObject, InputManager inputHandler)
             {
+                ApplicationManager = ApplicationManager.Instance;
                 AudioSystem = AudioSystem.Instance;
                 PoolManager = PoolManager.Instance;
 
@@ -102,13 +103,13 @@ namespace ShatterStep
                 PoolManager.CreatePool(RedShapePrefab, 1);
 
                 InputManager = inputHandler;
-                AnimatorManager = animatorManager;
                 DustParticles = playerObject.GetComponentInChildren<ParticleSystem>().emission;
                 BoxCollider = playerObject.GetComponent<BoxCollider2D>();
                 AudioSource = playerObject.GetComponent<AudioSource>();
                 Rigidbody = playerObject.GetComponent<Rigidbody2D>();
                 Transform = playerObject.transform;
                 GroundLayer = LayerMask.GetMask("Ground");
+                RespawnPoint = Transform.position;
 
                 AudioSource.playOnAwake = false;
 
@@ -116,20 +117,15 @@ namespace ShatterStep
                 Rigidbody.gravityScale = DefaultGravityScale;
                 Rigidbody.isKinematic = false;
 
-                PreviousLocomotion = LocomotionState.Grounded;
-                CurrentLocomotion = LocomotionState.Grounded;
-                LastTouchedWall = DirectionType.None;
-                CurrentAirJumps = 0;
-                LastGroundedTime = 0;
-                LastHangingTime = 0;
-                LastJumpTime = 0;
-                InputTimer = 0;
                 FacingRight = true;
 
-                SpawnPressed = false;
-                DashPressed = false;
-                CanSpawn = true;
-                CanDash = true;
+                ResetState();
+            }
+
+            public void Setup(Controller controller, AnimatorManager animatorManager)
+            {
+                Controller = controller;
+                AnimatorManager = animatorManager;
             }
 
             public void FixedTick(float fixedDeltaTime)
@@ -148,52 +144,56 @@ namespace ShatterStep
                 PreviousLocomotion = LocomotionState.Grounded;
                 CurrentLocomotion = LocomotionState.Grounded;
                 Rigidbody.velocity = Vector2.zero;
-                Transform.position = position;
+                Rigidbody.gravityScale = 0;
+                RespawnPoint = position;
 
-                OnPlayerRespawned();
+                ApplicationManager.SetGameState(GameState.Paused, RespawnTime);
+                ApplicationManager.GameStateUpdated += Data_GameStateUpdated;
+
+                AudioSystem.Play(DeathData, AudioSource);
+                Controller.SubscribeToActions(false);
+
+                OnPlayerDeath();
+                ResetState();
             }
 
             public void RefreshAbilities()
             {
-                int counter = 0;
-                (counter, CurrentAirJumps) = CheckRefresh(counter, CurrentAirJumps);
-                (counter, CanSpawn) = CheckRefresh(counter, CanSpawn);
-                (counter, CanDash) = CheckRefresh(counter, CanDash);
-
-                if (counter > 0)
-                {
-                    OnAbiltiesRefreshed();
-                }
+                CurrentAirJumps = 0;
+                CanSpawn = true;
+                CanDash = true;
             }
 
-            private (int counter, int current) CheckRefresh(int count, int current)
+            private void Data_GameStateUpdated(GameState gameState)
             {
-                if (current > 0)
-                {
-                    count++;
-                    current = 0;
-                }
-                return (count, current);
+                ApplicationManager.GameStateUpdated -= Data_GameStateUpdated;
+                Transform.position = RespawnPoint;
+
+                Controller.SubscribeToActions(true);
             }
 
-            private (int count, bool albe) CheckRefresh(int count, bool able)
+            private void OnPlayerDeath()
             {
-                if (!able)
-                {
-                    count++;
-                    able = true;
-                }
-                return (count, able);
+                PlayerDeath?.Invoke();
             }
 
-            private void OnAbiltiesRefreshed()
+            private void ResetState()
             {
-                AbilitiesRefreshed?.Invoke();
-            }
+                PreviousLocomotion = LocomotionState.Grounded;
+                CurrentLocomotion = LocomotionState.Grounded;
+                LastTouchedWall = DirectionType.None;
 
-            private void OnPlayerRespawned()
-            {
-                PlayerRespawned?.Invoke();
+                InputTimer = 0;
+                CurrentAirJumps = 0;
+                SpawnPressed = false;
+                DashPressed = false;
+
+                LastGroundedTime = 0;
+                LastHangingTime = 0;
+                LastJumpTime = 0;
+
+                CanSpawn = true;
+                CanDash = true;
             }
         }
     }

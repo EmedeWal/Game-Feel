@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace ShatterStep
 {
@@ -22,12 +23,14 @@ namespace ShatterStep
 
         private float _duration = 0;
 
+        public event Action TimeScaleReverted;
+
         public void Setup()
         {
             Time.timeScale = 1;
         }
 
-        public void UnscaledTick(float unscaledDeltaTime)
+        public void Tick(float unscaledDeltaTime)
         {
             if (_duration > 0)
             {
@@ -35,6 +38,7 @@ namespace ShatterStep
             }
             else if (Time.timeScale != 1)
             {
+                OnTimeScaleReverted();
                 Time.timeScale = 1;
             }
         }
@@ -43,6 +47,11 @@ namespace ShatterStep
         {
             Time.timeScale = scale; 
             _duration = duration;
+        }
+
+        private void OnTimeScaleReverted()
+        {
+            TimeScaleReverted?.Invoke();
         }
     }
 }

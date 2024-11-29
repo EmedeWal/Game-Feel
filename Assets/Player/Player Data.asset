@@ -14,37 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpData: {fileID: 11400000, guid: 88d950add1525b346a0df74eb98be574, type: 2}
   DashData: {fileID: 11400000, guid: 2802f22354245bd44ae9f501d3462f4e, type: 2}
+  DeathData: {fileID: 11400000, guid: 4f13befd3159bdd4f82a124ac8a85b54, type: 2}
   BlockedData: {fileID: 11400000, guid: 024230ecdb9cc9e428795e4fa6ab20be, type: 2}
   JumpEffect: {fileID: 8988293473146978437, guid: e5dc0222ec80be14a81d17e2128c43e4,
     type: 3}
   DashEffect: {fileID: 6986405501480664510, guid: d8dbf8da8295dab4b87b6bef8b28b851,
     type: 3}
   RespawnColor: {r: 1, g: 0, b: 0, a: 1}
-  RefreshColor: {r: 0, g: 0.689394, b: 1, a: 1}
   RespawnTime: 0.5
-  RefreshTime: 0.5
   Particles: 35
-  AirFriction: 0.25
+  Friction: 0.25
   MovementSpeed: 9
   VelocityPower: 0.95
   Acceleration: 16
   Deceleration: 13
+  VerticalBounceMultiplier: 1.2
   JumpCutMultiplier: 0.6
   AirJumpMultiplier: 0.8
-  BounceMultiplier: 1
   AirMultiplier: 0.4
   MaximumAirJumps: 1
   JumpCoyoteTime: 0.15
   JumpBufferTime: 0.1
   BounceTime: 0.1
-  JumpForce: 23
+  JumpForce: 20
   DashForce: 26
   DashCooldown: 2
   DashDuration: 0.1
   HangingGravityScale: 0.1
   MaximumVerticalVelocity: 60
-  FallGravityIncrement: 0.05
-  DefaultGravityScale: 2.2
+  FallGravityIncrement: 0.02
+  DefaultGravityScale: 2
   WallCheckOffset: {x: 0.25, y: 0}
   GroundCheckRadius: 0.1
   GrabCheckRadius: 0.1
@@ -55,17 +54,18 @@ MonoBehaviour:
   PreviousLocomotion: 0
   CurrentLocomotion: 0
   LastJumpDirection: 2
-  LastTouchedWall: 2
+  LastTouchedWall: 1
   CurrentAirJumps: 0
   LastGroundedTime: 0.13000001
-  LastHangingTime: -3.6199973
-  LastJumpTime: -3.6199973
-  InputTimer: -4.159997
+  LastHangingTime: -3.7599971
+  LastJumpTime: -3.7599971
+  InputTimer: -4.4399967
   FacingRight: 0
   SpawnPressed: 0
   DashPressed: 0
   CanSpawn: 1
   CanDash: 1
+  ApplicationManager: {fileID: 0}
   InputManager: {fileID: 0}
   BoxCollider: {fileID: 0}
   AudioSource: {fileID: 0}
@@ -74,3 +74,4 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 8
+  RespawnPoint: {x: 40, y: 0}

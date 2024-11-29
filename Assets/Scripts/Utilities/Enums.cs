@@ -29,4 +29,11 @@ namespace ShatterStep
         Dash,
         Spawn,
     }
+
+    public enum GameState
+    {
+        Gameplay,
+        Cutscene,
+        Paused,
+    }
 }

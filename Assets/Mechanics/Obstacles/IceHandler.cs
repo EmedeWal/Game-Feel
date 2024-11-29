@@ -35,7 +35,7 @@ namespace ShatterStep
             foreach (Trigger ice in _triggers)
             {
                 ice.PlayerEntered += Ice_PlayerEntered;
-                ice.Setup();
+                ice.Init();
             }
 
             _audioSystem = AudioSystem.Instance;

@@ -1,10 +1,31 @@
 using ShatterStep.Player;
 using UnityEngine;
+using System;
 
 namespace ShatterStep
 {
-    public class ApplicationManager : MonoBehaviour
+    public class ApplicationManager : SingletonBase
     {
+        #region Singleton
+        public static ApplicationManager Instance;
+
+        public override void Init()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+        #endregion
+
+        public event Action<GameState> GameStateUpdated; 
+
+        private GameState _gameState = GameState.Gameplay;
+
         private RespawnSystem _respawnSystem;
         private InputManager _inputManager;
         private TimeSystem _timeSystem;
@@ -61,22 +82,44 @@ namespace ShatterStep
 
         public void Update()
         {
-            // Static
-            float deltaTime = Time.deltaTime;
+            if (_gameState == GameState.Gameplay)
+            {
+                float deltaTime = Time.deltaTime;
+                float unscaledDeltaTime = Time.unscaledDeltaTime;
 
-            _player.Tick(deltaTime);
-
-            float unscaledDeltaTime = Time.unscaledDeltaTime;
-
-            _timeSystem.UnscaledTick(unscaledDeltaTime);
+                // Static
+                _player.Tick(deltaTime);
+                _timeSystem.Tick(unscaledDeltaTime);
+            }
         }
 
         private void FixedUpdate()
         {
-            // Static
-            float fixedDeltaTime = Time.fixedDeltaTime;
+            if (_gameState == GameState.Gameplay)
+            {
+                // Static
+                float fixedDeltaTime = Time.fixedDeltaTime;
 
-            _player.FixedTick(fixedDeltaTime);
+                _player.FixedTick(fixedDeltaTime);
+            }
+        }
+
+        public void SetGameState(GameState gameState, float duration)
+        {
+            _gameState = gameState;
+            OnGameStateUpdated(_gameState);
+            Invoke(nameof(ResetToDefaultState), duration);
+        }
+
+        private void ResetToDefaultState()
+        {
+            _gameState = GameState.Gameplay;
+            OnGameStateUpdated(_gameState);
+        }
+
+        private void OnGameStateUpdated(GameState gameState)
+        {
+            GameStateUpdated?.Invoke(gameState);
         }
     }
 }
