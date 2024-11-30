@@ -44,59 +44,34 @@ namespace ShatterStep
             }
         }
 
-        public PoolObject ReuseObject(PoolObject prefab, Vector3 position, Quaternion rotation)
+        public void ReuseObject(PoolObject prefab, Vector3 position, Quaternion rotation)
         {
             int poolKey = prefab.GetInstanceID();
             if (_poolDictionary.ContainsKey(poolKey))
             {
                 Queue<ObjectInstance> poolQueue = _poolDictionary[poolKey];
-                int initialQueueCount = poolQueue.Count;
 
-                for (int i = 0; i < initialQueueCount; i++)
+                if (poolQueue.Count > 0)
                 {
                     ObjectInstance objectInstance = poolQueue.Dequeue();
+                    objectInstance.Reuse(position, rotation);
                     poolQueue.Enqueue(objectInstance);
-
-                    if (objectInstance.PoolObject.AvailableForReuse())
-                    {
-                        objectInstance.Reuse(position, rotation);
-                        return objectInstance.PoolObject;
-                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Pool for {prefab.name} is empty. Consider increasing its size.");
                 }
             }
             else
             {
                 Debug.LogError($"Pool for prefab {prefab.name} does not exist.");
             }
-            return null;
         }
 
-        public bool CanReuseObject(PoolObject prefab)
-        {
-            int poolKey = prefab.GetInstanceID();
-
-            if (_poolDictionary.ContainsKey(poolKey))
-            {
-                foreach (var objectInstance in _poolDictionary[poolKey])
-                {
-                    if (objectInstance.IsReusable)
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogWarning($"Pool for prefab {prefab.name} does not exist.");
-            }
-
-            return false;
-        }
 
         public class ObjectInstance
         {
             public PoolObject PoolObject { get; private set; }
-            public bool IsReusable => PoolObject.AvailableForReuse();
 
             public ObjectInstance(PoolObject objectInstance, Transform parent = null)
             {
@@ -116,7 +91,7 @@ namespace ShatterStep
                     PoolObject.GameObject.SetActive(true);
                     PoolObject.Transform.position = position;
                     PoolObject.Transform.rotation = rotation;
-
+                    
                     PoolObject.ReuseObject();
                 }
                 else

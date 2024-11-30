@@ -50,10 +50,7 @@ namespace ShatterStep
             {
                 if (Data.SpawnPressed && Handler.CanSpawn())
                 {
-                    if (Data.PoolManager.CanReuseObject(Data.IceSlabPrefab))
-                    {
-                        Handler.PerformSpawn(Data.BoxCollider);
-                    }
+                    Handler.PerformSpawn(Data.BoxCollider);
                 }
                 else if (Data.DashPressed && Handler.CanDash(Data.CurrentLocomotion))
                 {

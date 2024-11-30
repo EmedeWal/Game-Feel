@@ -41,8 +41,7 @@ namespace ShatterStep
                 }
                 else
                 {
-                    PoolObject pool = _d.PoolManager.ReuseObject(_d.RedShapePrefab, position, rotation);
-                    _d.AudioSystem.Play(_d.BlockedData, pool.GetComponent<AudioSource>());
+                    _d.PoolManager.ReuseObject(_d.RedShapePrefab, position, rotation);
                 }
             }
 

@@ -15,7 +15,6 @@ namespace ShatterStep
             public AudioData JumpData;
             public AudioData DashData;
             public AudioData DeathData;
-            public AudioData BlockedData;
 
             [Header("VISUAL SETTINGS")]
             public PoolObject JumpEffect;
@@ -97,9 +96,9 @@ namespace ShatterStep
                 AudioSystem = AudioSystem.Instance;
                 PoolManager = PoolManager.Instance;
 
-                PoolManager.CreatePool(DashEffect, 2);
-                PoolManager.CreatePool(JumpEffect, 2);
-                PoolManager.CreatePool(IceSlabPrefab, 1);
+                PoolManager.CreatePool(DashEffect, 5);
+                PoolManager.CreatePool(JumpEffect, 5);
+                PoolManager.CreatePool(IceSlabPrefab, 5);
                 PoolManager.CreatePool(RedShapePrefab, 1);
 
                 InputManager = inputHandler;
@@ -135,8 +134,8 @@ namespace ShatterStep
                 LastJumpTime -= fixedDeltaTime;
                 InputTimer -= fixedDeltaTime;
 
-                if (SpawnPressed) SpawnPressed = false;
-                if (DashPressed) DashPressed = false;
+                SpawnPressed = false;
+                DashPressed = false;
             }
 
             public void RespawnPlayer(Vector2 position)

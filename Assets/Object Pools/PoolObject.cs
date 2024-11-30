@@ -13,11 +13,6 @@ namespace ShatterStep
 			Transform = transform;
 		}
 
-        public virtual bool AvailableForReuse()
-        {
-            return true;
-        }
-
         public abstract void ReuseObject();
 	}
 }

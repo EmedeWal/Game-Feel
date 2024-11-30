@@ -20,8 +20,10 @@ namespace ShatterStep
         }
         #endregion
 
-        public void Play(AudioData data, AudioSource audioSource)
+        public void Play(AudioData data, AudioSource audioSource, bool repeat = true)
         {
+            if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat) return;
+
             audioSource.Stop();
 
             audioSource.clip = data.Clip;

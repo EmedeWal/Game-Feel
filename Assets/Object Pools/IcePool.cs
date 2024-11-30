@@ -9,7 +9,7 @@ namespace ShatterStep
         [Header("AUDIO REFERENCES")]
         [SerializeField] private AudioData _spawnData;
         [SerializeField] private AudioData _shatterData;
-        [SerializeField] private float _shatterOffset;
+        [SerializeField] private float _shatterOffset = 0.4f;
 
         [Header("ANIMATION REFERENCE")]
         [SerializeField] private AnimationClip _animationClip;
@@ -29,7 +29,7 @@ namespace ShatterStep
 
             if (!_animationClip || !_spawnData || !_shatterData)
             {
-                Debug.LogError("Ice Pool reference was nog assigned!");
+                Debug.LogError("An Ice Pool reference was nog assigned!");
             }
 
             Animator[] animatorArray = GetComponentsInChildren<Animator>();
@@ -54,11 +54,6 @@ namespace ShatterStep
         public override void ReuseObject()
         {
             StartCoroutine(StateCoroutine());
-        }
-
-        public override bool AvailableForReuse()
-        {
-            return !_boxCollider.enabled;
         }
 
         private IEnumerator StateCoroutine()

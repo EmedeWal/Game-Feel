@@ -5,19 +5,34 @@ namespace ShatterStep
 {
     public class TransparentPool : PoolObject
     {
-        [Header("SETTINGS")]
+        private AudioSystem _audioSystem;
+
+        [Header("VISUAL SETTINGS")]
         [SerializeField] private float _startDelay = 1.0f;
         [SerializeField] private float _fadeTime = 1.0f;
 
         private SpriteRenderer _spriteRenderer;
         private float _originalAlpha;
 
+        [Header("AUDIO SETTINGS")]
+        [SerializeField] private AudioData _audioData;
+        private AudioSource _audioSource;
+
         public override void Init()
         {
             base.Init();
 
+            if (_audioData == null)
+            {
+                Debug.LogError("Transparent Pool audio data was not assigned!");
+            }
+
+            _audioSystem = AudioSystem.Instance;
+
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             _originalAlpha = _spriteRenderer.color.a;
+
+            _audioSource = GetComponentInChildren<AudioSource>();
         }
 
         public override void ReuseObject()
@@ -30,6 +45,8 @@ namespace ShatterStep
 
         private IEnumerator FadeCoroutine()
         {
+            _audioSystem.Play(_audioData, _audioSource);
+
             yield return new WaitForSeconds(_startDelay);
 
             float elapsedTime = 0f;
