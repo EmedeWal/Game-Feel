@@ -88,9 +88,13 @@ namespace ShatterStep
                 {
                     Data.Rigidbody.gravityScale = Data.DefaultGravityScale;
                 }
-                else if (Data.CurrentLocomotion == LocomotionState.Falling || Data.CurrentLocomotion == LocomotionState.Hanging)
+                else if (Data.CurrentLocomotion == LocomotionState.Falling)
                 {
                     Data.Rigidbody.gravityScale += Data.FallGravityIncrement;
+                }
+                else if (Data.CurrentLocomotion == LocomotionState.Hanging)
+                {
+                    Data.Rigidbody.gravityScale += Data.FallGravityIncrement * Data.HangingGravityMultiplier;
                 }
                 #endregion
 

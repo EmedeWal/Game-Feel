@@ -47,9 +47,10 @@ namespace ShatterStep
             public float DashDuration = 0.1f;
 
             [Header("GRAVITY SETTINGS")]
-            [Range(0, 1)] public float HangingGravityScale = 0.4f;
+            [Range(0, 1)] public float HangingGravityMultiplier = 0.1f;
+            [Range(0, 1)] public float HangingGravityScale = 0.1f;
             public float MaximumVerticalVelocity = 60f;
-            public float FallGravityIncrement = 0.01f;
+            public float FallGravityIncrement = 0.02f;
             public float DefaultGravityScale = 2f;
 
             [Header("OVERLAP CIRCLE SETTINGS")]

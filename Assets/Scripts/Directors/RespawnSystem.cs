@@ -31,7 +31,7 @@ namespace ShatterStep
         [SerializeField] private AudioData _audioData;
         private AudioSource _audioSource;
 
-        private Dictionary<Trigger, ParticleSystem> _respawnPointDictionary = new();
+        private Dictionary<EventTrigger, ParticleSystem> _respawnPointDictionary = new();
         private Vector2 _lastRespawnPosition;
 
         public void Setup()
@@ -45,20 +45,19 @@ namespace ShatterStep
 
             _audioSource = GetComponent<AudioSource>();
 
-            Trigger[] respawnPointArray = _respawnPointParent.GetComponentsInChildren<Trigger>();
-            foreach (Trigger respawnPoint in respawnPointArray)
+            EventTrigger[] respawnPointArray = _respawnPointParent.GetComponentsInChildren<EventTrigger>();
+            foreach (EventTrigger respawnPoint in respawnPointArray)
             {
                 ParticleSystem particleSystem = respawnPoint.GetComponent<ParticleSystem>();
                 _respawnPointDictionary.Add(respawnPoint, particleSystem);
 
                 respawnPoint.PlayerEntered += RespawnSystem_PlayerEntered;
-                respawnPoint.Init();
             }
         }
 
         public void Cleanup()
         {
-            foreach (Trigger respawnPoint in _respawnPointDictionary.Keys)
+            foreach (EventTrigger respawnPoint in _respawnPointDictionary.Keys)
             {
                 respawnPoint.PlayerEntered -= RespawnSystem_PlayerEntered;
             }
@@ -71,7 +70,7 @@ namespace ShatterStep
             data.RespawnPlayer(_lastRespawnPosition);
         }
 
-        private void RespawnSystem_PlayerEntered(Manager player, Trigger respawnPoint)
+        private void RespawnSystem_PlayerEntered(Manager player, EventTrigger respawnPoint)
         {
             _lastRespawnPosition = respawnPoint.transform.position;
 

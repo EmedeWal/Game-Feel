@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 namespace ShatterStep
 {
@@ -24,7 +23,6 @@ namespace ShatterStep
             {
                 collectible.Collected -= CollectibleManager_Collected;
                 collectible.Collected += CollectibleManager_Collected;
-                collectible.Init();
 
                 CollectibleType type = collectible.Type;
                 if (collectibleTypeMaxDictionary.ContainsKey(type))

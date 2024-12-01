@@ -33,12 +33,8 @@ namespace ShatterStep
         private CollectibleManager _collectibleManager;
         private Manager _player;
 
-        private PotionParent _potionParent;
-        private SpikeParent _spikeHandler;
-
         private void Awake()
         {
-            // Static
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -58,26 +54,14 @@ namespace ShatterStep
 
             _collectibleManager.Setup();
             _player.Setup();
-
-            // Variable
-            _potionParent = FindObjectOfType<PotionParent>();
-            _spikeHandler = FindObjectOfType<SpikeParent>();
-
-            _potionParent?.Setup();
-            _spikeHandler?.Setup();
         }
 
         private void OnDisable()
         {
-            // Static
             _respawnSystem.Cleanup();
             _inputManager.Cleanup();
 
             _player.Cleanup();
-
-            // Variable
-            _potionParent?.Cleanup();
-            _spikeHandler?.Cleanup();
         }
 
         public void Update()
@@ -87,7 +71,6 @@ namespace ShatterStep
                 float deltaTime = Time.deltaTime;
                 float unscaledDeltaTime = Time.unscaledDeltaTime;
 
-                // Static
                 _player.Tick(deltaTime);
                 _timeSystem.Tick(unscaledDeltaTime);
             }
@@ -97,7 +80,6 @@ namespace ShatterStep
         {
             if (_gameState == GameState.Gameplay)
             {
-                // Static
                 float fixedDeltaTime = Time.fixedDeltaTime;
 
                 _player.FixedTick(fixedDeltaTime);

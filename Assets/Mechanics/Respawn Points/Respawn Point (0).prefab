@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1958895270814740482}
   - component: {fileID: 2190542622146479436}
-  - component: {fileID: 5336006117426278121}
   - component: {fileID: 1510093271189344622}
   - component: {fileID: -6693504319141791365}
+  - component: {fileID: 12915116216057175}
   m_Layer: 0
   m_Name: Respawn Point (0)
   m_TagString: Untagged
@@ -81,18 +81,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
---- !u!114 &5336006117426278121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1479842991441972950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0366a0cb2a158b4389f86b09633498b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!198 &1510093271189344622
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4948,6 +4936,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &12915116216057175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479842991441972950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f49eec33f944148bd2bf9938c555dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7796908233635139882
 GameObject:
   m_ObjectHideFlags: 0
