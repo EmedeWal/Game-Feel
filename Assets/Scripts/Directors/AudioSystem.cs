@@ -1,54 +1,61 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ShatterStep
 {
-    public class AudioSystem : SingletonBase
+    public class AudioSystem : MonoBehaviour
     {
-        #region Setup
-        public static AudioSystem Instance; 
+        #region Singleton
+        public static AudioSystem Instance;
 
-        public override void Initialize()
+        private void Awake()
         {
+            _musicSource = GetComponent<AudioSource>();
+
             if (Instance == null)
             {
                 Instance = this;
+
+                AudioDictionary = new()
+                {
+                    { AudioType.Music, 0.5f },
+                    { AudioType.Sound, 0.5f },
+                };
+
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
+                Instance.PlayMusic(_musicSource.clip);
                 Destroy(gameObject);
             }
-
-            _musicSource = GetComponent<AudioSource>();
-
-            SetSoundVolume(0.5f);
-            SetMusicVolume(0.5f);
         }
         #endregion
 
+        public Dictionary<AudioType, float> AudioDictionary { get; private set; }
+
         private AudioSource _musicSource;
-        private float _soundVolume;
 
-        public void SetSoundVolume(float volume)
+        public void UpdateAudioSettings(AudioType type, float volume)
         {
-            _soundVolume = volume;
+            AudioDictionary[type] = volume;
+
+            if (type == AudioType.Music)
+            {
+                _musicSource.volume = volume;
+            }
         }
 
-        public void SetMusicVolume(float volume)
+        public void PlayMusic(AudioClip clip)
         {
-            _musicSource.volume = volume;
+            _musicSource.Stop();
+
+            _musicSource.clip = clip;
+
+            _musicSource.Play();
         }
 
-        public float GetSoundVolume()
-        {
-            return _soundVolume;
-        }
-
-        public float GetMusicVolume()
-        {
-            return _musicSource.volume;
-        }
-
-        public void Play(AudioData data, AudioSource audioSource, bool repeat = true)
+        public void PlayAudio(AudioData data, AudioSource audioSource, bool repeat = true)
         {
             if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat) return;
 
@@ -56,7 +63,7 @@ namespace ShatterStep
 
             audioSource.clip = data.Clip;
             audioSource.time = data.Offset;
-            audioSource.volume = data.Volume * _soundVolume;
+            audioSource.volume = data.Volume * AudioDictionary[AudioType.Sound];
 
             audioSource.Play();
         }

@@ -38,6 +38,12 @@ namespace ShatterStep
         Time,
     }
 
+    public enum AudioType
+    {
+        Music,
+        Sound,
+    }
+
     public enum GameState
     {
         Gameplay,

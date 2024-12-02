@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System;
 
 namespace ShatterStep
 {
@@ -30,10 +31,14 @@ namespace ShatterStep
 
         public float HorizontalInput { get; private set; }
 
+        public event Action PauseInputPerformed;
+
         public void Setup()
         {
             _inputActions.FindAction("Horizontal").performed += i => HorizontalInput = i.ReadValue<float>();
             _inputActions.FindAction("Horizontal").canceled += i => HorizontalInput = i.ReadValue<float>();
+
+            _inputActions.FindAction("Pause").performed += i => PauseInputPerformed?.Invoke();
 
             foreach (var action in _actionDataList)
             {
@@ -54,6 +59,8 @@ namespace ShatterStep
 
             _inputActions.FindAction("Horizontal").performed -= i => HorizontalInput = i.ReadValue<float>();
             _inputActions.FindAction("Horizontal").canceled -= i => HorizontalInput = i.ReadValue<float>();
+
+            _inputActions.FindAction("Pause").performed -= i => PauseInputPerformed?.Invoke();
         }
 
         public bool GetAction(ActionType actionType, out ActionData actionData)

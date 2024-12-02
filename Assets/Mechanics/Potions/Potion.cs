@@ -38,7 +38,7 @@ namespace ShatterStep
 
         private IEnumerator PotionCoroutine()
         {
-            _audioSystem.Play(_audioData, _audioSource);
+            _audioSystem.PlayAudio(_audioData, _audioSource);
 
             _spriteRender.enabled = false;  
             _collider.enabled = false;

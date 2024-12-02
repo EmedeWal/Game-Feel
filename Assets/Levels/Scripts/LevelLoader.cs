@@ -50,7 +50,7 @@ namespace ShatterStep
                 }
             }
 
-            LevelTracker.Instance.LevelCompleted(_levelData);
+            LevelSystem.Instance.LevelCompleted(_levelData);
         }
     }
 }

@@ -22,6 +22,9 @@ namespace ShatterStep
         }
         #endregion
 
+        [Header("ACTIVATE OBJECTS")]
+        [SerializeField] private GameObject[] _objectArray;
+
         public event Action<GameState> GameStateUpdated; 
 
         private GameState _gameState = GameState.Gameplay;
@@ -30,29 +33,31 @@ namespace ShatterStep
         private InputManager _inputManager;
         private TimeSystem _timeSystem;
 
-        private StatManager _statisticsManager;
+        private OptionsController _optionsController;
+        private StatManager _statManager;
         private Manager _player;
 
         private void Awake()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            foreach (var item in _objectArray) item.SetActive(true);
 
-            SingletonBase[] singletons = FindObjectsByType<SingletonBase>(FindObjectsSortMode.None);
-            foreach (var singleton in singletons) singleton.Initialize();
+            SingletonBase[] singletonArray = FindObjectsByType<SingletonBase>(FindObjectsSortMode.None);
+            foreach (var singleton in singletonArray) singleton.Initialize();
 
             _respawnSystem = RespawnSystem.Instance;
             _inputManager = InputManager.Instance;
             _timeSystem = TimeSystem.Instance;
 
-            _statisticsManager = FindObjectOfType<StatManager>();
+            _optionsController = FindObjectOfType<OptionsController>();
+            _statManager = FindObjectOfType<StatManager>();
             _player = FindObjectOfType<Manager>();
 
             _respawnSystem.Setup();
             _inputManager.Setup();
             _timeSystem.Setup();
 
-            _statisticsManager.Setup(_player);
+            _optionsController.Setup();
+            _statManager.Setup(_player);
             _player.Setup();
         }
 
@@ -61,7 +66,8 @@ namespace ShatterStep
             _respawnSystem.Cleanup();
             _inputManager.Cleanup();
 
-            _statisticsManager.Cleanup();
+            _optionsController.Cleanup();
+            _statManager.Cleanup();
             _player.Cleanup();
         }
 

@@ -11,7 +11,7 @@ namespace ShatterStep
         private float _controllerLength;
         private float _standardOffset;
 
-        public void Initialize()
+        private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

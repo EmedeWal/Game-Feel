@@ -27,7 +27,7 @@ namespace ShatterStep
 
         private AudioSource _audioSource;
         private AudioSystem _audioSystem;
-        private StatUI _statisticUI;
+        private StatUI _statUI;
         private Data _player;
 
         public void Setup(Manager player)
@@ -47,24 +47,24 @@ namespace ShatterStep
             };
             StatTracker = new(maxValues);
 
-            _statisticUI = FindObjectOfType<StatUI>();
+            _statUI = FindObjectOfType<StatUI>();
 
             StartCoroutine(TimeCoroutine());
-            _statisticUI.Setup(StatTracker);
+            _statUI.Setup(StatTracker);
             _player.PlayerDeath += StatisticsManager_PlayerDeath;
         }
 
         public void Cleanup()
         {
             StopAllCoroutines();
-            _statisticUI.Cleanup();
+            _statUI.Cleanup();
             _player.PlayerDeath -= StatisticsManager_PlayerDeath;
         }
 
         private void StatisticsManager_Collected(Collectible collectible)
         {
             StatTracker.IncrementStat(collectible.Type, 1);
-            _audioSystem.Play(collectible.AudioData, _audioSource);
+            _audioSystem.PlayAudio(collectible.AudioData, _audioSource);
             collectible.Collected -= StatisticsManager_Collected;
             Destroy(collectible.gameObject);
         }

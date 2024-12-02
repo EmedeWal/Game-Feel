@@ -54,7 +54,7 @@ namespace ShatterStep
                 _d.CanDash = false;
                 _d.InputTimer = _d.DashDuration;
                 _d.CurrentLocomotion = LocomotionState.Dashing;
-                _d.AudioSystem.Play(_d.DashData, _d.AudioSource);
+                _d.AudioSystem.PlayAudio(_d.DashData, _d.AudioSource);
                 _d.PoolManager.ReuseObject(_d.DashEffect, _d.Transform.position, Quaternion.identity);
             }
 
@@ -85,7 +85,7 @@ namespace ShatterStep
                 _d.Rigidbody.AddForce(direction * _d.JumpForce, ForceMode2D.Impulse);
 
                 _d.PoolManager.ReuseObject(_d.JumpEffect, _d.Transform.position, Quaternion.identity);
-                _d.AudioSystem.Play(_d.JumpData, _d.AudioSource);
+                _d.AudioSystem.PlayAudio(_d.JumpData, _d.AudioSource);
                 _d.CurrentLocomotion = state;
                 _d.LastGroundedTime = 0f;
                 _d.LastHangingTime = 0;

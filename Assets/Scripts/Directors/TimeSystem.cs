@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 namespace ShatterStep
 {
@@ -32,15 +33,20 @@ namespace ShatterStep
 
         public void Tick(float unscaledDeltaTime)
         {
-            if (_duration > 0)
-            {
-                _duration -= unscaledDeltaTime;
-            }
-            else if (Time.timeScale != 1)
-            {
-                OnTimeScaleReverted();
-                Time.timeScale = 1;
-            }
+            //if (_duration > 0)
+            //{
+            //    _duration -= unscaledDeltaTime;
+            //}
+            //else if (Time.timeScale != 1)
+            //{
+            //    OnTimeScaleReverted();
+            //    Time.timeScale = 1;
+            //}
+        }
+
+        public void SetTimeScale(float timeScale)
+        {
+            Time.timeScale = timeScale;
         }
 
         public void DelayTimeFor(float scale, float duration)
