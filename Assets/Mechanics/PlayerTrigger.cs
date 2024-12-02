@@ -6,7 +6,7 @@ namespace ShatterStep
     [RequireComponent(typeof(Collider2D))]
     public abstract class PlayerTrigger : MonoBehaviour
     {
-        private void Awake()
+        private void Start()
         {
             Initialize();
         }

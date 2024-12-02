@@ -9,7 +9,7 @@ namespace ShatterStep
         #region Singleton
         public static ApplicationManager Instance;
 
-        public override void Init()
+        public override void Initialize()
         {
             if (Instance == null)
             {
@@ -30,7 +30,7 @@ namespace ShatterStep
         private InputManager _inputManager;
         private TimeSystem _timeSystem;
 
-        private StatisticsManager _collectibleManager;
+        private StatManager _statisticsManager;
         private Manager _player;
 
         private void Awake()
@@ -39,20 +39,20 @@ namespace ShatterStep
             Cursor.visible = false;
 
             SingletonBase[] singletons = FindObjectsByType<SingletonBase>(FindObjectsSortMode.None);
-            foreach (var singleton in singletons) singleton.Init();
+            foreach (var singleton in singletons) singleton.Initialize();
 
             _respawnSystem = RespawnSystem.Instance;
             _inputManager = InputManager.Instance;
             _timeSystem = TimeSystem.Instance;
 
-            _collectibleManager = FindObjectOfType<StatisticsManager>();
+            _statisticsManager = FindObjectOfType<StatManager>();
             _player = FindObjectOfType<Manager>();
 
             _respawnSystem.Setup();
             _inputManager.Setup();
             _timeSystem.Setup();
 
-            _collectibleManager.Setup();
+            _statisticsManager.Setup(_player);
             _player.Setup();
         }
 
@@ -61,6 +61,7 @@ namespace ShatterStep
             _respawnSystem.Cleanup();
             _inputManager.Cleanup();
 
+            _statisticsManager.Cleanup();
             _player.Cleanup();
         }
 

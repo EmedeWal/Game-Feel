@@ -14,11 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Level 02
   Completed: 0
-  Unlocked: 1
-  Time: 0
-  Deaths: 0
-  Coins: 0
-  Keys: 0
+  Unlocked: 0
   CompletedBlock:
     m_NormalColor: {r: 0, g: 1, b: 0, a: 1}
     m_HighlightedColor: {r: 0, g: 0.7843138, b: 0, a: 1}

@@ -9,7 +9,7 @@ namespace ShatterStep
         #region Singleton
         public static InputManager Instance { get; private set; }
 
-        public override void Init()
+        public override void Initialize()
         {
             if (Instance == null)
             {

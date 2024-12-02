@@ -30,6 +30,14 @@ namespace ShatterStep
         Spawn,
     }
 
+    public enum StatType
+    {
+        Coin,
+        Key,
+        Death,
+        Time,
+    }
+
     public enum GameState
     {
         Gameplay,

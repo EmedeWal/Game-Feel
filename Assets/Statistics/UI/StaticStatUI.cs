@@ -1,0 +1,58 @@
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+namespace ShatterStep
+{
+    public class StaticStatUI : MonoBehaviour
+    {
+        [Header("REFERENCES")]
+        [SerializeField] private TextMeshProUGUI _keyText;
+        [SerializeField] private TextMeshProUGUI _coinText;
+        [SerializeField] private TextMeshProUGUI _timeText;
+        [SerializeField] private TextMeshProUGUI _deathText;
+
+        public void Initialize(Dictionary<StatType, StatValues> statDictionary)
+        {
+            foreach (var type in statDictionary.Keys)
+            {
+                UpdateStatisticUI(type, statDictionary[type]);
+            }
+        }
+
+        private void UpdateStatisticUI(StatType type, StatValues stat)
+        {
+            TextMeshProUGUI text = GetText(type);
+
+            if (text == null) return;
+
+            switch (type)
+            {
+                case StatType.Coin:
+                case StatType.Key:
+                    text.text = $"{stat.CurrentValue} / {stat.MaximumValue}";
+                    break;
+
+                case StatType.Time:
+                    text.text = UIHelpers.FormatTime(stat.CurrentValue);
+                    break;
+
+                default:
+                    text.text = stat.CurrentValue.ToString();
+                    break;
+            }
+        }
+
+        private TextMeshProUGUI GetText(StatType type)
+        {
+            return type switch
+            {
+                StatType.Key => _keyText,
+                StatType.Coin => _coinText,
+                StatType.Time => _timeText,
+                StatType.Death => _deathText,
+                _ => null,
+            };
+        }
+    }
+}

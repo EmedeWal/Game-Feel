@@ -14,6 +14,7 @@ namespace ShatterStep
         [Header("SETTINGS")]
         [SerializeField] private float _pickupDelay = 3;
 
+        private SpriteRenderer _spriteRender;
         private AudioSource _audioSource;
         private Collider2D _collider;
 
@@ -21,6 +22,7 @@ namespace ShatterStep
         {
             _audioSystem = AudioSystem.Instance;
 
+            _spriteRender = GetComponentInChildren<SpriteRenderer>();
             _audioSource = GetComponent<AudioSource>();
             _collider = GetComponent<Collider2D>();
 
@@ -37,11 +39,14 @@ namespace ShatterStep
         private IEnumerator PotionCoroutine()
         {
             _audioSystem.Play(_audioData, _audioSource);
+
+            _spriteRender.enabled = false;  
             _collider.enabled = false;
 
             yield return new WaitForSeconds(_pickupDelay);
 
             _collider.enabled = true;
+            _spriteRender.enabled = true;
         }
     }
 }

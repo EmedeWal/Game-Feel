@@ -8,14 +8,12 @@ namespace ShatterStep
 {
     public class LevelHolder
     {
-        public float Length { get; private set; }
-
         private List<GameObject> _childrenList = new();
         private MenuController _menuController;
         private GameObject _parentObject;
         private string _levelName;  
 
-        public LevelHolder(LevelData levelData, GameObject gameObject, MenuController menuController, Transform transform)
+        public LevelHolder(LevelData levelData, MenuController menuController, Transform transform, LevelMenu levelMenu, GameObject gameObject)
         {
             for (int i = 0; i < transform.childCount; i++)
             {
@@ -25,7 +23,7 @@ namespace ShatterStep
             _menuController = menuController;
             _parentObject = gameObject;
 
-            _levelName = levelData.Name; // Possible delete later
+            _levelName = levelData.Name;
 
             Button playButton = _childrenList[1].GetComponent<Button>();
             Button backButton = _childrenList[3].GetComponent<Button>();
@@ -40,7 +38,7 @@ namespace ShatterStep
             playButton.GetComponentInChildren<TextMeshProUGUI>().text = levelData.Completed ? "Retry" : "Play";
 
             float layoutSpacing = transform.GetComponent<VerticalLayoutGroup>().spacing;
-            Length = UIHelpers.GetLengthOfElements(_childrenList, layoutSpacing);
+            levelMenu.Length = UIHelpers.GetLengthOfElements(_childrenList, layoutSpacing);
 
             playButton.onClick.RemoveAllListeners();
             backButton.onClick.RemoveAllListeners();

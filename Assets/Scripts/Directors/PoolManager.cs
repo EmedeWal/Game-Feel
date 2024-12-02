@@ -8,7 +8,7 @@ namespace ShatterStep
         #region Setup
         public static PoolManager Instance { get; private set; }
 
-        public override void Init()
+        public override void Initialize()
         {
             if (Instance == null)
             {

@@ -6,12 +6,12 @@ namespace ShatterStep
 {
     public class MenuController : MonoBehaviour
     {
-        private List<LevelHolder> _levelHolderList = new();
+        private List<LevelMenu> _levelMenuList = new();
         private RectTransform _backgroundRect;
         private float _controllerLength;
         private float _standardOffset;
 
-        private void Awake()
+        public void Initialize()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -24,8 +24,8 @@ namespace ShatterStep
             LevelMenu[] menuArray = firstChild.GetComponentsInChildren<LevelMenu>();
             foreach (LevelMenu menu in menuArray)
             {
-                menu.Setup(this);
-                _levelHolderList.Add(menu.Holder);
+                menu.Initialize(this);
+                _levelMenuList.Add(menu);
             }
 
             OpenLevelSelection();
@@ -35,23 +35,23 @@ namespace ShatterStep
         {
             SetBackdropSize(_controllerLength);
 
-            foreach (LevelHolder holder in _levelHolderList)
+            foreach (LevelMenu menu in _levelMenuList)
             {
-                holder.ActivateAll(true);
-                holder.CloseMenu();
+                menu.ActivateAll(true);
+                menu.CloseMenu();
             }
         }
 
-        public void OpenLevelMenu(LevelHolder holder)
+        public void OpenLevelMenu(LevelMenu menu)
         {
-            SetBackdropSize(holder.Length);
+            SetBackdropSize(menu.Length);
 
-            foreach (LevelHolder listHolder in _levelHolderList)
+            foreach (LevelMenu localMenu in _levelMenuList)
             {
-                listHolder.ActivateAll(false);
+                localMenu.ActivateAll(false);
             }
 
-            holder.ActivateAll(true);
+            menu.ActivateAll(true);
         }
 
         private void SetBackdropSize(float targetHeight)

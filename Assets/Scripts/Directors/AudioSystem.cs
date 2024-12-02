@@ -7,7 +7,7 @@ namespace ShatterStep
         #region Setup
         public static AudioSystem Instance; 
 
-        public override void Init()
+        public override void Initialize()
         {
             if (Instance == null)
             {

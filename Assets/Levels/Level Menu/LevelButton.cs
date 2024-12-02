@@ -6,50 +6,51 @@ namespace ShatterStep
 {
     public class LevelButton
     {
+        public Button Button { get; private set; }
+
         private MenuController _menuController;
-        private LevelHolder _levelHolder;
+        private LevelMenu _levelMenu;
 
         private TextMeshProUGUI _text;
-        private Button _button;
         private Image _image;
 
-        public LevelButton(LevelData levelData, LevelHolder levelHolder, MenuController menuController, Transform transform)
+        public LevelButton(LevelData levelData, MenuController menuController, Transform transform, LevelMenu levelMenu)
         {
-            _levelHolder = levelHolder;
+            _levelMenu = levelMenu;
             _menuController = menuController;
 
             transform = transform.GetChild(0);
             _text = transform.GetComponentInChildren<TextMeshProUGUI>();
             _image = transform.GetComponentInChildren<Image>();
-            _button = transform.GetComponent<Button>();
+            Button = transform.GetComponent<Button>();
 
-            _button.onClick.RemoveAllListeners();
-            _button.targetGraphic = _image;
+            Button.onClick.RemoveAllListeners();
+            Button.targetGraphic = _image;
 
             _text.text = levelData.Name;
 
             if (levelData.Completed)
             {
                 _text.color = Color.white;  
-                _button.colors = levelData.CompletedBlock;
-                _button.onClick.AddListener(OpenLevelDetails);
+                Button.colors = levelData.CompletedBlock;
+                Button.onClick.AddListener(OpenLevelDetails);
             }
             else if (levelData.Unlocked)
             {
                 _text.color = Color.white;
-                _button.colors = levelData.UnlockedBlock;
-                _button.onClick.AddListener(OpenLevelDetails);
+                Button.colors = levelData.UnlockedBlock;
+                Button.onClick.AddListener(OpenLevelDetails);
             }
             else
             {
                 _text.color = levelData.LockedBlock.normalColor;
-                _button.colors = levelData.LockedBlock;
+                Button.colors = levelData.LockedBlock;
             }
         }
 
         private void OpenLevelDetails()
         {
-            _menuController.OpenLevelMenu(_levelHolder);
+            _menuController.OpenLevelMenu(_levelMenu);
         }
     }
 }

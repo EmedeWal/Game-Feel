@@ -4,6 +4,6 @@ namespace ShatterStep
 {
     public abstract class SingletonBase : MonoBehaviour
     {
-        public abstract void Init();
+        public abstract void Initialize();
     }
 }

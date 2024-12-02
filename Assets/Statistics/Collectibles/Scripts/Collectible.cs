@@ -10,7 +10,7 @@ namespace ShatterStep
 
         [Header("SETTINGS")]
         public AudioData AudioData;
-        public CollectibleType Type;
+        public StatType Type;
 
         protected override void OnPlayerEntered(Manager player)
         {

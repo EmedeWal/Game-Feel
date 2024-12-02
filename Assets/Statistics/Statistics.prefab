@@ -765,7 +765,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8878549752419790337}
   - component: {fileID: 8966685034726739696}
-  - component: {fileID: 6901533515676056821}
   m_Layer: 0
   m_Name: Keys
   m_TagString: Untagged
@@ -820,19 +819,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &6901533515676056821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5324552828168514698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 444381368736a8f40a365e8c58c12e84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 1
 --- !u!1 &5535249142822340721
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +829,6 @@ GameObject:
   m_Component:
   - component: {fileID: 814383764559482267}
   - component: {fileID: 5819539078151133212}
-  - component: {fileID: 3761129764504220063}
   m_Layer: 0
   m_Name: Coins
   m_TagString: Untagged
@@ -898,19 +883,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &3761129764504220063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5535249142822340721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 444381368736a8f40a365e8c58c12e84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 0
 --- !u!1 &5918923354191555294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,6 +1027,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4424026375774395102}
   - component: {fileID: 7771416164843144109}
+  - component: {fileID: 251296782203144116}
   m_Layer: 0
   m_Name: Statistics
   m_TagString: Untagged
@@ -1109,6 +1082,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &251296782203144116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6423427829929077194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9297b631968529347b74be539ab42fd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _keyText: {fileID: 789984199240149865}
+  _coinText: {fileID: 3087962930741445521}
+  _timeText: {fileID: 9214214396058135123}
+  _deathText: {fileID: 4033314591500121682}
 --- !u!1 &6582658226663902226
 GameObject:
   m_ObjectHideFlags: 0
