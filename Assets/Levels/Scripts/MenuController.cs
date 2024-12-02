@@ -42,16 +42,16 @@ namespace ShatterStep
             }
         }
 
-        public void OpenLevelMenu(LevelHolder h)
+        public void OpenLevelMenu(LevelHolder holder)
         {
-            SetBackdropSize(h.Length);
+            SetBackdropSize(holder.Length);
 
-            foreach (LevelHolder holder in _levelHolderList)
+            foreach (LevelHolder listHolder in _levelHolderList)
             {
-                holder.ActivateAll(false);
+                listHolder.ActivateAll(false);
             }
 
-            h.ActivateAll(true);
+            holder.ActivateAll(true);
         }
 
         private void SetBackdropSize(float targetHeight)

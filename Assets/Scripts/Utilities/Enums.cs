@@ -12,7 +12,7 @@ namespace ShatterStep
 
     public enum CollectibleType
     {
-        Heart,
+        Coin,
         Key,
     }
 

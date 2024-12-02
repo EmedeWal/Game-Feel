@@ -30,7 +30,7 @@ namespace ShatterStep
         private InputManager _inputManager;
         private TimeSystem _timeSystem;
 
-        private CollectibleManager _collectibleManager;
+        private StatisticsManager _collectibleManager;
         private Manager _player;
 
         private void Awake()
@@ -45,7 +45,7 @@ namespace ShatterStep
             _inputManager = InputManager.Instance;
             _timeSystem = TimeSystem.Instance;
 
-            _collectibleManager = FindObjectOfType<CollectibleManager>();
+            _collectibleManager = FindObjectOfType<StatisticsManager>();
             _player = FindObjectOfType<Manager>();
 
             _respawnSystem.Setup();
