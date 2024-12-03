@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 namespace ShatterStep
 {
@@ -16,11 +16,11 @@ namespace ShatterStep
         {
             foreach (var type in statDictionary.Keys)
             {
-                UpdateStatisticUI(type, statDictionary[type]);
+                UpdateStatUI(type, statDictionary[type]);
             }
         }
 
-        private void UpdateStatisticUI(StatType type, StatValues stat)
+        private void UpdateStatUI(StatType type, StatValues stat)
         {
             TextMeshProUGUI text = GetText(type);
 

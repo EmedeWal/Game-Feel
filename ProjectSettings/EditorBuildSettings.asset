@@ -10,8 +10,11 @@ EditorBuildSettings:
     guid: 8d4df4424cb0517469ffbd64c263a941
   - enabled: 1
     path: Assets/Levels/Scenes/Level 01.unity
+    guid: 039e0a73f30b5664086702c59a76a882
+  - enabled: 1
+    path: Assets/Levels/Scenes/Level 01 - Game.unity
     guid: 2aa28c9a97e6ddd4fa0c0dcc5e6bf436
   - enabled: 1
-    path: Assets/Levels/Scenes/Credit Screen.unity
-    guid: 6fc135a48ca039c4d8d61a20a784dfe7
+    path: Assets/Levels/Scenes/Victory Screen.unity
+    guid: c41ff67c944bfdc4998ee3d4ba6d4703
   m_configObjects: {}

@@ -18,11 +18,15 @@ namespace ShatterStep
 
                 AudioDictionary = new()
                 {
-                    { AudioType.Music, 0.5f },
-                    { AudioType.Sound, 0.5f },
+                    { AudioType.Music, 0 },
+                    { AudioType.Sound, 0 },
                 };
 
+                _musicSource.volume = AudioDictionary[AudioType.Music];
+
                 DontDestroyOnLoad(gameObject);
+
+                Debug.Log("REMINDER: Audio values set to 0 by default");
             }
             else
             {
