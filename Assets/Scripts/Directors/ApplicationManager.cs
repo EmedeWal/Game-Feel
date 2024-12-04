@@ -34,6 +34,7 @@ namespace ShatterStep
         private TimeSystem _timeSystem;
 
         private OptionsController _optionsController;
+        private SnowController _snowController;
         private StatManager _statManager;
         private Manager _player;
 
@@ -49,9 +50,13 @@ namespace ShatterStep
             _timeSystem = TimeSystem.Instance;
 
             _optionsController = FindObjectOfType<OptionsController>();
+            _snowController = FindObjectOfType<SnowController>();
             _statManager = FindObjectOfType<StatManager>();
             _player = FindObjectOfType<Manager>();
+        }
 
+        private void Start()
+        {
             _respawnSystem.Setup();
             _inputManager.Setup();
             _timeSystem.Setup();
@@ -59,6 +64,8 @@ namespace ShatterStep
             _optionsController.Setup();
             _statManager.Setup(_player);
             _player.Setup();
+
+            _snowController.Initialize(_player);
         }
 
         private void OnDisable()
@@ -71,7 +78,7 @@ namespace ShatterStep
             _player.Cleanup();
         }
 
-        public void Update()
+        private void Update()
         {
             if (_gameState == GameState.Gameplay)
             {
@@ -80,6 +87,14 @@ namespace ShatterStep
 
                 _player.Tick(deltaTime);
                 _timeSystem.Tick(unscaledDeltaTime);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (_gameState == GameState.Gameplay)
+            {
+                _snowController.LateTick();
             }
         }
 

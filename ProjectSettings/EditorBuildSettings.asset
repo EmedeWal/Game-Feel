@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Levels/Scenes/Title Screen.unity
+    path: Assets/Screens/Title Screens/Title Screen.unity
     guid: 8d4df4424cb0517469ffbd64c263a941
   - enabled: 1
     path: Assets/Levels/Scenes/Level 01.unity
@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Levels/Scenes/Level 01 - Game.unity
     guid: 2aa28c9a97e6ddd4fa0c0dcc5e6bf436
   - enabled: 1
-    path: Assets/Levels/Scenes/Victory Screen.unity
+    path: Assets/Levels/Scenes/Level 02.unity
+    guid: 09370291b6fb6cf45a9d05a045b122f3
+  - enabled: 1
+    path: Assets/Levels/Scenes/Level 02 - Game.unity
+    guid: 8d552ee7da3c50149830195d5c4a9374
+  - enabled: 1
+    path: Assets/Screens/Victory Screen/Victory Screen.unity
     guid: c41ff67c944bfdc4998ee3d4ba6d4703
   m_configObjects: {}

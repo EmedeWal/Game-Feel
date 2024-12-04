@@ -75,7 +75,7 @@ namespace ShatterStep
             _lastRespawnPosition = respawnPoint.transform.position;
 
             _respawnPointDictionary[respawnPoint].Play();
-            _audioSystem.PlayAudio(_audioData, _audioSource);
+            _audioSystem.Play(_audioData, _audioSource);
 
             respawnPoint.PlayerEntered -= RespawnSystem_PlayerEntered;
             _respawnPointDictionary.Remove(respawnPoint);

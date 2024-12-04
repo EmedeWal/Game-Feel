@@ -44,7 +44,7 @@
 //            SetAlphaColor(_velocityText, 0);
 //        }
 
-//        public void Tick(float deltaTime)
+//        public void LateTick(float deltaTime)
 //        {
 //            if (_velocityText.color.a > 0)
 //            {
@@ -73,7 +73,7 @@
 
 //                if (xVelocity >= _xRequirement)
 //                {
-//                    //_audioSystem.PlayAudio(_audioData);
+//                    //_audioSystem.Play(_audioData);
 //                    _timeSystem.DelayTimeFor(_timeScale, _timeDuration);
 
 //                    Destroy(trigger.gameObject);

@@ -9,15 +9,17 @@ namespace ShatterStep
         [Header("REFERENCES")]
         [SerializeField] private Sprite[] _iconArray;
 
-        private TextMeshProUGUI _highScoreText;
         private TextMeshProUGUI _countText;
+        private HighScore _highScore;
         private Image _icon;
 
         public void Initialize(StatType type, StatValues values)
         {
-            _highScoreText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             _countText = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+            _highScore = GetComponentInChildren<HighScore>();
             _icon = transform.GetChild(3).GetComponent<Image>();
+
+            _highScore.Initialize(values.IsHighScore);
 
             UpdateText(type, values);
             UpdateIcon(type);
@@ -25,8 +27,6 @@ namespace ShatterStep
 
         private void UpdateText(StatType type, StatValues values)
         {
-            _highScoreText.text = values.IsHighScore ? " NEW HIGHSCORE!" : "";
-
             switch (type)
             {
                 case StatType.Coin:

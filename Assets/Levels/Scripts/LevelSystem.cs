@@ -37,46 +37,67 @@ namespace ShatterStep
 
         public void LevelCompleted(LevelData levelData, StatTracker tracker)
         {
-            CompareAndUpdateStatistics(levelData, tracker);
+            if (levelData.Completed)
+            {
+                CompareAndUpdateStatistics(tracker, levelData);
+            }
+            else
+            {
+                InitializeStatistics(tracker, levelData);
+            }
+
             UnlockNextLevel(levelData);
+
+            if (CurrentLevelData != levelData)
+                CurrentLevelData = levelData;
         }
 
-        private void CompareAndUpdateStatistics(LevelData levelData, StatTracker tracker)
+        private void CompareAndUpdateStatistics(StatTracker tracker, LevelData levelData)
         {
-            foreach (var statistic in tracker.StatDictionary)
+            foreach (var stat in tracker.StatDictionary)
             {
-                StatType type = statistic.Key;
-                StatValues newStatistic = statistic.Value;
+                StatType type = stat.Key;
+                StatValues newValues = stat.Value;
+                StatValues oldValues = levelData.StatDictionary[type];
 
-                if (levelData.StatDictionary.TryGetValue(type, out StatValues currentStatistic))
+                oldValues.IsHighScore = false;
+                levelData.StatDictionary[type] = oldValues;
+
+                switch (type)
                 {
-                    switch (type)
-                    {
-                        case StatType.Time:
-                        case StatType.Death:
-                            if (newStatistic.CurrentValue < currentStatistic.CurrentValue || currentStatistic.CurrentValue == 0)
-                            {
-                                currentStatistic.UpdateValue(newStatistic.CurrentValue, false);
-                                levelData.StatDictionary[type] = currentStatistic;
-                            }
-                            break;
+                    case StatType.Time:
+                    case StatType.Death:
+                        if (newValues.CurrentValue < oldValues.CurrentValue)
+                        {
+                            newValues.IsHighScore = true;
+                            levelData.StatDictionary[type] = new(newValues.CurrentValue, oldValues.MaximumValue, true);
+                        }
+                        break;
 
-                        case StatType.Coin:
-                        case StatType.Key:
-                            if (newStatistic.CurrentValue > currentStatistic.CurrentValue)
-                            {
-                                currentStatistic.UpdateValue(newStatistic.CurrentValue, true);
-                                levelData.StatDictionary[type] = currentStatistic;
-                            }
-                            break;
-                    }
-
+                    case StatType.Coin:
+                    case StatType.Key:
+                        if (newValues.CurrentValue > oldValues.CurrentValue)
+                        {
+                            levelData.StatDictionary[type] = new(newValues.CurrentValue, oldValues.MaximumValue, true);
+                        }
+                        break;
                 }
-                else
+            }
+        }
+
+        private void InitializeStatistics(StatTracker tracker, LevelData levelData)
+        {
+            foreach (var stat in tracker.StatDictionary)
+            {
+                StatType type = stat.Key;
+                StatValues newValues = stat.Value;
+
+                if (type != StatType.Key && type != StatType.Coin || newValues.CurrentValue > 0)
                 {
-                    levelData.StatDictionary[type] = newStatistic;
+                    newValues.IsHighScore = true;
                 }
-                CurrentLevelData = levelData;
+
+                levelData.StatDictionary[type] = newValues;
             }
         }
 

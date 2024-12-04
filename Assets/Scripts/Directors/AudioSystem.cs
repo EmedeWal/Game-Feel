@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ShatterStep
 {
@@ -18,23 +20,25 @@ namespace ShatterStep
 
                 AudioDictionary = new()
                 {
-                    { AudioType.Music, 0 },
-                    { AudioType.Sound, 0 },
+                    { AudioType.Music, 0.5f },
+                    { AudioType.Sound, 0.5f },
                 };
 
-                _musicSource.volume = AudioDictionary[AudioType.Music];
-
+                PlayMusic(MusicData);
                 DontDestroyOnLoad(gameObject);
-
-                Debug.Log("REMINDER: Audio values set to 0 by default");
             }
             else
             {
-                Instance.PlayMusic(_musicSource.clip);
+                if (Instance.MusicData != MusicData)
+                    Instance.PlayMusic(MusicData);
+
                 Destroy(gameObject);
             }
         }
         #endregion
+
+        [Header("REFERENCE")]
+        public AudioData MusicData;
 
         public Dictionary<AudioType, float> AudioDictionary { get; private set; }
 
@@ -45,31 +49,42 @@ namespace ShatterStep
             AudioDictionary[type] = volume;
 
             if (type == AudioType.Music)
-            {
-                _musicSource.volume = volume;
-            }
+                _musicSource.volume = GetVolume(MusicData);
         }
 
-        public void PlayMusic(AudioClip clip)
+        public void PlayMusic(AudioData data)
         {
+            MusicData = data;
+
             _musicSource.Stop();
 
-            _musicSource.clip = clip;
+            _musicSource.clip = data.Clip;
+            _musicSource.time = data.Offset;
+            _musicSource.volume = GetVolume(data);
 
             _musicSource.Play();
         }
 
-        public void PlayAudio(AudioData data, AudioSource audioSource, bool repeat = true)
+        public void Play(AudioData data, AudioSource audioSource, bool repeat = true)
         {
-            if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat) return;
+            if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat) 
+                return;
 
             audioSource.Stop();
 
             audioSource.clip = data.Clip;
             audioSource.time = data.Offset;
-            audioSource.volume = data.Volume * AudioDictionary[AudioType.Sound];
+            audioSource.volume = GetVolume(data);
 
             audioSource.Play();
+        }
+
+        private float GetVolume(AudioData data)
+        {
+            float multiplier = data.Type == AudioType.Music ?
+            AudioDictionary[AudioType.Music] : AudioDictionary[AudioType.Sound];
+
+            return data.Volume * multiplier;
         }
     }
 }

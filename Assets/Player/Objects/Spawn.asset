@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Spawn
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 970964a99b5489f4ab6f1717fb58de47, type: 3}
-  Volume: 0.2
+  Type: 0
+  Volume: 0.3
   Offset: 0.4

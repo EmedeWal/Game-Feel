@@ -64,7 +64,7 @@ namespace ShatterStep
         private void StatisticsManager_Collected(Collectible collectible)
         {
             StatTracker.IncrementStat(collectible.Type, 1);
-            _audioSystem.PlayAudio(collectible.AudioData, _audioSource);
+            _audioSystem.Play(collectible.AudioData, _audioSource);
             collectible.Collected -= StatisticsManager_Collected;
             Destroy(collectible.gameObject);
         }

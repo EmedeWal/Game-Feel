@@ -150,7 +150,7 @@ namespace ShatterStep
                 ApplicationManager.SetGameState(GameState.Paused, RespawnTime);
                 ApplicationManager.GameStateUpdated += Data_GameStateUpdated;
 
-                AudioSystem.PlayAudio(DeathData, AudioSource);
+                AudioSystem.Play(DeathData, AudioSource);
                 Controller.SubscribeToActions(false);
 
                 OnPlayerDeath();
