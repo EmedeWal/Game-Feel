@@ -5,7 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Interactible
-  - No Refresh
+  - Ice
   layers:
   - Default
   - TransparentFX

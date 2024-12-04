@@ -41,9 +41,9 @@ namespace ShatterStep
 
             _particleSystem = GetComponent<ParticleSystem>();
             _boxCollider = GetComponent<BoxCollider2D>();
-            _boxCollider.enabled = false;
             _audioSource = GetComponent<AudioSource>();
             _audioSource.playOnAwake = false;
+            _boxCollider.enabled = false;
 
             _animationHash = Animator.StringToHash(_animationClip.name);
             _animationLength = _animationClip.length;

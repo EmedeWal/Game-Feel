@@ -210,35 +210,32 @@ namespace ShatterStep
                 (Vector2 groundCheckOrigin, Vector2 leftWallCheckOrigin, Vector2 rightWallCheckOrigin) =
                 GetPhysicsOrigins(_d.BoxCollider, _d.Transform, _d.WallCheckOffset);
 
-                bool touchingRightWall = Physics2D.OverlapCircle(rightWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer) && _d.FacingRight;
-                bool touchingLeftWall = Physics2D.OverlapCircle(leftWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer) && !_d.FacingRight;
-                Collider2D grounded = Physics2D.OverlapCircle(groundCheckOrigin, _d.GroundCheckRadius, _d.GroundLayer);
+                Collider2D rightWallHit = Physics2D.OverlapCircle(rightWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer);
+                Collider2D leftWallHit = Physics2D.OverlapCircle(leftWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer);
+                Collider2D groundHit = Physics2D.OverlapCircle(groundCheckOrigin, _d.GroundCheckRadius, _d.GroundLayer);
 
+                bool grounded = groundHit;
                 bool hanging = false;
-                if (_d.LastGroundedTime < 0)
+
+                if (leftWallHit && !_d.FacingRight)
                 {
-                    if (touchingLeftWall)
-                    {
-                        _d.LastTouchedWall = DirectionType.Left;
-                        hanging = true;
-                    }
-                    else if (touchingRightWall)
-                    {
-                        _d.LastTouchedWall = DirectionType.Right;
-                        hanging = true;
-                    }
+                    hanging = true;
+                    _d.LastTouchedWall = DirectionType.Left;
+                }
+                else if (rightWallHit && _d.FacingRight)
+                {
+                    hanging = true;
+                    _d.LastTouchedWall = DirectionType.Right;
                 }
 
                 if (grounded)
                 {
                     _d.LastGroundedTime = _d.JumpCoyoteTime;
 
-                    if (!grounded.CompareTag("No Refresh"))
-                    {
+                    if (!groundHit.CompareTag("Ice"))
                         _d.RefreshAbilities();
-                    }
                 }
-                if (hanging)
+                else if (hanging)
                 {
                     _d.LastHangingTime = _d.JumpCoyoteTime;
                 }
