@@ -57,6 +57,11 @@ namespace ShatterStep
         {
             StopAllCoroutines();
             transform.position = _waypoints[0].position;
+
+            if (_activateOnStart)
+            {
+                StartCoroutine(MovePlatform());
+            }
         }
 
         private IEnumerator MovePlatform()
