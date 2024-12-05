@@ -43,7 +43,7 @@ namespace ShatterStep
                 _animatorManager = null;
                 _controller = null;
 
-                Data.PlayerDeath += Manager_PlayerRespawned;
+                Data.PlayerDeath -= Manager_PlayerRespawned;
             }
 
             public void Tick(float deltaTime)

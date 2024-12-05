@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Potion
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: c480f666fdb2a694aab3a86b89cfd466, type: 3}
+  Type: 1
   Volume: 0.1
   Offset: 0.1

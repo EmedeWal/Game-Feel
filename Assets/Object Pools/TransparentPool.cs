@@ -45,7 +45,7 @@ namespace ShatterStep
 
         private IEnumerator FadeCoroutine()
         {
-            _audioSystem.Play(_audioData, _audioSource);
+            _audioSystem.PlaySound(_audioData, _audioSource);
 
             yield return new WaitForSeconds(_startDelay);
 

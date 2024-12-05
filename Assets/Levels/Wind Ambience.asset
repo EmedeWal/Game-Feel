@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568bfaf106d6e674fa0c4580987e3309, type: 3}
   m_Name: Wind Ambience
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 660790bb19a97eb4581a05d90c81f369, type: 3}
+  Clip: {fileID: 8300000, guid: 7f35ba25541794f4d9de8c28ac29997c, type: 3}
   Type: 0
-  Volume: 1
+  Volume: 0.2
   Offset: 0

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Shatter
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: d731503882a8fbd49b2925023ac33d98, type: 3}
-  Type: 0
+  Type: 1
   Volume: 0.6
   Offset: 0

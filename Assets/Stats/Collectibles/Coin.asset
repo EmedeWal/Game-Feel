@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Coin
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: f9ce0bd536f6f4244b7151c5ba3c341e, type: 3}
-  Type: 3
+  Type: 1
   Volume: 0.05
   Offset: 0

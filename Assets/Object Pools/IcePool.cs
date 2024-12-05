@@ -60,13 +60,13 @@ namespace ShatterStep
         {
             foreach (Animator animator in _childrenDictionary.Keys) animator.Play(_animationHash);
 
-            _audioSystem.Play(_spawnData, _audioSource);
+            _audioSystem.PlaySound(_spawnData, _audioSource);
             _boxCollider.enabled = true;
             SetAlpha(1);
 
             yield return new WaitForSeconds(_animationLength - _shatterOffset);
 
-            _audioSystem.Play(_shatterData, _audioSource);
+            _audioSystem.PlaySound(_shatterData, _audioSource);
 
             yield return new WaitForSeconds(_shatterOffset);
 

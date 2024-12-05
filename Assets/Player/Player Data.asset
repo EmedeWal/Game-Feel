@@ -39,12 +39,13 @@ MonoBehaviour:
   DashForce: 26
   DashCooldown: 2
   DashDuration: 0.1
+  HangingGravityMultiplier: 0.1
   HangingGravityScale: 0.1
   MaximumVerticalVelocity: 60
   FallGravityIncrement: 0.02
   DefaultGravityScale: 2
   WallCheckOffset: {x: 0.25, y: 0}
-  GroundCheckRadius: 0.1
+  GroundCheckDistance: 0.1
   GrabCheckRadius: 0.1
   IceSlabPrefab: {fileID: 4593585747838000098, guid: dd90c944d2c196049b80ac82faaf0a3a,
     type: 3}
@@ -56,9 +57,9 @@ MonoBehaviour:
   LastTouchedWall: 2
   CurrentAirJumps: 0
   LastGroundedTime: 0.13000001
-  LastHangingTime: -7.8099933
-  LastJumpTime: -9.200021
-  InputTimer: -11.5900755
+  LastHangingTime: -2.2999985
+  LastJumpTime: -2.2999985
+  InputTimer: -64.88113
   FacingRight: 1
   SpawnPressed: 0
   DashPressed: 0
@@ -73,4 +74,4 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 8
-  RespawnPoint: {x: 286.3, y: 108.93}
+  RespawnPoint: {x: 0, y: 0}

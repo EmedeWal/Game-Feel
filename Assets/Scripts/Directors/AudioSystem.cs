@@ -1,7 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace ShatterStep
 {
@@ -24,37 +23,53 @@ namespace ShatterStep
                     { AudioType.Sound, 0.5f },
                 };
 
-                PlayMusic(MusicData);
+                Initialize(_musicTrackArray);
                 DontDestroyOnLoad(gameObject);
             }
             else
             {
-                if (Instance.MusicData != MusicData)
-                    Instance.PlayMusic(MusicData);
-
+                Instance.Initialize(_musicTrackArray);
                 Destroy(gameObject);
             }
         }
         #endregion
 
-        [Header("REFERENCE")]
-        public AudioData MusicData;
-
         public Dictionary<AudioType, float> AudioDictionary { get; private set; }
 
+        [Header("REFERENCE")]
+        [SerializeField] private AudioData[] _musicTrackArray;
+
         private AudioSource _musicSource;
+        private AudioData _activeTrack;
+        private int _currentTrackIndex;
+
+        private void Update()
+        {
+            if (!_musicSource.isPlaying)
+            {
+                _currentTrackIndex = (_currentTrackIndex + 1) % _musicTrackArray.Length;
+                PlayMusic(_musicTrackArray[_currentTrackIndex]);
+            }
+        }
+
+        public void Initialize(AudioData[] musicArray)
+        {
+            _currentTrackIndex = 0;
+            _musicTrackArray = musicArray;
+            PlayMusic(musicArray[_currentTrackIndex]);
+        }
 
         public void UpdateAudioSettings(AudioType type, float volume)
         {
             AudioDictionary[type] = volume;
 
             if (type == AudioType.Music)
-                _musicSource.volume = GetVolume(MusicData);
+                _musicSource.volume = GetVolume(_activeTrack);
         }
 
         public void PlayMusic(AudioData data)
         {
-            MusicData = data;
+            _activeTrack = data;
 
             _musicSource.Stop();
 
@@ -65,9 +80,9 @@ namespace ShatterStep
             _musicSource.Play();
         }
 
-        public void Play(AudioData data, AudioSource audioSource, bool repeat = true)
+        public void PlaySound(AudioData data, AudioSource audioSource, bool repeat = true)
         {
-            if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat) 
+            if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat)
                 return;
 
             audioSource.Stop();

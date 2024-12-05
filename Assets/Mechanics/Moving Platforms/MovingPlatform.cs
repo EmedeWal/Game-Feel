@@ -1,3 +1,4 @@
+using ShatterStep.Player;
 using System.Collections;
 using UnityEngine;
 
@@ -5,11 +6,16 @@ namespace ShatterStep
 {
     public class MovingPlatform : MonoBehaviour
     {
-        [Header("Path Settings")]
+        [Header("ACTIVATION SETTINGS")]
+        [SerializeField] private float _activationDelay = 2f;
+        [SerializeField] private bool _activateOnStart = true;
+        private Data _data;
+        
+        [Header("PATH SETTINGS")]
         [SerializeField] private Transform[] _waypoints;
-        [SerializeField] private float _movementSpeed = 2f; 
+        [SerializeField] private float _movementSpeed = 4f; 
         [SerializeField] private float _waypointPause = 1f;
-        [SerializeField] private float _journeyPause = 2f;
+        [SerializeField] private float _journeyPause = 1f;
 
         private Rigidbody2D _rb;
         private int _wapointIndex = 0;
@@ -17,7 +23,8 @@ namespace ShatterStep
 
         private void Start()
         {
-            _rb = GetComponentInChildren<Rigidbody2D>();
+            _data = FindObjectOfType<Manager>().Data;
+            _rb = GetComponent<Rigidbody2D>();
             _rb.isKinematic = true;
 
             if (_waypoints.Length < 2)
@@ -27,11 +34,35 @@ namespace ShatterStep
                 return;
             }
 
-            StartCoroutine(MovePlatform());
+            if (_activateOnStart)
+            {
+                StartCoroutine(MovePlatform());
+            }
+
+            _data.PlayerRespawn += MovingPlatform_PlayerRespawn;
+        }
+
+        private void OnDisable()
+        {
+            _data.PlayerRespawn -= MovingPlatform_PlayerRespawn;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (!_activateOnStart && collision.transform.TryGetComponent(out Manager player))
+                StartCoroutine(MovePlatform());
+        }
+
+        private void MovingPlatform_PlayerRespawn()
+        {
+            StopAllCoroutines();
+            transform.position = _waypoints[0].position;
         }
 
         private IEnumerator MovePlatform()
         {
+            yield return new WaitForSeconds(_activationDelay);
+
             while (true)
             {
                 Transform targetWaypoint = _waypoints[_wapointIndex];
@@ -63,8 +94,8 @@ namespace ShatterStep
                     _wapointIndex--;
                     if (_wapointIndex < 0)
                     {
-                        _movingForward = true;
                         _wapointIndex = 0;
+                        _movingForward = true;
                         yield return new WaitForSeconds(_journeyPause);
                     }
                     else

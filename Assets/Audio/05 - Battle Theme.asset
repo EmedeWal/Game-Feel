@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 568bfaf106d6e674fa0c4580987e3309, type: 3}
-  m_Name: Game Theme
+  m_Name: 05 - Battle Theme
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 947516b9eac5a88438a208e9cf2f0670, type: 3}
+  Clip: {fileID: 8300000, guid: 73e800617cbae8843909627cf37f3b01, type: 3}
   Type: 0
-  Volume: 0.5
+  Volume: 0.2
   Offset: 0

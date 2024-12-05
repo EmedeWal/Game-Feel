@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 5135593734812721489}
   - component: {fileID: 2513404483846365794}
   m_Layer: 3
-  m_Name: Unstable Platform
+  m_Name: 3 - Unstable Platform
   m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

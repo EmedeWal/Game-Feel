@@ -54,7 +54,7 @@ namespace ShatterStep
                 _d.CanDash = false;
                 _d.InputTimer = _d.DashDuration;
                 _d.CurrentLocomotion = LocomotionState.Dashing;
-                _d.AudioSystem.Play(_d.DashData, _d.AudioSource);
+                _d.AudioSystem.PlaySound(_d.DashData, _d.AudioSource);
                 _d.PoolManager.ReuseObject(_d.DashEffect, _d.Transform.position, Quaternion.identity);
             }
 
@@ -85,7 +85,7 @@ namespace ShatterStep
                 _d.Rigidbody.AddForce(direction * _d.JumpForce, ForceMode2D.Impulse);
 
                 _d.PoolManager.ReuseObject(_d.JumpEffect, _d.Transform.position, Quaternion.identity);
-                _d.AudioSystem.Play(_d.JumpData, _d.AudioSource);
+                _d.AudioSystem.PlaySound(_d.JumpData, _d.AudioSource);
                 _d.CurrentLocomotion = state;
                 _d.LastGroundedTime = 0f;
                 _d.LastHangingTime = 0;
@@ -210,10 +210,10 @@ namespace ShatterStep
                 (Vector2 groundCheckOrigin, Vector2 leftWallCheckOrigin, Vector2 rightWallCheckOrigin) =
                 GetPhysicsOrigins(_d.BoxCollider, _d.Transform, _d.WallCheckOffset);
 
+                Vector2 groundCheckSize = new(_d.BoxCollider.bounds.size.x - _d.GroundCheckDistance, _d.GroundCheckDistance);
                 Collider2D rightWallHit = Physics2D.OverlapCircle(rightWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer);
                 Collider2D leftWallHit = Physics2D.OverlapCircle(leftWallCheckOrigin, _d.GrabCheckRadius, _d.GroundLayer);
-                Collider2D groundHit = Physics2D.OverlapCircle(groundCheckOrigin, _d.GroundCheckRadius, _d.GroundLayer);
-
+                Collider2D groundHit = Physics2D.OverlapBox(groundCheckOrigin, groundCheckSize, 0, _d.GroundLayer);
                 bool grounded = groundHit;
                 bool hanging = false;
 

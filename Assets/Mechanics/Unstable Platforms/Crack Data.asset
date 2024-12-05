@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Crack Data
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: b6f0dd2574b7c10449a4a91d6c060375, type: 3}
-  Type: 4
+  Type: 1
   Volume: 0.8
   Offset: 0

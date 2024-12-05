@@ -55,7 +55,7 @@ namespace ShatterStep
 
             [Header("OVERLAP CIRCLE SETTINGS")]
             public Vector2 WallCheckOffset = new(0.25f, 0f);
-            public float GroundCheckRadius = 0.2f;
+            public float GroundCheckDistance = 0.2f;
             public float GrabCheckRadius = 0.2f;
 
             [Header("SPAWN SETTINGS")]
@@ -89,6 +89,7 @@ namespace ShatterStep
             [HideInInspector] public LayerMask GroundLayer;
             [HideInInspector] public Vector2 RespawnPoint;
 
+            public event Action PlayerRespawn;
             public event Action PlayerDeath;
 
             public void Init(GameObject playerObject, InputManager inputHandler)
@@ -144,13 +145,14 @@ namespace ShatterStep
                 PreviousLocomotion = LocomotionState.Grounded;
                 CurrentLocomotion = LocomotionState.Grounded;
                 Rigidbody.velocity = Vector2.zero;
+                BoxCollider.enabled = false;
                 Rigidbody.gravityScale = 0;
                 RespawnPoint = position;
 
                 ApplicationManager.SetGameState(GameState.Paused, RespawnTime);
                 ApplicationManager.GameStateUpdated += Data_GameStateUpdated;
 
-                AudioSystem.Play(DeathData, AudioSource);
+                AudioSystem.PlaySound(DeathData, AudioSource);
                 Controller.SubscribeToActions(false);
 
                 OnPlayerDeath();
@@ -168,8 +170,15 @@ namespace ShatterStep
             {
                 ApplicationManager.GameStateUpdated -= Data_GameStateUpdated;
                 Transform.position = RespawnPoint;
+                BoxCollider.enabled = true;
 
                 Controller.SubscribeToActions(true);
+                OnPlayerRespawn();
+            }
+
+            private void OnPlayerRespawn()
+            {
+                PlayerRespawn?.Invoke();
             }
 
             private void OnPlayerDeath()
