@@ -919,13 +919,14 @@ MonoBehaviour:
   nextButton: {fileID: 1229052760}
   typingSpeed: 0.05
   dialogueLines:
-  - It seems I am following in your footsteps this time, just like when we were kids.
-    Almost funny how everything has changed since then.  I guess it only makes sense.
-  - I really don't know why mother is so harsh on you. You're no worse of a son to
-    her than I am, that's for sure. Still, I wish you didn't take it to heart as
-    much as you do.
-  - Why do you feel like you have to proof yourself, Cain? Nobody even doubts how
-    good you are. No matter. I really should hurry if I want to catch up to you.
+  - 'Jack: It seems I am following in your footsteps this time, just like when we
+    were kids. Almost funny how everything has changed since then.  I guess it only
+    makes sense.'
+  - 'Jack: I really don''t know why mother is so harsh on you. You''re no worse of
+    a son to her than I am, that''s for sure. Still, I wish you didn''t take it to
+    heart as much as you do.'
+  - 'Jack: Why do you feel like you have to proof yourself, Cain? Nobody even doubts
+    how good you are. No matter. I really should hurry if I want to catch up to you.'
 --- !u!4 &791161047
 Transform:
   m_ObjectHideFlags: 0

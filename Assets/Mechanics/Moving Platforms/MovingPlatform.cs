@@ -18,7 +18,7 @@ namespace ShatterStep
         [SerializeField] private float _journeyPause = 1f;
 
         private Rigidbody2D _rb;
-        private int _wapointIndex = 0;
+        private int _waypointIndex = 0;
         private bool _movingForward = true;
 
         private void Start()
@@ -56,6 +56,8 @@ namespace ShatterStep
         private void MovingPlatform_PlayerRespawn()
         {
             StopAllCoroutines();
+
+            _waypointIndex = 0;
             transform.position = _waypoints[0].position;
 
             if (_activateOnStart)
@@ -70,7 +72,7 @@ namespace ShatterStep
 
             while (true)
             {
-                Transform targetWaypoint = _waypoints[_wapointIndex];
+                Transform targetWaypoint = _waypoints[_waypointIndex];
                 while (Vector2.Distance(_rb.position, targetWaypoint.position) > 0.1f)
                 {
                     Vector2 direction = ((Vector2)targetWaypoint.position - _rb.position).normalized;
@@ -82,11 +84,11 @@ namespace ShatterStep
 
                 if (_movingForward)
                 {
-                    _wapointIndex++;
-                    if (_wapointIndex >= _waypoints.Length)
+                    _waypointIndex++;
+                    if (_waypointIndex >= _waypoints.Length)
                     {
                         _movingForward = false;
-                        _wapointIndex = _waypoints.Length - 1;
+                        _waypointIndex = _waypoints.Length - 1;
                         yield return new WaitForSeconds(_journeyPause);
                     }
                     else
@@ -96,10 +98,10 @@ namespace ShatterStep
                 }
                 else
                 {
-                    _wapointIndex--;
-                    if (_wapointIndex < 0)
+                    _waypointIndex--;
+                    if (_waypointIndex < 0)
                     {
-                        _wapointIndex = 0;
+                        _waypointIndex = 0;
                         _movingForward = true;
                         yield return new WaitForSeconds(_journeyPause);
                     }
