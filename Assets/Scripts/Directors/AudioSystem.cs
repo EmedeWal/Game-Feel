@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -86,6 +85,10 @@ namespace ShatterStep
                 return;
 
             audioSource.Stop();
+
+            float minimum = data.DefaultPitch - data.PitchOffset;
+            float maximum = data.DefaultPitch + data.PitchOffset;
+            audioSource.pitch = Random.Range(minimum, maximum);
 
             audioSource.clip = data.Clip;
             audioSource.time = data.Offset;

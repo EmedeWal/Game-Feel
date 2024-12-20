@@ -43,7 +43,6 @@ namespace ShatterStep
 
             [Header("DASH SETTINGS")]
             public float DashForce = 26f;
-            public float DashCooldown = 2f;
             public float DashDuration = 0.1f;
 
             [Header("GRAVITY SETTINGS")]
@@ -71,6 +70,7 @@ namespace ShatterStep
             [HideInInspector] public float LastHangingTime;
             [HideInInspector] public float LastJumpTime;
             [HideInInspector] public float InputTimer;
+            [HideInInspector] public float DashTimer;
             [HideInInspector] public bool FacingRight;
             [HideInInspector] public bool SpawnPressed;
             [HideInInspector] public bool DashPressed;
@@ -135,6 +135,7 @@ namespace ShatterStep
                 LastHangingTime -= fixedDeltaTime;
                 LastJumpTime -= fixedDeltaTime;
                 InputTimer -= fixedDeltaTime;
+                DashTimer -= fixedDeltaTime;
 
                 SpawnPressed = false;
                 DashPressed = false;

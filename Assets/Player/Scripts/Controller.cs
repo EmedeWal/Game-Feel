@@ -32,7 +32,10 @@ namespace ShatterStep
                 float verticalVelocity = Data.Rigidbody.velocity.y;
                 float inputMagnitude = Mathf.Abs(horizontalInput);
 
-                UpdateLocomotionState(verticalVelocity);
+                if (Data.InputTimer <= 0)
+                {
+                    UpdateLocomotionState(verticalVelocity);
+                }
 
                 HandlePhysics(inputMagnitude);
                 HandleVisuals(inputMagnitude, horizontalInput);
@@ -56,11 +59,16 @@ namespace ShatterStep
                 {
                     Handler.PerformDash();
                 }
+
+                if (Data.CurrentLocomotion == LocomotionState.Dashing && Data.InputTimer <= 0)
+                {
+                    Data.Rigidbody.gravityScale = Data.DefaultGravityScale;
+                    Data.CurrentLocomotion = LocomotionState.Falling;
+                }
             }
 
             private void UpdateLocomotionState(float verticalVelocity)
             {
-                if (Data.InputTimer > 0) return;
                 (bool grounded, bool hanging) = Handler.HandlePhysicsChecks();
                 (Data.PreviousLocomotion, Data.CurrentLocomotion) = Handler.UpdateLocomotionState(Data.CurrentLocomotion, verticalVelocity, grounded, hanging);
             }

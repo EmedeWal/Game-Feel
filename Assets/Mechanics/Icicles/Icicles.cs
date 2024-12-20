@@ -8,16 +8,23 @@ namespace ShatterStep
         [Header("REFERENCE")]
         [SerializeField] private PoolObject _iciclePool;
 
+        private PoolManager _poolManager;
+        private Vector3 _position;
+
         protected override void Initialize()
         {
             base.Initialize();
 
-            PoolManager.Instance.CreatePool(_iciclePool, 1);
+            _poolManager = PoolManager.Instance;
+            _position = transform.position;
+
+            _poolManager.CreatePool(_iciclePool, 1);
+            _poolManager.SetupObject(_iciclePool, _position, Quaternion.identity);
         }
 
         protected override void OnPlayerEntered(Manager player)
         {
-            PoolManager.Instance.ReuseObject(_iciclePool, transform.position, Quaternion.identity);
+            _poolManager.ReuseObject(_iciclePool, _position, Quaternion.identity);
         }
     }
 }

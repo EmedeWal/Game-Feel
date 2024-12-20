@@ -53,6 +53,7 @@ namespace ShatterStep
 
                 _d.CanDash = false;
                 _d.InputTimer = _d.DashDuration;
+                _d.DashTimer = _d.DashDuration * 2f;
                 _d.CurrentLocomotion = LocomotionState.Dashing;
                 _d.AudioSystem.PlaySound(_d.DashData, _d.AudioSource);
                 _d.PoolManager.ReuseObject(_d.DashEffect, _d.Transform.position, Quaternion.identity);
@@ -129,7 +130,7 @@ namespace ShatterStep
 
             public bool CanDash(LocomotionState state)
             {
-                return _d.CanSpawn && state != LocomotionState.Dashing && state != LocomotionState.Hanging;
+                return _d.CanDash && _d.DashTimer <= 0 && state != LocomotionState.Dashing && state != LocomotionState.Hanging;
             }
 
             public bool CanAirJump(LocomotionState state)
@@ -187,7 +188,7 @@ namespace ShatterStep
             UpdateLocomotionState(LocomotionState currentLocomotion, float verticalVelocity, bool grounded, bool hanging)
             {
                 LocomotionState newLocomotion = currentLocomotion;
-
+                
                 if (grounded)
                 {
                     newLocomotion = LocomotionState.Grounded;

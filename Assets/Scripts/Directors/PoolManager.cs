@@ -44,6 +44,30 @@ namespace ShatterStep
             }
         }
 
+        public void SetupObject(PoolObject prefab, Vector3 position, Quaternion rotation)
+        {
+            int poolKey = prefab.GetInstanceID();
+            if (_poolDictionary.ContainsKey(poolKey))
+            {
+                Queue<ObjectInstance> poolQueue = _poolDictionary[poolKey];
+
+                if (poolQueue.Count > 0)
+                {
+                    ObjectInstance objectInstance = poolQueue.Dequeue();
+                    objectInstance.Setup(position, rotation);
+                    poolQueue.Enqueue(objectInstance);
+                }
+                else
+                {
+                    Debug.LogWarning($"Pool for {prefab.name} is empty. Consider increasing its size.");
+                }
+            }
+            else
+            {
+                Debug.LogError($"Pool for prefab {prefab.name} does not exist.");
+            }
+        }
+
         public void ReuseObject(PoolObject prefab, Vector3 position, Quaternion rotation)
         {
             int poolKey = prefab.GetInstanceID();
@@ -68,7 +92,6 @@ namespace ShatterStep
             }
         }
 
-
         public class ObjectInstance
         {
             public PoolObject PoolObject { get; private set; }
@@ -79,8 +102,19 @@ namespace ShatterStep
                 PoolObject.GameObject.SetActive(false);
 
                 if (parent)
-                {
                     PoolObject.Transform.SetParent(parent, false);
+            }
+
+            public void Setup(Vector3 position, Quaternion rotation)
+            {
+                if (PoolObject)
+                {
+                    PoolObject.GameObject.SetActive(true);
+                    PoolObject.Transform.SetPositionAndRotation(position, rotation);
+                }
+                else
+                {
+                    Debug.LogError("Tried to reuse a pool object that was not set.");
                 }
             }
 
@@ -89,9 +123,8 @@ namespace ShatterStep
                 if (PoolObject)
                 {
                     PoolObject.GameObject.SetActive(true);
-                    PoolObject.Transform.position = position;
-                    PoolObject.Transform.rotation = rotation;
-                    
+                    PoolObject.Transform.SetPositionAndRotation(position, rotation);
+
                     PoolObject.ReuseObject();
                 }
                 else
