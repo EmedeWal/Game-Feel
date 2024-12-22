@@ -9,13 +9,13 @@ namespace ShatterStep
         [Header("SETTINGS")]
         public LevelData LevelData;
 
-        private LevelButton _button;
+        //private LevelButton _Button;
         private LevelHolder _holder;
     
         public void Initialize(MenuController controller)
         {
             _holder = new LevelHolder(LevelData, controller, transform, this, gameObject);
-            _button = new LevelButton(LevelData, controller, transform, this);
+            //_Button = new LevelButton(LevelData, controller, transform, this);
 
             if (LevelData.Completed)
             {
@@ -27,13 +27,13 @@ namespace ShatterStep
         public void CloseMenu()
         {
             _holder.CloseMenu();
-            _button.Button.interactable = true;
+            //_Button._Button.interactable = true;
         }
 
         public void ActivateAll(bool activate)
         {
             _holder.ActivateAll(activate);
-            _button.Button.interactable = false;
+            //_Button._Button.interactable = false;
         }
     }
 }

@@ -4,53 +4,55 @@ using TMPro;
 
 namespace ShatterStep
 {
-    public class LevelButton
+    namespace TitleScreen
     {
-        public Button Button { get; private set; }
-
-        private MenuController _menuController;
-        private LevelMenu _levelMenu;
-
-        private TextMeshProUGUI _text;
-        private Image _image;
-
-        public LevelButton(LevelData levelData, MenuController menuController, Transform transform, LevelMenu levelMenu)
+        public class LevelButton : NavigateButton
         {
-            _levelMenu = levelMenu;
-            _menuController = menuController;
+            [Header("LEVEL DATA REFERENCE")]
+            [SerializeField] private LevelData _data;
 
-            transform = transform.GetChild(0);
-            _text = transform.GetComponentInChildren<TextMeshProUGUI>();
-            _image = transform.GetComponentInChildren<Image>();
-            Button = transform.GetComponent<Button>();
+            private TextMeshProUGUI _text;
+            private Image _image;
 
-            Button.onClick.RemoveAllListeners();
-            Button.targetGraphic = _image;
-
-            _text.text = levelData.Name;
-
-            if (levelData.Completed)
+            public override void Initialize(Controller controller)
             {
-                _text.color = Color.white;  
-                Button.colors = levelData.CompletedBlock;
-                Button.onClick.AddListener(OpenLevelDetails);
-            }
-            else if (levelData.Unlocked)
-            {
-                _text.color = Color.white;
-                Button.colors = levelData.UnlockedBlock;
-                Button.onClick.AddListener(OpenLevelDetails);
-            }
-            else
-            {
-                _text.color = levelData.LockedBlock.normalColor;
-                Button.colors = levelData.LockedBlock;
-            }
-        }
+                _Controller = controller;
+                _Button = GetComponent<Button>();
 
-        private void OpenLevelDetails()
-        {
-            _menuController.OpenLevelMenu(_levelMenu);
+                _text = GetComponentInChildren<TextMeshProUGUI>();
+                _image = GetComponentInChildren<Image>();
+                
+                _Button.targetGraphic = _image;
+
+                _text.text = _data.Name;
+
+                if (_data.Completed)
+                {
+                    _text.color = Color.white;
+                    _Button.colors = _data.CompletedBlock;
+                    _Button.onClick.AddListener(OnClick);
+                }
+                else if (_data.Unlocked)
+                {
+                    _text.color = Color.white;
+                    _Button.onClick.AddListener(OnClick);
+                }
+                else
+                {
+                    _text.color = _data.LockedBlock.normalColor;
+                    _Button.colors = _data.LockedBlock;
+                }
+            }
+
+            public override void Cleanup()
+            {
+                base.Cleanup();
+            }
+
+            protected override void OnClick()
+            {
+                base.OnClick();
+            }
         }
     }
 }

@@ -14,7 +14,6 @@ namespace ShatterStep
 
         [Header("COLORS")]
         [Space] public ColorBlock CompletedBlock;
-        [Space] public ColorBlock UnlockedBlock;
         [Space] public ColorBlock LockedBlock;
 
         public Dictionary<StatType, StatValues> StatDictionary;
