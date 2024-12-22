@@ -9,7 +9,7 @@ namespace ShatterStep
         public event Action<Collectible> Collected;
 
         [Header("SETTINGS")]
-        public AudioData AudioData;
+        public SoundData AudioData;
         public StatType Type;
 
         protected override void OnPlayerEntered(Manager player)

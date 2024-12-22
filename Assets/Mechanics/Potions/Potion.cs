@@ -6,10 +6,8 @@ namespace ShatterStep
 {
     public class Potion : PlayerTrigger
     {
-        private AudioSystem _audioSystem;
-
         [Header("REFERENCES")]
-        [SerializeField] private AudioData _audioData;
+        [SerializeField] private SoundData _audioData;
 
         [Header("SETTINGS")]
         [SerializeField] private float _pickupDelay = 3;
@@ -20,25 +18,38 @@ namespace ShatterStep
 
         protected override void Initialize()
         {
-            _audioSystem = AudioSystem.Instance;
+            base.Initialize();
 
             _spriteRender = GetComponentInChildren<SpriteRenderer>();
             _audioSource = GetComponent<AudioSource>();
             _collider = GetComponent<Collider2D>();
 
-            _collider.isTrigger = true;
+            Data.PlayerRespawn += Potion_PlayerRespawn;
+        }
+
+        protected override void Cleanup()
+        {
+            Data.PlayerRespawn -= Potion_PlayerRespawn;
         }
 
         protected override void OnPlayerEntered(Manager player)
         {
-            player.Data.RefreshAbilities();
+            player.Data.RefreshAbilities(true);
 
             StartCoroutine(PotionCoroutine());
         }
 
+        private void Potion_PlayerRespawn()
+        {
+            StopAllCoroutines();
+
+            _collider.enabled = true;
+            _spriteRender.enabled = true;
+        }
+
         private IEnumerator PotionCoroutine()
         {
-            _audioSystem.PlaySound(_audioData, _audioSource);
+            AudioSystem.Instance.PlaySound(_audioData, _audioSource);
 
             _spriteRender.enabled = false;  
             _collider.enabled = false;

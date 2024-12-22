@@ -9,10 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 568bfaf106d6e674fa0c4580987e3309, type: 3}
+  m_Script: {fileID: 11500000, guid: ee43a673917abfa4eb6602df3216f04a, type: 3}
   m_Name: Coin
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: f9ce0bd536f6f4244b7151c5ba3c341e, type: 3}
-  Type: 1
   Volume: 0.05
   Offset: 0
+  PitchRanges:
+  - 0.8
+  - 0.9
+  - 1
+  - 1.1
+  - 1.2

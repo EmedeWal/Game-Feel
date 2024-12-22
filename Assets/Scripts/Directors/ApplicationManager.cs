@@ -22,9 +22,6 @@ namespace ShatterStep
         }
         #endregion
 
-        [Header("ACTIVATE OBJECTS")]
-        [SerializeField] private GameObject[] _objectArray;
-
         public event Action<GameState> GameStateUpdated; 
 
         private GameState _gameState = GameState.Gameplay;
@@ -40,7 +37,8 @@ namespace ShatterStep
 
         private void Awake()
         {
-            foreach (var item in _objectArray) item.SetActive(true);
+            foreach (Canvas canvas in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+                canvas.enabled = true;
 
             SingletonBase[] singletonArray = FindObjectsByType<SingletonBase>(FindObjectsSortMode.None);
             foreach (var singleton in singletonArray) singleton.Initialize();
@@ -70,7 +68,6 @@ namespace ShatterStep
 
         private void OnDisable()
         {
-            _respawnSystem.Cleanup();
             _inputManager.Cleanup();
 
             _optionsController.Cleanup();

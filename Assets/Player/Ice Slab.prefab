@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca465e6982fe1694ba3c2f49cfe93015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnData: {fileID: 11400000, guid: fc02b9a815857154b8b58b4ff9245721, type: 2}
-  _shatterData: {fileID: 11400000, guid: affc93c9d7adcaf48aa3befd4dd05eeb, type: 2}
+  _spawnData: {fileID: 11400000, guid: 0e21267f6b743af40aa5a53dd6733245, type: 2}
+  _shatterData: {fileID: 11400000, guid: 3ecbc0edd17138f4caef53a7ecf0d99d, type: 2}
   _shatterOffset: 0.4
   _animationClip: {fileID: 7400000, guid: df5ae6e569114b542a661020384bdf13, type: 2}
 --- !u!61 &2869966627378857622

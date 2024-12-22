@@ -11,6 +11,11 @@ namespace ShatterStep
             Initialize();
         }
 
+        private void OnDisable()
+        {
+            Cleanup();
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out Manager player))
@@ -22,6 +27,11 @@ namespace ShatterStep
         protected virtual void Initialize()
         {
             GetComponent<Collider2D>().isTrigger = true;
+        }
+
+        protected virtual void Cleanup()
+        {
+
         }
 
         protected abstract void OnPlayerEntered(Manager player);

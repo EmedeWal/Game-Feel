@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startDelay: 0
   _fadeTime: 1
-  _audioData: {fileID: 11400000, guid: 024230ecdb9cc9e428795e4fa6ab20be, type: 2}
+  _audioData: {fileID: 11400000, guid: 3bfe742f6cc108f4ba20c34041279c92, type: 2}
 --- !u!82 &-812726922412035667
 AudioSource:
   m_ObjectHideFlags: 0

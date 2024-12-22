@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3199cc4fbde5bfa4e8411aced31c9b7a, type: 3}
   m_Name: Player Data
   m_EditorClassIdentifier: 
-  JumpData: {fileID: 11400000, guid: 88d950add1525b346a0df74eb98be574, type: 2}
-  DashData: {fileID: 11400000, guid: 2802f22354245bd44ae9f501d3462f4e, type: 2}
-  DeathData: {fileID: 11400000, guid: 4f13befd3159bdd4f82a124ac8a85b54, type: 2}
+  JumpData: {fileID: 11400000, guid: 189593bb47ff21a4386ecca4f4e9e45e, type: 2}
+  DashData: {fileID: 11400000, guid: 876a71d3cb986884f855468fb9d41bb8, type: 2}
+  DeathData: {fileID: 11400000, guid: 50627d5416b7a7d478677e0ab562bf13, type: 2}
   JumpEffect: {fileID: 8988293473146978437, guid: e5dc0222ec80be14a81d17e2128c43e4,
     type: 3}
   DashEffect: {fileID: 6986405501480664510, guid: d8dbf8da8295dab4b87b6bef8b28b851,
@@ -37,7 +37,6 @@ MonoBehaviour:
   BounceTime: 0.15
   JumpForce: 20
   DashForce: 26
-  DashCooldown: 2
   DashDuration: 0.1
   HangingGravityMultiplier: 0.1
   HangingGravityScale: 0.1
@@ -54,12 +53,13 @@ MonoBehaviour:
   PreviousLocomotion: 0
   CurrentLocomotion: 0
   LastJumpDirection: 2
-  LastTouchedWall: 2
+  LastTouchedWall: 0
   CurrentAirJumps: 0
   LastGroundedTime: 0.13000001
-  LastHangingTime: -2.2999985
-  LastJumpTime: -2.2999985
-  InputTimer: -64.88113
+  LastHangingTime: -3.0799978
+  LastJumpTime: -3.0799978
+  InputTimer: -3.0799978
+  DashTimer: -3.0799978
   FacingRight: 1
   SpawnPressed: 0
   DashPressed: 0
@@ -74,4 +74,4 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 8
-  RespawnPoint: {x: 0, y: 0}
+  RespawnPoint: {x: 169.88, y: 47.96}

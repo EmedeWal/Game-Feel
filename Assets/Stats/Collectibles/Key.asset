@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 568bfaf106d6e674fa0c4580987e3309, type: 3}
+  m_Script: {fileID: 11500000, guid: ee43a673917abfa4eb6602df3216f04a, type: 3}
   m_Name: Key
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 30dba348a205448f2999c128259b3012, type: 3}
-  Type: 1
   Volume: 0.1
   Offset: 0
+  PitchRanges:
+  - 0.9
+  - 1
+  - 1.1

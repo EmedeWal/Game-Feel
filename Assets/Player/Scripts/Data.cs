@@ -12,9 +12,9 @@ namespace ShatterStep
             public PoolManager PoolManager { get; private set; }
 
             [Header("AUDIO SETTINGS")]
-            public AudioData JumpData;
-            public AudioData DashData;
-            public AudioData DeathData;
+            public SoundData JumpData;
+            public SoundData DashData;
+            public SoundData DeathData;
 
             [Header("VISUAL SETTINGS")]
             public PoolObject JumpEffect;
@@ -89,8 +89,8 @@ namespace ShatterStep
             [HideInInspector] public LayerMask GroundLayer;
             [HideInInspector] public Vector2 RespawnPoint;
 
-            public event Action PlayerRespawn;
-            public event Action PlayerDeath;
+            public static event Action PlayerRespawn;
+            public static event Action PlayerDeath;
 
             public void Init(GameObject playerObject, InputManager inputHandler)
             {
@@ -160,11 +160,14 @@ namespace ShatterStep
                 ResetState();
             }
 
-            public void RefreshAbilities()
+            public void RefreshAbilities(bool refreshDashTimer = false)
             {
                 CurrentAirJumps = 0;
                 CanSpawn = true;
                 CanDash = true;
+
+                if (refreshDashTimer)
+                    DashTimer = 0f;
             }
 
             private void Data_GameStateUpdated(GameState gameState)

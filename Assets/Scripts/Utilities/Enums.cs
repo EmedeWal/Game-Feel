@@ -41,7 +41,7 @@ namespace ShatterStep
     public enum AudioType
     {
         Music,
-        Sound,
+        Sound
     }
 
     public enum GameState

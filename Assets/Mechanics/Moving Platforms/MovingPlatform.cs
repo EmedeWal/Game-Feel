@@ -9,7 +9,6 @@ namespace ShatterStep
         [Header("ACTIVATION SETTINGS")]
         [SerializeField] private float _activationDelay = 2f;
         [SerializeField] private bool _activateOnStart = true;
-        private Data _data;
         
         [Header("PATH SETTINGS")]
         [SerializeField] private Transform[] _waypoints;
@@ -23,7 +22,6 @@ namespace ShatterStep
 
         private void Start()
         {
-            _data = FindObjectOfType<Manager>().Data;
             _rb = GetComponent<Rigidbody2D>();
             _rb.isKinematic = true;
 
@@ -39,12 +37,12 @@ namespace ShatterStep
                 StartCoroutine(MovePlatform());
             }
 
-            _data.PlayerRespawn += MovingPlatform_PlayerRespawn;
+            Data.PlayerRespawn += MovingPlatform_PlayerRespawn;
         }
 
         private void OnDisable()
         {
-            _data.PlayerRespawn -= MovingPlatform_PlayerRespawn;
+            Data.PlayerRespawn -= MovingPlatform_PlayerRespawn;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

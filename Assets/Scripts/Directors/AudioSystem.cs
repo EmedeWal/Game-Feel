@@ -10,20 +10,21 @@ namespace ShatterStep
 
         private void Awake()
         {
-            _musicSource = GetComponent<AudioSource>();
-
             if (Instance == null)
             {
                 Instance = this;
 
+                _musicSource = GetComponent<AudioSource>();
+
+                float startVolume = 0.5f;
                 AudioDictionary = new()
                 {
-                    { AudioType.Music, 0.5f },
-                    { AudioType.Sound, 0.5f },
+                    { AudioType.Music, startVolume },
+                    { AudioType.Sound, startVolume },
                 };
 
-                Initialize(_musicTrackArray);
                 DontDestroyOnLoad(gameObject);
+                Initialize(_musicTrackArray);
             }
             else
             {
@@ -63,7 +64,7 @@ namespace ShatterStep
             AudioDictionary[type] = volume;
 
             if (type == AudioType.Music)
-                _musicSource.volume = GetVolume(_activeTrack);
+                _musicSource.volume = GetMusicVolume(_activeTrack);
         }
 
         public void PlayMusic(AudioData data)
@@ -74,35 +75,31 @@ namespace ShatterStep
 
             _musicSource.clip = data.Clip;
             _musicSource.time = data.Offset;
-            _musicSource.volume = GetVolume(data);
+            _musicSource.volume = GetMusicVolume(data);
 
             _musicSource.Play();
         }
 
-        public void PlaySound(AudioData data, AudioSource audioSource, bool repeat = true)
+        public void PlaySound(SoundData data, AudioSource audioSource, bool repeat = true)
         {
             if (audioSource.isPlaying && audioSource.clip == data.Clip && !repeat)
                 return;
 
             audioSource.Stop();
 
-            float minimum = data.DefaultPitch - data.PitchOffset;
-            float maximum = data.DefaultPitch + data.PitchOffset;
-            audioSource.pitch = Random.Range(minimum, maximum);
+            float[] pitchRanges = data.PitchRanges;
+            int index = Random.Range(0, pitchRanges.Length);
+            audioSource.pitch = pitchRanges[index];
 
             audioSource.clip = data.Clip;
             audioSource.time = data.Offset;
-            audioSource.volume = GetVolume(data);
+            audioSource.volume = GetSoundVolume(data);
 
             audioSource.Play();
         }
 
-        private float GetVolume(AudioData data)
-        {
-            float multiplier = data.Type == AudioType.Music ?
-            AudioDictionary[AudioType.Music] : AudioDictionary[AudioType.Sound];
+        private float GetMusicVolume(AudioData data) => data.Volume * AudioDictionary[AudioType.Music];
 
-            return data.Volume * multiplier;
-        }
+        private float GetSoundVolume(AudioData data) => data.Volume * AudioDictionary[AudioType.Sound];
     }
 }

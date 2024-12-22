@@ -11,9 +11,9 @@ namespace ShatterStep
         [SerializeField] private float _restorationDelay = 3f;
 
         [Header("AUDIO REFERENCES")]
-        [SerializeField] private AudioData _crackData;
-        [SerializeField] private AudioData _spawnData;
-        [SerializeField] private AudioData _shatterData;
+        [SerializeField] private SoundData _crackData;
+        [SerializeField] private SoundData _spawnData;
+        [SerializeField] private SoundData _shatterData;
         [SerializeField] private float _shatterOffset = 0.4f;
 
         [Header("ANIMATION REFERENCE")]

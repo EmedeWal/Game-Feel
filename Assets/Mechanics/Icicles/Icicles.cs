@@ -10,7 +10,6 @@ namespace ShatterStep
         [SerializeField] private float _regrowthDuration = 1f;
 
         private Dictionary<SpriteRenderer, ParticleSystem> _spriteDictionary;
-        private RespawnSystem _respawnSystem;
         private ColliderEvent _colliderEvent;
         private Rigidbody2D _rigidbody;
         private Collider2D _collider;
@@ -19,16 +18,10 @@ namespace ShatterStep
         private Transform _transform;
         private Vector3 _position;
 
-        private void OnDisable()
-        {
-            _colliderEvent.CollisionEnter -= Icicle_CollisionEnter;
-        }
-
         protected override void Initialize()
         {
             base.Initialize();
 
-            _respawnSystem = RespawnSystem.Instance;
             _colliderEvent = GetComponentInChildren<ColliderEvent>();
 
             _childTransform = transform.GetChild(0);
@@ -50,7 +43,14 @@ namespace ShatterStep
             _transform = transform;
             _position = _transform.position;
 
+            Data.PlayerRespawn += Icicle_PlayerRespawn;
             _colliderEvent.CollisionEnter += Icicle_CollisionEnter;
+        }
+
+        protected override void Cleanup()
+        {
+            Data.PlayerRespawn -= Icicle_PlayerRespawn;
+            _colliderEvent.CollisionEnter -= Icicle_CollisionEnter;
         }
 
         protected override void OnPlayerEntered(Manager player)
@@ -62,10 +62,17 @@ namespace ShatterStep
             _rigidbody.velocity = Vector2.zero;
         }
 
+        private void Icicle_PlayerRespawn()
+        {
+            CancelInvoke();
+
+            Regrow();
+        }
+
         private void Icicle_CollisionEnter(Collision2D collision)
         {
             if (collision.transform.TryGetComponent(out Manager player))
-                _respawnSystem.RespawnPlayer(player.Data);
+                RespawnSystem.Instance.RespawnPlayer(player.Data);
 
             SetAlpha(0f);
             PlayParticles();

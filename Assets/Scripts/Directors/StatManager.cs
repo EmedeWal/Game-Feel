@@ -51,14 +51,16 @@ namespace ShatterStep
 
             StartCoroutine(TimeCoroutine());
             _statUI.Setup(StatTracker);
-            _player.PlayerDeath += StatisticsManager_PlayerDeath;
+
+            Data.PlayerDeath += StatisticsManager_PlayerDeath;
         }
 
         public void Cleanup()
         {
             StopAllCoroutines();
             _statUI.Cleanup();
-            _player.PlayerDeath -= StatisticsManager_PlayerDeath;
+
+            Data.PlayerDeath -= StatisticsManager_PlayerDeath;
         }
 
         private void StatisticsManager_Collected(Collectible collectible)

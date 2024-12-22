@@ -15,7 +15,7 @@ namespace ShatterStep
         private float _originalAlpha;
 
         [Header("AUDIO SETTINGS")]
-        [SerializeField] private AudioData _audioData;
+        [SerializeField] private SoundData _audioData;
         private AudioSource _audioSource;
 
         public override void Init()

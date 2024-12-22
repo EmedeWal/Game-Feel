@@ -158,9 +158,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _restorationDelay: 3
-  _crackData: {fileID: 11400000, guid: c0b68bf10b5acef4db38eb5960953278, type: 2}
-  _spawnData: {fileID: 11400000, guid: fc02b9a815857154b8b58b4ff9245721, type: 2}
-  _shatterData: {fileID: 11400000, guid: affc93c9d7adcaf48aa3befd4dd05eeb, type: 2}
+  _crackData: {fileID: 11400000, guid: bf88345457a0d5f479008ee08a744830, type: 2}
+  _spawnData: {fileID: 11400000, guid: 0e21267f6b743af40aa5a53dd6733245, type: 2}
+  _shatterData: {fileID: 11400000, guid: 3ecbc0edd17138f4caef53a7ecf0d99d, type: 2}
   _shatterOffset: 0.4
   _animationClip: {fileID: 7400000, guid: e5e5877824befb440945e6aa6cc3f5f2, type: 2}
 --- !u!61 &5064105695564437946
