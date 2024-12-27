@@ -87,6 +87,7 @@ namespace ShatterStep
             [HideInInspector] public Controller Controller;
             [HideInInspector] public Transform Transform;
             [HideInInspector] public LayerMask GroundLayer;
+            [HideInInspector] public Vector2 PreviousVelocity;
             [HideInInspector] public Vector2 RespawnPoint;
 
             public static event Action PlayerRespawn;
@@ -195,6 +196,7 @@ namespace ShatterStep
                 PreviousLocomotion = LocomotionState.Grounded;
                 CurrentLocomotion = LocomotionState.Grounded;
                 LastTouchedWall = DirectionType.None;
+                PreviousVelocity = Vector2.zero;
 
                 InputTimer = 0;
                 CurrentAirJumps = 0;

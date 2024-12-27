@@ -27,6 +27,8 @@ namespace ShatterStep
 
             public void FixedTick(float deltaTime, float horizontalInput)
             {
+                Data.PreviousVelocity = Data.Rigidbody.velocity;
+
                 HandleAbilities();
 
                 float verticalVelocity = Data.Rigidbody.velocity.y;
