@@ -31,7 +31,12 @@ namespace ShatterStep
             Time.timeScale = 1;
         }
 
-        public void Tick(float unscaledDeltaTime)
+        public void Cleanup()
+        {
+            Time.timeScale = 1;
+        }
+
+        public void UnscaledTick(float unscaledDeltaTime)
         {
             //if (_duration > 0)
             //{

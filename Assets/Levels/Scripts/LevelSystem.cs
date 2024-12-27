@@ -5,35 +5,23 @@ namespace ShatterStep
 {
     public class LevelSystem : MonoBehaviour
     {
-        #region Singleton
         public static LevelSystem Instance;
 
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-
-                foreach (var levelData in _levelDataList)
-                {
-                    levelData.Initialize();
-                }
-
-                _levelDataList[0].Unlocked = true;
-
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-        #endregion
-
+        public List<LevelData> LevelDataList => _levelDataList;
         public LevelData CurrentLevelData { get; private set; }
 
         [Header("DATA LIST")]
         [SerializeField] private List<LevelData> _levelDataList = new();
+
+        public void Initialize()
+        {
+            Instance = this;
+
+            foreach (LevelData data in _levelDataList)
+                data.Initialize();
+
+            _levelDataList[0].Unlocked = true;
+        }
 
         public void LevelCompleted(LevelData levelData, StatTracker tracker)
         {

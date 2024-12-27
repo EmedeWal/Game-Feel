@@ -29,13 +29,13 @@
 //        private TimeSystem _timeSystem;
 //        private float _elapsedTime;
 
-//        public void Initialize()
+//        public void UpdateMusicTracks()
 //        {
 //            _triggers = GetComponentsInChildren<PlayerTrigger>();
 //            foreach (PlayerTrigger ice in _triggers)
 //            {
 //                ice.OnPlayerEntered += Ice_PlayerEntered;
-//                ice.Initialize();
+//                ice.UpdateMusicTracks();
 //            }
 
 //            _audioSystem = AudioSystem.Instance;

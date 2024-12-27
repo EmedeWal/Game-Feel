@@ -1,5 +1,8 @@
+using System;
+
 namespace ShatterStep
 {
+    [Serializable]  
     public struct StatValues
     {
         public int CurrentValue;

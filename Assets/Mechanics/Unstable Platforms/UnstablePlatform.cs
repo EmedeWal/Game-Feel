@@ -52,6 +52,13 @@ namespace ShatterStep
             _animationLength = _animationClip.length;
 
             _audioSystem = AudioSystem.Instance;
+
+            Data.PlayerRespawn += UnstablePlatform_PlayerRespawn;
+        }
+
+        private void OnDisable()
+        {
+            Data.PlayerRespawn -= UnstablePlatform_PlayerRespawn;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -60,6 +67,15 @@ namespace ShatterStep
             {
                 StartCoroutine(StateCoroutine());
             }
+        }
+
+        private void UnstablePlatform_PlayerRespawn()
+        {
+            StopAllCoroutines();
+
+            _boxCollider.enabled = true;
+            _isCracking = false;
+            SetAlpha(1);
         }
 
         private IEnumerator StateCoroutine()

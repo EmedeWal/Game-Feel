@@ -10,13 +10,11 @@ namespace ShatterStep
         [Header("SETTINGS")]
         [SerializeField] private Vector2 _offset = new(25, 25);
 
-        private void Start()
+        private void Awake()
         {
             Cursor.SetCursor(_cursor, _offset, CursorMode.Auto);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-
-            DontDestroyOnLoad(gameObject);
         }
     }
 }

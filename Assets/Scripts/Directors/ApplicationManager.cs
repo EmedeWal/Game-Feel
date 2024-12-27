@@ -1,4 +1,5 @@
 using ShatterStep.Player;
+using ShatterStep.UI;
 using UnityEngine;
 using System;
 
@@ -68,6 +69,8 @@ namespace ShatterStep
 
         private void OnDisable()
         {
+            _timeSystem.Cleanup();
+
             _inputManager.Cleanup();
 
             _optionsController.Cleanup();
@@ -83,7 +86,8 @@ namespace ShatterStep
                 float unscaledDeltaTime = Time.unscaledDeltaTime;
 
                 _player.Tick(deltaTime);
-                _timeSystem.Tick(unscaledDeltaTime);
+                _timeSystem.UnscaledTick(unscaledDeltaTime);
+                _optionsController.UnscaledTick(unscaledDeltaTime);
             }
         }
 
