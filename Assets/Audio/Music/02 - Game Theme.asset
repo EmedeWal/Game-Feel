@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 568bfaf106d6e674fa0c4580987e3309, type: 3}
-  m_Name: 04 - Game Theme
+  m_Name: 02 - Game Theme
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 947516b9eac5a88438a208e9cf2f0670, type: 3}
   Type: 0

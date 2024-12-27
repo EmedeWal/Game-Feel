@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1187111880373354954}
-  - component: {fileID: 8713600068485942249}
+  - component: {fileID: 7080389690023066432}
   m_Layer: 0
   m_Name: Application Manager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6964504630530095873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8713600068485942249
+--- !u!114 &7080389690023066432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 731861719762625921}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdcff962d933e424a82f8a4a726a154b, type: 3}
+  m_Script: {fileID: 11500000, guid: 15ed239ff9fea8747a6cd521e80dd753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectArray:
-  - {fileID: 0}
 --- !u!1 &2051500516569598889
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1128989392128915621}
-  - component: {fileID: 434265244790044314}
+  - component: {fileID: 4532107306007140530}
   - component: {fileID: 3368223636717343471}
   m_Layer: 0
   m_Name: Stat Manager
@@ -79,7 +77,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6964504630530095873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &434265244790044314
+--- !u!114 &4532107306007140530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2051500516569598889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ea929950fa0ce94e99bd7261e637dbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 377d5de8a16656a4ab4234179370e10d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!82 &3368223636717343471
@@ -240,7 +238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7853430715815788565}
-  - component: {fileID: 6910624363425186217}
+  - component: {fileID: 1613455110058673063}
   m_Layer: 0
   m_Name: Input Manager
   m_TagString: Untagged
@@ -263,7 +261,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6964504630530095873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6910624363425186217
+--- !u!114 &1613455110058673063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -272,15 +270,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2842208199340677881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbcaabe5c5487f141b722b1a3beb9dd5, type: 3}
+  m_Script: {fileID: 11500000, guid: 601ac4fb2b26afe4fa3bbd204eb57ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActions: {fileID: -944628639613478452, guid: b6372cbbad6afaa4b88a414186b1b15e,
     type: 3}
   _actionDataList:
-  - {fileID: 11400000, guid: 6d9e69f4d240a9140aebb1b889772cd5, type: 2}
-  - {fileID: 11400000, guid: ce9f82f7c99cf16438bf8a88f1b952f8, type: 2}
-  - {fileID: 11400000, guid: 0dbcd9f11184f354cb96678dcc189410, type: 2}
+  - {fileID: 11400000, guid: 22c933ddda2a5cb40b8d6218d02adf01, type: 2}
+  - {fileID: 11400000, guid: af8ecb710ab6a0243b7af2a6b034a7c5, type: 2}
 --- !u!1 &5369248144020226478
 GameObject:
   m_ObjectHideFlags: 0
