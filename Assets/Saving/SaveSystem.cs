@@ -74,8 +74,8 @@ namespace ShatterStep
             SaveData saveData = JsonUtility.FromJson<SaveData>(json);
 
             // Restore audio settings
-            audioSystem.AudioDictionary[AudioType.Music] = saveData.AudioSettings.MusicVolume;
-            audioSystem.AudioDictionary[AudioType.Sound] = saveData.AudioSettings.SoundVolume;
+            audioSystem.UpdateAudioSettings(AudioType.Music, saveData.AudioSettings.MusicVolume);
+            audioSystem.UpdateAudioSettings(AudioType.Sound, saveData.AudioSettings.SoundVolume);
 
             // Restore level data
             var levelDataList = levelSystem.LevelDataList;
