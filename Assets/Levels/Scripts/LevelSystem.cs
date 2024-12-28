@@ -21,6 +21,7 @@ namespace ShatterStep
                 data.Initialize();
 
             _levelDataList[0].Unlocked = true;
+            _levelDataList[_levelDataList.Count - 1].SceneOffset = 1;
         }
 
         public void LevelCompleted(LevelData levelData, StatTracker tracker)

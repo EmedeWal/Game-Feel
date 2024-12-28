@@ -33,6 +33,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 04 - Game.unity
     guid: 18aa66514eaaa0f429f890a9526076bf
   - enabled: 1
+    path: Assets/Scenes/Final Scene.unity
+    guid: 9aa4bc34d37ec4647b524788a1e13052
+  - enabled: 1
     path: Assets/Scenes/Victory Screen.unity
     guid: c41ff67c944bfdc4998ee3d4ba6d4703
   m_configObjects: {}

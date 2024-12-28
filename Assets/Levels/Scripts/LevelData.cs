@@ -11,6 +11,7 @@ namespace ShatterStep
         public string Name = "Level";
         public bool Completed;
         public bool Unlocked;
+        public int SceneOffset;
 
         [Header("COLORS")]
         [Header("Completed Block")]
@@ -24,6 +25,7 @@ namespace ShatterStep
         {
             Completed = false;
             Unlocked = false;
+            SceneOffset = 0;
 
             StatDictionary = new Dictionary<StatType, StatValues>
             {

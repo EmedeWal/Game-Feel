@@ -846,16 +846,15 @@ MonoBehaviour:
   nextButton: {fileID: 1229052760}
   typingSpeed: 0.05
   dialogueLines:
-  - "Jack: Just gonna catch my breath for a minute. I don\xB4t remember it being
-    this difficult. It has been a long while, I suppose. It\xB4s a shame we don\xB4t
-    do this together anymore. Life\xB4s just been busy and... I didn\xB4t have time
-    for you."
-  - "Jack: ...I suppose this is my fault too, isn't it? I haven't been a very good
-    brother to you these last few years. I got so caught up in my responsibilities
-    that I forgot that I am responsible for you, too.\t"
-  - 'Jack: I''m sorry, Cain. I''ll make it up to you. I promise. *sigh* You deserve
-    an apology. You deserve me back in your life. Enough drooling. Let''s make sure
-    that it happens. '
+  - 'Jack: Just gonna catch my breath for a minute. I don''t remember it being this
+    difficult. Now that I think of it, this has been the farthest up the mountain
+    we ever got.'
+  - 'Jack: How did you even get this far, Cain? You''re just a normal kid, but I
+    can''t even compete. The hero of the frost, completely outmatched by his younger
+    brother.'
+  - 'Jack: I''m proud of you, brother, you know that? None of this has been easy
+    on you, on us. And yet, you never surrender. Hold on to that, and you''ll reach
+    the summit yet.'
 --- !u!4 &791161047
 Transform:
   m_ObjectHideFlags: 0

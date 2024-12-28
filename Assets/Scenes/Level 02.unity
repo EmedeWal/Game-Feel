@@ -846,15 +846,15 @@ MonoBehaviour:
   nextButton: {fileID: 1229052760}
   typingSpeed: 0.05
   dialogueLines:
-  - 'Jack: I remember this place. The trees, the hills, the lake. We used to come
-    up here whenever we wanted to escape mom and dad. Back when I was... before everything
-    changed.'
-  - 'Jack: Making snow angels, sliding down the hills, hiding out behind the campfire.
-    You always made me laugh with your silly jokes. It was never boring with you,
-    brother.'
-  - 'Jack: I wonder if you miss it, too? You know, being a child? Everything was
-    simpler then. ''Suppose I shouldn''t linger too long. Let''s go then. I still
-    need to find you.'
+  - 'Jack: This place holds many memories. The secrets we uncovered, the challenges
+    we conquered together... it felt like the world was ours. It isn''t the same
+    without you, Cain.'
+  - 'Jack: It all seems so long ago now. I sometimes wish things could go back to
+    the way they were. Before I became... different. Before mom and dad loves us
+    unequally. '
+  - 'Jack: These adventures I had with you were some of the best days of my life.
+    I''ll never forget them, brother. No matter what happens. I won''t give up on
+    us.'
 --- !u!4 &791161047
 Transform:
   m_ObjectHideFlags: 0

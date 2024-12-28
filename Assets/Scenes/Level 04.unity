@@ -528,7 +528,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fa6c4a466a47f634583c087a997896c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd9a4515f1069a44a8c4f13631a61630, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -846,16 +846,14 @@ MonoBehaviour:
   nextButton: {fileID: 1229052760}
   typingSpeed: 0.05
   dialogueLines:
-  - "Jack: Just gonna catch my breath for a minute. I don\xB4t remember it being
-    this difficult. It has been a long while, I suppose. It\xB4s a shame we don\xB4t
-    do this together anymore. Life\xB4s just been busy and... I didn\xB4t have time
-    for you."
-  - "Jack: ...I suppose this is my fault too, isn't it? I haven't been a very good
-    brother to you these last few years. I got so caught up in my responsibilities
-    that I forgot that I am responsible for you, too.\t"
-  - 'Jack: I''m sorry, Cain. I''ll make it up to you. I promise. *sigh* You deserve
-    an apology. You deserve me back in your life. Enough drooling. Let''s make sure
-    that it happens. '
+  - 'Jack: There it is. The summit. It feels so close now. And yet, you are nowhere
+    to be seen. It seems I am still two steps behind you, brother. I just hope you
+    are allright.'
+  - 'Jack: It is beautiful up here. I can see why you like it so much. Despite the
+    harsh winds, the sharp rocks and the cold snow, this place is quiet, peaceful,
+    and fair.'
+  - 'Jack: I''m coming up. No doubt that this will be the hardest part yet, but we
+    have come this far. We are not backing down now. I''ll meet you at the top, Cain! '
 --- !u!4 &791161047
 Transform:
   m_ObjectHideFlags: 0

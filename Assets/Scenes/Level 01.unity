@@ -346,14 +346,14 @@ MonoBehaviour:
   nextButton: {fileID: 8957411134324653023}
   typingSpeed: 0.05
   dialogueLines:
-  - 'Jack: It seems I am following in your footsteps this time, just like when we
-    were kids. Almost funny how everything has changed since then.  I guess it only
-    makes sense.'
-  - 'Jack: I really don''t know why mother is so harsh on you. You''re no worse of
-    a son to her than I am, that''s for sure. Still, I wish you didn''t take it to
-    heart as much as you do.'
-  - 'Jack: Why do you feel like you have to proof yourself, Cain? Nobody even doubts
-    how good you are. No matter. I really should hurry if I want to catch up to you.'
+  - 'Jack: It seems I am following in your footsteps this time, Cain. Just like when
+    we were kids. Funny how almost everything and everyone has changed since then. '
+  - 'Jack: Why are you so eager to prove yourself? The only one who event doubts
+    your abilities is you. And yet, here you are again, pushing yourself to the limit
+    on last time.'
+  - 'Jack: No matter. The snow''s getting worse. I really ought to hurry if I want
+    to catch up you. I bet you mom and dad are worried about you. Let''s get you
+    home. '
 --- !u!222 &1361166711892831560
 CanvasRenderer:
   m_ObjectHideFlags: 0
