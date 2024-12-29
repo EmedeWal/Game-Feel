@@ -13,7 +13,7 @@ namespace ShatterStep
         protected override void OnPlayerEntered(Manager player)
         {
             LevelSystem.Instance.LevelCompleted(_levelData, StatManager.Instance.StatTracker);
-            SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
+            SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1 - _levelData.SceneOffset);
         }
     }
 }
