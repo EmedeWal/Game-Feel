@@ -27,11 +27,6 @@ namespace ShatterStep
             Data.PlayerRespawn += Potion_PlayerRespawn;
         }
 
-        protected override void Cleanup()
-        {
-            Data.PlayerRespawn -= Potion_PlayerRespawn;
-        }
-
         protected override void OnPlayerEntered(Manager player)
         {
             player.Data.RefreshAbilities(true);

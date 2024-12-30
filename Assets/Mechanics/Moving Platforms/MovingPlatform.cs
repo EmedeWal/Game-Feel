@@ -40,11 +40,6 @@ namespace ShatterStep
             Data.PlayerRespawn += MovingPlatform_PlayerRespawn;
         }
 
-        private void OnDisable()
-        {
-            Data.PlayerRespawn -= MovingPlatform_PlayerRespawn;
-        }
-
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (!_activateOnStart && collision.transform.TryGetComponent(out Manager player))

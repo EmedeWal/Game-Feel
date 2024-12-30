@@ -108,7 +108,7 @@ namespace ShatterStep
             private void MainMenu()
             {
                 string message = "Quit to the main menu? Unsaved progress may be lost.";
-                static void action() { SceneManager.LoadScene(0); }
+                static void action() { SceneLoader.Instance.LoadFirstScene(); }
                 ConfirmationDialog.Instance.ShowDialog(message, action);
             }
 

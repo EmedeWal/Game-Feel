@@ -49,7 +49,6 @@ namespace ShatterStep
 
         protected override void Cleanup()
         {
-            Data.PlayerRespawn -= Icicle_PlayerRespawn;
             _colliderEvent.CollisionEnter -= Icicle_CollisionEnter;
         }
 

@@ -67,7 +67,7 @@ namespace ShatterStep
                 }
                 else
                 {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                    SceneLoader.Instance.LoadNextScene();
                 }
 
                 UpdateButtonStates();

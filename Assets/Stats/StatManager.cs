@@ -60,8 +60,6 @@ namespace ShatterStep
         {
             StopAllCoroutines();
             _statUI.Cleanup();
-
-            Data.PlayerDeath -= StatisticsManager_PlayerDeath;
         }
 
         private void StatisticsManager_Collected(Collectible collectible)

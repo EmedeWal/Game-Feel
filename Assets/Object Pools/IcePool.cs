@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using ShatterStep.Player;
 
 namespace ShatterStep
 {
@@ -49,11 +50,36 @@ namespace ShatterStep
             _animationLength = _animationClip.length;
 
             _audioSystem = AudioSystem.Instance;
+
+            Data.PlayerRespawn += IcePool_PlayerRespawn;
         }
 
         public override void ReuseObject()
         {
             StartCoroutine(StateCoroutine());
+        }
+
+        private void IcePool_PlayerRespawn() => ResetState(hardReset: true);
+
+        private void ResetState(bool hardReset)
+        {
+            if (hardReset)
+                StopAllCoroutines();
+            else
+                _particleSystem.Play();
+
+            _boxCollider.enabled = false;
+            SetAlpha(0);
+        }
+
+        private void SetAlpha(float alpha)
+        {
+            foreach (SpriteRenderer renderer in _childrenDictionary.Values)
+            {
+                Color color = renderer.color;
+                color.a = alpha;
+                renderer.color = color;
+            }
         }
 
         private IEnumerator StateCoroutine()
@@ -70,19 +96,7 @@ namespace ShatterStep
 
             yield return new WaitForSeconds(_shatterOffset);
 
-            _boxCollider.enabled = false;
-            _particleSystem.Play();
-            SetAlpha(0);
-        }
-
-        private void SetAlpha(float alpha)
-        {
-            foreach (SpriteRenderer renderer in _childrenDictionary.Values)
-            {
-                Color color = renderer.color;
-                color.a = alpha;
-                renderer.color = color;
-            }
+            ResetState(hardReset: false);
         }
     }
 }

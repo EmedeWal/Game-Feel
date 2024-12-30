@@ -130,6 +130,12 @@ namespace ShatterStep
                 AnimatorManager = animatorManager;
             }
 
+            public void Cleanup()
+            {
+                PlayerRespawn = null;
+                PlayerDeath = null;
+            }
+
             public void FixedTick(float fixedDeltaTime)
             {
                 LastGroundedTime -= fixedDeltaTime;

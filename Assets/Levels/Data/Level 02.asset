@@ -15,19 +15,8 @@ MonoBehaviour:
   Name: Level 02
   Completed: 0
   Unlocked: 0
-  CompletedBlock:
-    m_NormalColor: {r: 0, g: 1, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.7843138, b: 0, a: 1}
-    m_PressedColor: {r: 0, g: 0.7843138, b: 0, a: 1}
-    m_SelectedColor: {r: 0, g: 0.7843138, b: 0, a: 1}
-    m_DisabledColor: {r: 0, g: 1, b: 0, a: 1}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  LockedBlock:
-    m_NormalColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
-    m_HighlightedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
-    m_PressedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
-    m_SelectedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
-    m_DisabledColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
+  SceneArray:
+  - Comic 02
+  - Level 02
+  - Victory Screen
+  UI: {fileID: 11400000, guid: 0d9d17d199e9d7e4c81a3cf44ec13283, type: 2}

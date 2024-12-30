@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEngine.UI;
+using ShatterStep.UI;
 using UnityEngine;
 
 namespace ShatterStep
@@ -11,13 +11,12 @@ namespace ShatterStep
         public string Name = "Level";
         public bool Completed;
         public bool Unlocked;
-        public int SceneOffset;
 
-        [Header("COLORS")]
-        [Header("Completed Block")]
-        [Space] public ColorBlock CompletedBlock;
-        [Header("Locked Block")]
-        [Space] public ColorBlock LockedBlock;
+        [Header("SCENE QUEUE")]
+        public string[] SceneArray;
+
+        [Header("REFERENCE")]
+        public UserInterfaceData UI;
 
         public Dictionary<StatType, StatValues> StatDictionary;
 
@@ -25,7 +24,6 @@ namespace ShatterStep
         {
             Completed = false;
             Unlocked = false;
-            SceneOffset = 0;
 
             StatDictionary = new Dictionary<StatType, StatValues>
             {

@@ -22,7 +22,7 @@ namespace ShatterStep
             private void Start()
             {
                 _levelSelectButton.onClick.AddListener(LoadTitleScreen);
-                _retryButton.onClick.AddListener(LoadLevel);
+                _retryButton.onClick.AddListener(RetryLevel);
 
                 _levelSelectButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
@@ -36,7 +36,7 @@ namespace ShatterStep
             private void OnDisable()
             {
                 _levelSelectButton.onClick.RemoveListener(LoadTitleScreen);
-                _retryButton.onClick.RemoveListener(LoadLevel);
+                _retryButton.onClick.RemoveListener(RetryLevel);
             }
 
             private IEnumerator DisplayStatsWithDelays()
@@ -58,12 +58,14 @@ namespace ShatterStep
 
             private void LoadTitleScreen()
             {
-                SceneManager.LoadScene(0);
+                string[] scenes = new[] { "Title Screen" };
+                SceneLoader.Instance.EnqueueScenes(scenes);
             }
 
-            private void LoadLevel()
+            private void RetryLevel()
             {
-                SceneManager.LoadScene(LevelSystem.Instance.CurrentLevelData.Name);
+                string[] scenes = LevelSystem.Instance.CurrentLevelData.SceneArray;
+                SceneLoader.Instance.EnqueueScenes(scenes);
             }
         }
     }

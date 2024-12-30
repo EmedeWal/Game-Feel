@@ -50,11 +50,6 @@ namespace ShatterStep
             Data.PlayerRespawn += IceWall_PlayerRespawn;
         }
 
-        private void OnDisable()
-        {
-            Data.PlayerRespawn -= IceWall_PlayerRespawn;
-        }
-
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.transform.TryGetComponent(out Manager player))
