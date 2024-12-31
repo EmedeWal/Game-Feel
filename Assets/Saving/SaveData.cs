@@ -6,8 +6,16 @@ namespace ShatterStep
     [Serializable]
     public class SaveData
     {
+        public BrightnessSaveData BrightnessSettings;
         public AudioSaveData AudioSettings;
         public List<LevelSaveData> Levels;
+
+
+        [Serializable]
+        public class BrightnessSaveData
+        {
+            public float Brightness;
+        }
 
         [Serializable]
         public class AudioSaveData

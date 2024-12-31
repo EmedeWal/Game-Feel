@@ -6,13 +6,14 @@ namespace ShatterStep
     {
         public class OptionSection : Section
         {
-            private AudioSettings[] _audioSettings;
+            private SliderSettings[] _sliderSettings;
 
             public override (Section section, Transform[] children) Initialize(Controller controller, int childrenStart = 2)
             {
-                _audioSettings = GetComponentsInChildren<AudioSettings>();
-                foreach (AudioSettings audioSettings in _audioSettings)
-                    audioSettings.Initialize();
+                _sliderSettings = GetComponentsInChildren<SliderSettings>();
+
+                foreach (var sliderSetting in _sliderSettings)
+                    sliderSetting.Initialize();
 
                 return base.Initialize(controller, childrenStart);
             }
@@ -21,8 +22,8 @@ namespace ShatterStep
             {
                 base.Cleanup();
 
-                foreach (AudioSettings audioSettings in _audioSettings)
-                    audioSettings.Cleanup();
+                foreach (var sliderSetting in _sliderSettings)
+                    sliderSetting.Cleanup();
             }
         }
     }

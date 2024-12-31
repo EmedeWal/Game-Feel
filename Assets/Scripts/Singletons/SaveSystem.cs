@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using ShatterStep.UI;
 
 namespace ShatterStep
 {
@@ -32,11 +33,16 @@ namespace ShatterStep
 
             SaveData saveData = new()
             {
+                BrightnessSettings = new SaveData.BrightnessSaveData
+                {
+                    Brightness = BrightnessOverlay.Instance.CurrentBrightness
+                },
+
                 // Save audio settings
                 AudioSettings = new SaveData.AudioSaveData
                 {
-                    MusicVolume = audioSystem.AudioDictionary[AudioType.Music],
-                    SoundVolume = audioSystem.AudioDictionary[AudioType.Sound]
+                    MusicVolume = audioSystem.CurrentAudioDictionary[AudioType.Music],
+                    SoundVolume = audioSystem.CurrentAudioDictionary[AudioType.Sound]
                 },
 
                 // Save level data
@@ -73,9 +79,12 @@ namespace ShatterStep
             string json = File.ReadAllText(_saveFilePath);
             SaveData saveData = JsonUtility.FromJson<SaveData>(json);
 
+            // Restore brightness settings
+            BrightnessOverlay.Instance.SetBrightness(saveData.BrightnessSettings.Brightness);
+
             // Restore audio settings
-            audioSystem.UpdateAudioSettings(AudioType.Music, saveData.AudioSettings.MusicVolume);
-            audioSystem.UpdateAudioSettings(AudioType.Sound, saveData.AudioSettings.SoundVolume);
+            audioSystem.SetTypeVolume(AudioType.Music, saveData.AudioSettings.MusicVolume);
+            audioSystem.SetTypeVolume(AudioType.Sound, saveData.AudioSettings.SoundVolume);
 
             // Restore level data
             var levelDataList = levelSystem.LevelDataList;

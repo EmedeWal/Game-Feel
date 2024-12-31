@@ -8,6 +8,7 @@ namespace ShatterStep
         public static bool Initialized;
 
         private ConfirmationDialog _confirmationDialog;
+        private BrightnessOverlay _brightnessOverlay;
         private SceneLoader _sceneLoader;
         private AudioSystem _audioSystem;
         private LevelSystem _levelSystem;
@@ -16,6 +17,7 @@ namespace ShatterStep
         private void Awake()
         {
             _confirmationDialog = GetComponentInChildren<ConfirmationDialog>();
+            _brightnessOverlay = GetComponentInChildren<BrightnessOverlay>();
             _sceneLoader = GetComponentInChildren<SceneLoader>();
             _audioSystem = GetComponentInChildren<AudioSystem>();
             _levelSystem = GetComponentInChildren<LevelSystem>();
@@ -26,6 +28,7 @@ namespace ShatterStep
                 DontDestroyOnLoad(gameObject);
 
                 _confirmationDialog.Initialize();
+                _brightnessOverlay.Initialize();
                 _sceneLoader.Initialize();
                 _audioSystem.Initialize();
                 _levelSystem.Initialize();

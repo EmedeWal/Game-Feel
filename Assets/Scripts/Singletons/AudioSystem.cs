@@ -7,7 +7,9 @@ namespace ShatterStep
     {
         public static AudioSystem Instance;
 
-        public Dictionary<AudioType, float> AudioDictionary { get; private set; }
+        public Dictionary<AudioType, float> PreviousAudioDictionary { get; private set; }
+        public Dictionary<AudioType, float> CurrentAudioDictionary { get; private set; }
+        public float DefaultVolume {  get; private set; }   
         public AudioData[] MusicTrackArray => _musicTrackArray;
 
         [Header("REFERENCE")]
@@ -23,13 +25,12 @@ namespace ShatterStep
 
             _musicSource = GetComponent<AudioSource>();
 
-            float startVolume = 0.5f;
-            AudioDictionary = new()
+            DefaultVolume = 0.5f;
+            CurrentAudioDictionary = new()
             {
-                { AudioType.Music, startVolume },
-                { AudioType.Sound, startVolume },
+                { AudioType.Music, DefaultVolume },
+                { AudioType.Sound, DefaultVolume },
             };
-
             PlayMusic(_musicTrackArray[0], 0);
         }
 
@@ -52,9 +53,12 @@ namespace ShatterStep
             }
         }
 
-        public void UpdateAudioSettings(AudioType type, float volume)
+        public void SetTypeVolume(AudioType type, float volume)
         {
-            AudioDictionary[type] = volume;
+            // Create a new dictionary and copy the current values
+            PreviousAudioDictionary = new Dictionary<AudioType, float>(CurrentAudioDictionary);
+
+            CurrentAudioDictionary[type] = volume;
 
             if (type == AudioType.Music)
                 _musicSource.volume = GetMusicVolume(_activeTrack);
@@ -93,9 +97,9 @@ namespace ShatterStep
             audioSource.Play();
         }
 
-        private float GetMusicVolume(AudioData data) => data.Volume * AudioDictionary[AudioType.Music];
+        private float GetMusicVolume(AudioData data) => data.Volume * CurrentAudioDictionary[AudioType.Music];
 
-        private float GetSoundVolume(AudioData data) => data.Volume * AudioDictionary[AudioType.Sound];
+        private float GetSoundVolume(AudioData data) => data.Volume * CurrentAudioDictionary[AudioType.Sound];
 
         private bool AudioArrayIsShared(AudioData[] musicArray)
         {

@@ -24,11 +24,12 @@ namespace ShatterStep
             private GameObject _holderObject;
             private Button _pauseButton;
             private Button _resumeButton;
+            private Button _retryLevelButton;
             private Button _mainMenuButton;
             private Button _quitGameButton;
             private Image _background;
 
-            private AudioSettings[] _audioSettingsArray;
+            private SliderSettings[] _sliderSettings;
 
             public void Setup()
             {
@@ -43,28 +44,35 @@ namespace ShatterStep
 
                 Transform holderTransform = _holderObject.transform;
                 _resumeButton = holderTransform.GetChild(0).GetComponent<Button>();
-                _mainMenuButton = holderTransform.GetChild(1).GetComponent<Button>();
-                _quitGameButton = holderTransform.GetChild(2).GetComponent<Button>();
+                _retryLevelButton = holderTransform.GetChild(1).GetComponent<Button>();
+                _mainMenuButton = holderTransform.GetChild(2).GetComponent<Button>();
+                _quitGameButton = holderTransform.GetChild(3).GetComponent<Button>();
 
                 _resumeButton.onClick.AddListener(Resume);
+                _retryLevelButton.onClick.AddListener(RetryLevel);
                 _mainMenuButton.onClick.AddListener(MainMenu);
                 _quitGameButton.onClick.AddListener(QuitGame);
 
                 EnableHolder(false);
 
-                _audioSettingsArray = _holderObject.GetComponentsInChildren<AudioSettings>();
-                foreach (AudioSettings audioSettings in _audioSettingsArray) audioSettings.Initialize();
+                _sliderSettings = _holderObject.GetComponentsInChildren<SliderSettings>();
+                foreach (var sliderSetting in _sliderSettings)
+                    sliderSetting.Initialize();
+
                 _inputManager.PauseInputPerformed += OptionsController_PauseInputPerformed;
                 _pauseButton.onClick.AddListener(OptionsController_PauseInputPerformed);
             }
 
             public void Cleanup()
             {
-                foreach (AudioSettings audioSettings in _audioSettingsArray) audioSettings.Cleanup();
+                foreach (var sliderSetting in _sliderSettings)
+                    sliderSetting.Cleanup();
+
                 _inputManager.PauseInputPerformed -= OptionsController_PauseInputPerformed;
                 _pauseButton.onClick.RemoveListener(OptionsController_PauseInputPerformed);
 
                 _resumeButton.onClick.RemoveListener(Resume);
+                _retryLevelButton?.onClick.RemoveListener(RetryLevel);
                 _mainMenuButton.onClick.RemoveListener(MainMenu);
                 _quitGameButton.onClick.RemoveListener(QuitGame);
             }
@@ -103,6 +111,13 @@ namespace ShatterStep
             private void Resume()
             {
                 EnableHolder(false);
+            }
+
+            private void RetryLevel()
+            {
+                string message = "Retry this level? Unsaved progress may be lost.";
+                static void action() { SceneLoader.Instance.LoadScene(SceneManager.GetActiveScene().name); }
+                ConfirmationDialog.Instance.ShowDialog(message, action);
             }
 
             private void MainMenu()

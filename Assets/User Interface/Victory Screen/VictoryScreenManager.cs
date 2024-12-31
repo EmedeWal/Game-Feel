@@ -14,17 +14,17 @@ namespace ShatterStep
 
             [Header("REFERENCES")]
             [SerializeField] private Transform _statContainer;
-            [SerializeField] private Button _levelSelectButton;
+            [SerializeField] private Button _mainMenuButton;
             [SerializeField] private Button _retryButton;
 
             private StatOverview[] _statList;
 
             private void Start()
             {
-                _levelSelectButton.onClick.AddListener(LoadTitleScreen);
+                _mainMenuButton.onClick.AddListener(LoadTitleScreen);
                 _retryButton.onClick.AddListener(RetryLevel);
 
-                _levelSelectButton.gameObject.SetActive(false);
+                _mainMenuButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
 
                 _statList = _statContainer.GetComponentsInChildren<StatOverview>();
@@ -35,7 +35,7 @@ namespace ShatterStep
 
             private void OnDisable()
             {
-                _levelSelectButton.onClick.RemoveListener(LoadTitleScreen);
+                _mainMenuButton.onClick.RemoveListener(LoadTitleScreen);
                 _retryButton.onClick.RemoveListener(RetryLevel);
             }
 
@@ -52,14 +52,13 @@ namespace ShatterStep
                     yield return new WaitForSeconds(_delayTime);
                 }
 
-                _levelSelectButton.gameObject.SetActive(true);
+                _mainMenuButton.gameObject.SetActive(true);
                 _retryButton.gameObject.SetActive(true);
             }
 
             private void LoadTitleScreen()
             {
-                string[] scenes = new[] { "Title Screen" };
-                SceneLoader.Instance.EnqueueScenes(scenes);
+                SceneLoader.Instance.LoadFirstScene();
             }
 
             private void RetryLevel()

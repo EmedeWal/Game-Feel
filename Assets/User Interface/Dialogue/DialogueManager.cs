@@ -1,4 +1,3 @@
-using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
@@ -10,58 +9,77 @@ namespace ShatterStep
     {
         public class DialogueManager : MonoBehaviour
         {
-            [Header("References")]
-            [SerializeField] private TextMeshProUGUI dialogueText;
-            [SerializeField] private Button previousButton;
-            [SerializeField] private Button nextButton;
+            [Header("DATA")]
+            [SerializeField] private DialogueData _data;
 
-            [Header("Settings")]
-            [SerializeField] private float typingSpeed = 0.05f;
-            [TextArea][SerializeField] private string[] dialogueLines;
+            [Header("REFERENCES")]
+            [SerializeField] private TextMeshProUGUI _dialogueText;
+            [SerializeField] private Button _previousButton;
+            [SerializeField] private Button _nextButton;
+            [SerializeField] private Button _skipButton;
+            [SerializeField] private Image _background;
 
-            private int currentLineIndex = 0;
-            private bool isTyping = false;
+            [Header("SETTINGS")]
+            [SerializeField] private float _typingSpeed = 0.05f;
+
+            private int _currentLineIndex = 0;
+            private bool _isTyping = false;
 
             private void Start()
             {
-                previousButton.onClick.AddListener(OnPreviousButtonPressed);
-                nextButton.onClick.AddListener(OnNextButtonPressed);
+                _background.sprite = _data.BackgroundSprite;
+
+                _previousButton.onClick.AddListener(OnPreviousButtonPressed);
+                _nextButton.onClick.AddListener(OnNextButtonPressed);
+                _skipButton.onClick.AddListener(OnSkipButtonPressed);
 
                 UpdateButtonStates();
                 ShowDialogue();
             }
 
+            private void OnDisable()
+            {
+                _previousButton.onClick.RemoveListener(OnPreviousButtonPressed);
+                _nextButton.onClick.RemoveListener(OnNextButtonPressed);
+                _skipButton.onClick.RemoveListener(OnSkipButtonPressed);
+            }
+
             private void ShowDialogue()
             {
-                StartCoroutine(TypeDialogue(dialogueLines[currentLineIndex]));
+                StartCoroutine(TypeDialogue(_data.Dialogue[_currentLineIndex]));
             }
 
             private IEnumerator TypeDialogue(string line)
             {
-                isTyping = true;
-                dialogueText.text = "";
+                _isTyping = true;
+                _dialogueText.text = "";
 
                 foreach (char c in line.ToCharArray())
                 {
-                    dialogueText.text += c;
-                    yield return new WaitForSeconds(typingSpeed);
+                    _dialogueText.text += c;
+                    yield return new WaitForSeconds(_typingSpeed);
                 }
 
-                isTyping = false;
+                _isTyping = false;
+            }
+
+            private void OnSkipButtonPressed()
+            {
+                SceneLoader.Instance.LoadNextScene();
             }
 
             private void OnNextButtonPressed()
             {
-                if (isTyping)
+                if (_isTyping)
                 {
                     StopAllCoroutines();
-                    dialogueText.text = dialogueLines[currentLineIndex];
-                    isTyping = false;
+                    _dialogueText.text = _data.Dialogue[_currentLineIndex];
+                    _isTyping = false;
                     return;
                 }
 
-                currentLineIndex++;
-                if (currentLineIndex < dialogueLines.Length)
+                _currentLineIndex++;
+                if (_currentLineIndex < _data.Dialogue.Length)
                 {
                     ShowDialogue();
                 }
@@ -75,17 +93,17 @@ namespace ShatterStep
 
             private void OnPreviousButtonPressed()
             {
-                if (isTyping)
+                if (_isTyping)
                 {
                     StopAllCoroutines();
-                    dialogueText.text = dialogueLines[currentLineIndex];
-                    isTyping = false;
+                    _dialogueText.text = _data.Dialogue[_currentLineIndex];
+                    _isTyping = false;
                     return;
                 }
 
-                if (currentLineIndex > 0)
+                if (_currentLineIndex > 0)
                 {
-                    currentLineIndex--;
+                    _currentLineIndex--;
                     ShowDialogue();
                 }
 
@@ -94,8 +112,8 @@ namespace ShatterStep
 
             private void UpdateButtonStates()
             {
-                previousButton.interactable = currentLineIndex > 0;
-                nextButton.interactable = currentLineIndex < dialogueLines.Length;
+                _previousButton.interactable = _currentLineIndex > 0;
+                _nextButton.interactable = _currentLineIndex < _data.Dialogue.Length;
             }
         }
     }

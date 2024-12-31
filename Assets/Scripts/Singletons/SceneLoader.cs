@@ -29,6 +29,11 @@ namespace ShatterStep
             LoadNextScene();
         }
 
+        public void LoadScene(string sceneName)
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+
         public void LoadNextScene()
         {
             if (_sceneQueue.Count > 0)
