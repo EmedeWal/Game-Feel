@@ -9,6 +9,8 @@ namespace ShatterStep
             [Header("COMIC SCENE")]
             public SceneData[] ComicScenes;
 
+            public virtual void Initialize(GameObject display) { }
+
             public abstract bool IsRequirementMet();
         }
     }

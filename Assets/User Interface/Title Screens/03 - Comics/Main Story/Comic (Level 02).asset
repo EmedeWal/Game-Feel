@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Comic (Level 02)
   m_EditorClassIdentifier: 
   ComicScenes:
-  - Comic 02
+  - {fileID: 11400000, guid: 8431f0a0791335842ac78d63cd5a20dd, type: 2}
   _levelData: {fileID: 11400000, guid: daeb00a8357a16f47b027ab23438f901, type: 2}

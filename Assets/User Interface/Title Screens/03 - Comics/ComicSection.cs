@@ -34,12 +34,16 @@ namespace ShatterStep
                 Transform thirdChild = transform.GetChild(2);
                 TextMeshProUGUI headerText = thirdChild.GetComponentInChildren<TextMeshProUGUI>();
                 headerText.text = gameObject.name;
-                Image image = thirdChild.GetComponentInChildren<Image>();
+                Image headerImage = thirdChild.GetComponentInChildren<Image>();
+                Image image = GetComponentInChildren<Image>();    
 
-                // Set the header image color correct
+                // Set the header headerImage color correct
                 if (_requirementState is RequirementState.Completed)
-                    image.color = _UI.CompletedBlock.normalColor;
-
+                {
+                    Color color = _UI.CompletedBlock.normalColor;
+                    headerImage.color = color;
+                    image.color = color;
+                }
                 return base.Initialize(controller, childrenStart);
             }
 
@@ -61,11 +65,7 @@ namespace ShatterStep
                 TextMeshProUGUI openButtonText = _openButton.GetComponentInChildren<TextMeshProUGUI>();
                 openButtonText.text = "Read";
 
-                if (_requirementState is RequirementState.Completed)
-                {
-                    _openButton.colors = _UI.CompletedBlock;
-                }
-                else if (_requirementState is RequirementState.Locked)
+                if (_requirementState is RequirementState.Locked)
                 {
                     _openButton.interactable = false;
                     _openButton.colors = _UI.LockedBlock;
@@ -81,19 +81,24 @@ namespace ShatterStep
 
             private void CollectComics()
             {
+                GameObject displayObject = transform.GetChild(transform.childCount - 2).gameObject;
                 foreach (var comicRequirement in _comicRequirements)
+                {
+                    comicRequirement.Initialize(displayObject);
                     if (comicRequirement.IsRequirementMet())
                         foreach (var scene in comicRequirement.ComicScenes)
                             _comicScenes.Add(scene);
+                }
             }
 
             private int GetMaxComicCount()
             {
                 int maxComics = 0;
                 foreach (var comicRequirement in _comicRequirements)
+                {
                     foreach (var scene in comicRequirement.ComicScenes)
                         maxComics++;
-
+                }
                 return maxComics;
             }
         }
