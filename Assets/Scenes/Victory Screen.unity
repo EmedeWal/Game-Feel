@@ -2208,7 +2208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _delayTime: 1
   _statContainer: {fileID: 410338517}
-  _levelSelectButton: {fileID: 97137140}
+  _mainMenuButton: {fileID: 97137140}
   _retryButton: {fileID: 1321714149}
 --- !u!1 &1810011050
 GameObject:

@@ -1,4 +1,3 @@
-using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
@@ -63,7 +62,7 @@ namespace ShatterStep
 
             private void RetryLevel()
             {
-                string[] scenes = LevelSystem.Instance.CurrentLevelData.SceneArray;
+                SceneData[] scenes = LevelSystem.Instance.CurrentLevelData.SceneArray;
                 SceneLoader.Instance.EnqueueScenes(scenes);
             }
         }

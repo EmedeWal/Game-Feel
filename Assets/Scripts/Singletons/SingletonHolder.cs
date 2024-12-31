@@ -5,41 +5,40 @@ namespace ShatterStep
 {
     public class SingletonHolder : MonoBehaviour
     {
-        public static bool Initialized;
+        public static SingletonHolder Instance;
 
         private ConfirmationDialog _confirmationDialog;
         private BrightnessOverlay _brightnessOverlay;
-        private SceneLoader _sceneLoader;
         private AudioSystem _audioSystem;
         private LevelSystem _levelSystem;
+        private SceneLoader _sceneLoader;
         private SaveSystem _saveSystem;
 
         private void Awake()
         {
-            _confirmationDialog = GetComponentInChildren<ConfirmationDialog>();
-            _brightnessOverlay = GetComponentInChildren<BrightnessOverlay>();
-            _sceneLoader = GetComponentInChildren<SceneLoader>();
-            _audioSystem = GetComponentInChildren<AudioSystem>();
-            _levelSystem = GetComponentInChildren<LevelSystem>();
-            _saveSystem = GetComponentInChildren<SaveSystem>();
-
-            if (!Initialized)
+            if (Instance == null)
             {
                 DontDestroyOnLoad(gameObject);
 
+                _confirmationDialog = GetComponentInChildren<ConfirmationDialog>();
+                _brightnessOverlay = GetComponentInChildren<BrightnessOverlay>();
+                _audioSystem = GetComponentInChildren<AudioSystem>();
+                _levelSystem = GetComponentInChildren<LevelSystem>();
+                _sceneLoader = GetComponentInChildren<SceneLoader>();
+                _saveSystem = GetComponentInChildren<SaveSystem>();
+
                 _confirmationDialog.Initialize();
                 _brightnessOverlay.Initialize();
-                _sceneLoader.Initialize();
                 _audioSystem.Initialize();
                 _levelSystem.Initialize();
+                _sceneLoader.Initialize();
                 _saveSystem.Initialize();
 
-                Initialized = true;
+                Instance = this;
             }
             else
             {
-                AudioSystem.Instance.UpdateMusicTracks(_audioSystem.MusicTrackArray);
-
+                Instance.OnAwake();
                 Destroy(gameObject);
             }
         }
@@ -47,6 +46,11 @@ namespace ShatterStep
         private void Update()
         {
             _audioSystem.Tick();
+        }
+
+        public void OnAwake()
+        {
+            _sceneLoader.HandleSceneStart();
         }
     }
 }

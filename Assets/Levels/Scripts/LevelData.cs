@@ -13,7 +13,7 @@ namespace ShatterStep
         public bool Unlocked;
 
         [Header("SCENE QUEUE")]
-        public string[] SceneArray;
+        public SceneData[] SceneArray;
 
         [Header("REFERENCE")]
         public UserInterfaceData UI;

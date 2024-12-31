@@ -116,7 +116,7 @@ namespace ShatterStep
             private void RetryLevel()
             {
                 string message = "Retry this level? Unsaved progress may be lost.";
-                static void action() { SceneLoader.Instance.LoadScene(SceneManager.GetActiveScene().name); }
+                static void action() { SceneLoader.Instance.LoadScene(SceneLoader.Instance.GetActiveScene()); }
                 ConfirmationDialog.Instance.ShowDialog(message, action);
             }
 

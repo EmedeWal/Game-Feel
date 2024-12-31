@@ -16,7 +16,7 @@ MonoBehaviour:
   Completed: 0
   Unlocked: 0
   SceneArray:
-  - Comic 03
-  - Level 03
-  - Victory Screen
+  - {fileID: 11400000, guid: 34056a56d282ca347bb5c4e75cf76404, type: 2}
+  - {fileID: 11400000, guid: 49468f944e8dae744926853823a36d86, type: 2}
+  - {fileID: 11400000, guid: f701dd04a21a7e74ba97738252f4a0c5, type: 2}
   UI: {fileID: 11400000, guid: 0d9d17d199e9d7e4c81a3cf44ec13283, type: 2}

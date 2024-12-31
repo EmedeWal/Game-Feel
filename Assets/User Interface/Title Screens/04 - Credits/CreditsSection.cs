@@ -1,4 +1,3 @@
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace ShatterStep
@@ -24,8 +23,9 @@ namespace ShatterStep
             protected override void OpenSection()
             {
                 // Load next scene in build index, which is the credit scene
-                string[] scenes = new[] { "Credit Screen" };
-                SceneLoader.Instance.EnqueueScenes(scenes);
+                SceneLoader sceneLoader = SceneLoader.Instance;
+                SceneData creditScene = sceneLoader.GetScene("Credit Screen");
+                sceneLoader.LoadScene(creditScene);
             }
         }
     }

@@ -7,7 +7,7 @@ namespace ShatterStep
         public abstract class ComicRequirementData : ScriptableObject
         {
             [Header("COMIC SCENE")]
-            public string[] ComicScenes;
+            public SceneData[] ComicScenes;
 
             public abstract bool IsRequirementMet();
         }

@@ -13,7 +13,7 @@ namespace ShatterStep
             [SerializeField] private ComicRequirementData[] _comicRequirements;
             [SerializeField] private UserInterfaceData _UI;
 
-            private readonly List<string> _comicScenes = new();
+            private readonly List<SceneData> _comicScenes = new();
 
             private RequirementState _requirementState;
             private Button _openButton;
@@ -72,7 +72,9 @@ namespace ShatterStep
                     openButtonText.color = _UI.LockedBlock.normalColor;
                 }
 
-                _comicScenes.Add("Title Screen");
+                // Make sure the comic set ends on the title screen
+                SceneData titleScene = SceneLoader.Instance.GetScene("Title Screen");
+                _comicScenes.Add(titleScene);
             }
 
             private void LoadComics() => SceneLoader.Instance.EnqueueScenes(_comicScenes.ToArray());

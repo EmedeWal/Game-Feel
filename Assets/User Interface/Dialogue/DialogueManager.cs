@@ -8,10 +8,7 @@ namespace ShatterStep
     namespace UI
     {
         public class DialogueManager : MonoBehaviour
-        {
-            [Header("DATA")]
-            [SerializeField] private DialogueData _data;
-
+        { 
             [Header("REFERENCES")]
             [SerializeField] private TextMeshProUGUI _dialogueText;
             [SerializeField] private Button _previousButton;
@@ -22,19 +19,22 @@ namespace ShatterStep
             [Header("SETTINGS")]
             [SerializeField] private float _typingSpeed = 0.05f;
 
+            private DialogueData _data;
             private int _currentLineIndex = 0;
             private bool _isTyping = false;
 
-            private void Start()
+            public void Initialize(DialogueData data)
             {
-                _background.sprite = _data.BackgroundSprite;
+                _data = data;
+
+                _background.sprite = data.BackgroundSprite;
 
                 _previousButton.onClick.AddListener(OnPreviousButtonPressed);
                 _nextButton.onClick.AddListener(OnNextButtonPressed);
                 _skipButton.onClick.AddListener(OnSkipButtonPressed);
 
                 UpdateButtonStates();
-                ShowDialogue();
+                ShowDialogue();                
             }
 
             private void OnDisable()
@@ -44,10 +44,7 @@ namespace ShatterStep
                 _skipButton.onClick.RemoveListener(OnSkipButtonPressed);
             }
 
-            private void ShowDialogue()
-            {
-                StartCoroutine(TypeDialogue(_data.Dialogue[_currentLineIndex]));
-            }
+            private void ShowDialogue() => StartCoroutine(TypeDialogue(_data.Dialogue[_currentLineIndex]));
 
             private IEnumerator TypeDialogue(string line)
             {

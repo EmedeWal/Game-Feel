@@ -1,6 +1,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine;
+using ShatterStep.UI;
 
 namespace ShatterStep
 {
@@ -8,38 +9,51 @@ namespace ShatterStep
     {
         public static SceneLoader Instance;
 
-        private Queue<string> _sceneQueue;
+        [Header("REFERENCES")]
+        [SerializeField] private List<SceneData> _allScenes;
+        private Queue<SceneData> _sceneQueue;
+        private SceneData _loadedScene;
 
         public void Initialize()
         {
             Instance = this;
 
-            _sceneQueue = new Queue<string>();
+            _sceneQueue = new();
+            _loadedScene = GetActiveScene();
         }
 
-        public void EnqueueScenes(params string[] sceneNames)
+        public void HandleSceneStart()
+        {
+            AudioSystem.Instance.UpdateMusicTracks(_loadedScene.AudioTrackArray);
+
+            if (_loadedScene.DialogueData != null)
+                FindObjectOfType<DialogueManager>().Initialize(_loadedScene.DialogueData);
+        }
+
+        public void EnqueueScenes(params SceneData[] scenes)
         {
             _sceneQueue.Clear();
 
-            foreach (string sceneName in sceneNames)
+            foreach (var sceneData in scenes)
             {
-                _sceneQueue.Enqueue(sceneName);
+                _sceneQueue.Enqueue(sceneData);
             }
 
             LoadNextScene();
         }
 
-        public void LoadScene(string sceneName)
+        public void LoadScene(SceneData scene)
         {
-            SceneManager.LoadScene(sceneName);
+            _loadedScene = scene;
+            SceneManager.LoadScene(scene.Name);
         }
 
         public void LoadNextScene()
         {
             if (_sceneQueue.Count > 0)
             {
-                string nextScene = _sceneQueue.Dequeue();
-                SceneManager.LoadScene(nextScene);
+                SceneData nextScene = _sceneQueue.Dequeue();
+                LoadScene(nextScene);
             }
             else
             {
@@ -51,7 +65,11 @@ namespace ShatterStep
         {
             _sceneQueue.Clear();
 
-            SceneManager.LoadScene(0);
+            SceneData titleScene = GetScene("Title Screen");
+            LoadScene(titleScene);
         }
+
+        public SceneData GetScene(string sceneName) => _allScenes.Find(s => s.Name.Equals(sceneName)); 
+        public SceneData GetActiveScene() => GetScene(SceneManager.GetActiveScene().name);
     }
 }

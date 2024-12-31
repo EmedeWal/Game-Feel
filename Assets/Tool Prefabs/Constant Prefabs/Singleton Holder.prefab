@@ -1206,9 +1206,9 @@ Transform:
   m_Children:
   - {fileID: 6274933494515637015}
   - {fileID: 195689759762506290}
-  - {fileID: 8092107165260795562}
   - {fileID: 4974697809692682005}
   - {fileID: 8669463756727399130}
+  - {fileID: 8092107165260795562}
   - {fileID: 7636089423427326736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1686,6 +1686,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa1858b0a7b61346bd5dac7c0e7756e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _allScenes:
+  - {fileID: 11400000, guid: 3074e200674b8c2428f58307e5066f28, type: 2}
+  - {fileID: 11400000, guid: 8431f0a0791335842ac78d63cd5a20dd, type: 2}
+  - {fileID: 11400000, guid: 34056a56d282ca347bb5c4e75cf76404, type: 2}
+  - {fileID: 11400000, guid: 8dacb535ea1a75044afd048d68bdfd58, type: 2}
+  - {fileID: 11400000, guid: 1faff0211c65b6043a6327c5c6316a62, type: 2}
+  - {fileID: 11400000, guid: 96267972f0120e343969c58e5ae5e81b, type: 2}
+  - {fileID: 11400000, guid: 4ad6bba631896934d8d515a1bf320f92, type: 2}
+  - {fileID: 11400000, guid: 49468f944e8dae744926853823a36d86, type: 2}
+  - {fileID: 11400000, guid: ef24ae3118301384b804f25a19acb423, type: 2}
+  - {fileID: 11400000, guid: b55bdd6c88f7de0409b71ded9987c176, type: 2}
+  - {fileID: 11400000, guid: b9049544cb0820c4e9f073b7c4bb6ee6, type: 2}
+  - {fileID: 11400000, guid: f701dd04a21a7e74ba97738252f4a0c5, type: 2}
 --- !u!1 &8361273737764745663
 GameObject:
   m_ObjectHideFlags: 0
