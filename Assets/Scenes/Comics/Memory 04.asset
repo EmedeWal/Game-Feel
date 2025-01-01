@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Comic
   AudioTrackArray:
   - {fileID: 11400000, guid: 7b184e857922af54f919426b104fc57b, type: 2}
-  DialogueData: {fileID: 11400000, guid: 6a4aab5bdd23302479a660f981371f48, type: 2}
+  DialogueData: {fileID: 11400000, guid: 11413c3846043844cb3dffc5bf5f4a37, type: 2}

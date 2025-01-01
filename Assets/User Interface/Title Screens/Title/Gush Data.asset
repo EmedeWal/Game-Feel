@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gush Data
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 03455008a18a09442aa725030c02e7c3, type: 3}
-  Volume: 0.5
+  Volume: 1
   Offset: 0
   PitchRanges:
   - 1

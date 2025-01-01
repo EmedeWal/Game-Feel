@@ -12,6 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ef94f9ab6800b4aa1e8cdc95f6a963, type: 3}
   m_Name: Memory 04
   m_EditorClassIdentifier: 
-  BackgroundSprite: {fileID: 21300000, guid: 0820e0d60c571b548ac0cd9b8a0a28bc, type: 3}
+  BackgroundSprite: {fileID: 21300000, guid: 49d3af62e1cc7584189853bd3e90733f, type: 3}
   Dialogue:
-  - Placeholder
+  - 'Cain: "Hey, that''s your fourth sausage already! Leave some for me."'
+  - 'Jack: "I''m a big guy. I need a lot of food for sustenance. I''m twice your
+    size, little man."'
+  - 'Cain: "That''s why you need to leave some for me! Otherwise I''ll stay little
+    forever, and all the other boys will pick on me."'
+  - 'Jack: "Knowing you, they''d come to regret that. You''ll be fine, Cain. You''ll
+    grow up tall and strong, just like me."'
+  - 'Cain: "Jack?" '
+  - 'Jack: "Yes?"'
+  - 'Cain: "Do you sometimes wish that you could just... stay in one moment, and
+    never leave?"'
+  - 'Jack: "... sometimes. yeah. But life keeps on moving. We gotta keep up, little
+    man, or we''ll get too far behind."'
+  - 'Cain: "Jack?"'
+  - 'Jack: "Yes, little man?"'
+  - 'Cain: "I''m scared. Scared of growing up. Of things changing. Of us never being
+    the same again. Of you leaving, and never coming back."'
+  - 'Cain: "I''m scared of you thinking that you''re too old for me. That you''ll
+    have more important things to do and won''t have time for me anymore."'
+  - 'Jack: "Hey, don''t cry now, Cain. It''s alright. I promise you, we''ll stay
+    together no matter what. Whatever happens, nothing will change the way I feel
+    about you, okay?"'
+  - 'Cain: "Okay."'

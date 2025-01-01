@@ -14,4 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BackgroundSprite: {fileID: 21300000, guid: 8e7d14235dbefba41b45f79a61a39657, type: 3}
   Dialogue:
-  - Placeholder
+  - "Cain: (whispering) \"Jack\u2026 is that\u2026 an elk?\""
+  - "Jack: (also whispering) \"It\u2019s enormous! I didn\u2019t think they got that
+    big.\""
+  - "Jack: \"Do you think it\u2019s dangerous?.\""
+  - "Jack: \"I don\u2019t know\u2026 It looks kind of calm, though. Look at its eyes\u2014they\u2019re
+    completely black!\""
+  - "Cain: (taking a small step forward) \"Maybe it\u2019s friendly?\""
+  - "Jack: (grabbing Cain\u2019s arm) \"Maybe it\u2019s hungry! Don\u2019t get too
+    close. What if it thinks you're a snack?\""
+  - "Cain: \"I don\u2019t think it eats kids, Jack.\""
+  - "Jack: \"Hmm, I don\u2019t know. You\u2019re pretty small. He could chew you
+    right up!\""
+  - "Cain: \"Well, you\u2019re taller. You\u2019d make a better meal. I'm gonna try
+    and pet it.\""
+  - "Cain: \"Fine, then. But if it chases us, I\u2019m tripping you.\""
+  - (Cain takes another cautious step forward, and the elk lowers its head slightly,
+    as if to inspect him. The elk then snorts softly, shakes its antlers, and lazily
+    munches on some grass.)
+  - 'Cain: "See? Totally harmless. I bet he''d make a good pet."'
+  - 'Jack: "Oh yeah? And where would you keep him, silly?"'
+  - 'Cain: "In our room, of course! He could sleep in your bed. I bet he doesn''t
+    snore as much as you do." '

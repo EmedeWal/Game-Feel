@@ -4618,7 +4618,7 @@ PrefabInstance:
     - target: {fileID: 8412798075693673581, guid: f5679696d63520e48b6852e9eaf3ded4,
         type: 3}
       propertyPath: m_Name
-      value: Memory 05
+      value: All Memories
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 606874431025685150, guid: f5679696d63520e48b6852e9eaf3ded4, type: 3}

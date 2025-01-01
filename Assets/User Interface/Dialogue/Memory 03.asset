@@ -14,4 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BackgroundSprite: {fileID: 21300000, guid: 9f1d9c962baac7246a93b82408d24d96, type: 3}
   Dialogue:
-  - Placeholder
+  - "Cain: \"We made it, Jack! Finally. It feels like we\u2019re on top of the world.\""
+  - "Jack: \"Not quite, but it\u2019s the furthest we\u2019ve ever climbed. Just
+    look at that view\u2026 Makes all the slipping and scrambling worth it, huh?\""
+  - 'Cain: "Yeah. It''s a shame about the fog. Do you think that, on a clear day,
+    we could view our house from up here?"'
+  - "Jack: \"I don't doubt it. I like the fog though. The world just looks so...
+    different from up here. There's nothing quite like it.\"\t"
+  - 'Cain: "Should we head back down? Mama told us we ought to be home before dark."'
+  - 'Jack: "Home can wait. Let us enjoy our achievement a little longer, even for
+    just a while. It''s not everyday we make it this far up."'
+  - 'Cain: "Jack... do you think we''ll reach the summit someday?"'
+  - 'Jack: "Of course. In fact, I would have made it there already had you not slowed
+    me down with your tiny legs."'
+  - 'Cain: (playfully punching Jack''s arm) "Real funny."'

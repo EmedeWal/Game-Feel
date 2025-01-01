@@ -46,7 +46,10 @@ namespace ShatterStep
 
             private void OnDisable()
             {
-                _controller.Cleanup();
+                if (_controller.gameObject.activeSelf)
+                {
+                    _controller.Cleanup();
+                }
             }
 
             private void Update()

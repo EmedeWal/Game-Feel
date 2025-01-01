@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Level 03
   m_EditorClassIdentifier: 
   Name: Level 03
-  Completed: 0
-  Unlocked: 0
+  Completed: 1
+  Unlocked: 1
   SceneArray:
   - {fileID: 11400000, guid: 34056a56d282ca347bb5c4e75cf76404, type: 2}
   - {fileID: 11400000, guid: 49468f944e8dae744926853823a36d86, type: 2}

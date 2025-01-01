@@ -18,6 +18,7 @@ namespace ShatterStep
         private AudioSource _musicSource;
         private AudioData _activeTrack;
         private int _currentTrackIndex;
+        private bool _isPaused;
 
         public void Initialize()
         {
@@ -36,7 +37,18 @@ namespace ShatterStep
 
         public void Tick()
         {
-            if (!_musicSource.isPlaying)
+            if (Application.isFocused)
+            {
+                _isPaused = false;
+                _musicSource.UnPause();
+            }
+            else
+            {
+                _isPaused = true;
+                _musicSource.Pause();
+            }
+
+            if (!_musicSource.isPlaying && !_isPaused)
             {
                 _currentTrackIndex = (_currentTrackIndex + 1) % _musicTrackArray.Length;
                 PlayMusic(_musicTrackArray[_currentTrackIndex], _currentTrackIndex);
@@ -112,8 +124,9 @@ namespace ShatterStep
                         return false;   
                     }
                 }
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }
