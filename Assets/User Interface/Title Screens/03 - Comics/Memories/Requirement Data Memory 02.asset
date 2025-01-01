@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d86cc7d5290654485c7cb24c3417fb, type: 3}
+  m_Name: Requirement Data Memory 02
+  m_EditorClassIdentifier: 
+  ComicScenes:
+  - {fileID: 11400000, guid: 28fc1f6e03aeed64698d83003af6112d, type: 2}
+  _minimumKeys: 8
+  _minimumCoins: 60

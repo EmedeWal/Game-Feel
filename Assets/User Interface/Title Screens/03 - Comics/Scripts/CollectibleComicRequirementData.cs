@@ -34,14 +34,8 @@ namespace ShatterStep
             {
                 // Compare collectibles
                 foreach (var values in _statDictionary.Values)
-                {
                     if (values.CurrentValue < values.MaximumValue)
-                    {
-                        Debug.Log("collectible requirement not met.");
                         return false;
-                    }
-                }
-                Debug.Log("collectible requirement met");
                 return true;
             }
 

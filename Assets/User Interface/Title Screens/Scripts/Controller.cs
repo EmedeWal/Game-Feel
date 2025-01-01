@@ -21,7 +21,7 @@ namespace ShatterStep
             private float _originalVerticalSize;
             private float _layoutSpacing;
 
-            private void Start()
+            public void Initialize()
             {
                 _audioSystem = AudioSystem.Instance;
                 _audioSource = GetComponent<AudioSource>();
@@ -62,7 +62,7 @@ namespace ShatterStep
                 ActivateSection(mainSection);
             }
 
-            private void OnDisable()
+            public void Cleanup()
             {
                 foreach (Section section in _sectionDictionary.Keys)
                     section.Cleanup();

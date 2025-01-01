@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ef94f9ab6800b4aa1e8cdc95f6a963, type: 3}
+  m_Name: Comic 01
+  m_EditorClassIdentifier: 
+  BackgroundSprite: {fileID: 21300000, guid: 3c243e9b7c284fe4d9cf2df7db93cbec, type: 3}
+  Dialogue:
+  - 'Jack: It seems I am following in your footsteps this time, Cain. Funny. In all
+    of our years as brothers, this is the first time I shall scale the mountain alone.'
+  - 'Jack: Why are you so eager to prove yourself? The only one who even doubts your
+    abilities is you. And yet, here you are again, pushing yourself to the limit.'
+  - 'Jack: No matter. The snow''s getting worse. I really ought to hurry if I want
+    to catch up with you. I bet you mom and dad are worried about you. Let''s get
+    you home. '

@@ -24,6 +24,8 @@ namespace ShatterStep
             {
                 Instance = this;
 
+                GetComponent<Canvas>().enabled = true;
+
                 _background = transform.GetChild(0).GetComponent<Image>();
 
                 Transform holderTransform = transform.GetChild(1);

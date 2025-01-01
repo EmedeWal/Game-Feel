@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Requirement Data Memory 01
   m_EditorClassIdentifier: 
   ComicScenes:
-  - {fileID: 11400000, guid: 1faff0211c65b6043a6327c5c6316a62, type: 2}
-  _minimumKeys: 30
-  _minimumCoins: 160
+  - {fileID: 11400000, guid: 6bed5ec51ac46d54fa2e71806d398d04, type: 2}
+  _minimumKeys: 3
+  _minimumCoins: 30
